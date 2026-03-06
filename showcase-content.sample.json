@@ -1,0 +1,337 @@
+{
+  "siteProfile": {
+    "brandName": "Caldwell Tents",
+    "tagline": "Elegant local rentals for weddings, parties, and backyard celebrations",
+    "primaryGoal": "Turn visitors into booking requests with clear packages, trustworthy visuals, and simple next steps"
+  },
+  "navigation": {
+    "brandSubtitle": "Event Rentals",
+    "links": [
+      { "label": "Packages", "href": "/packages" },
+      { "label": "Gallery", "href": "/gallery" },
+      { "label": "Service Areas", "href": "/service-areas" },
+      { "label": "Contact", "href": "/contact" }
+    ],
+    "primaryCta": "Request a Booking"
+  },
+  "rentalCategories": [
+    {
+      "name": "Tent Rentals",
+      "description": "Frame and high-peak tents for backyard parties, weddings, and open-house events.",
+      "buttonText": "View Tent Packages"
+    },
+    {
+      "name": "Table Rentals",
+      "description": "Banquet and round tables sized for dining, buffet layouts, and dessert stations.",
+      "buttonText": "View Table Options"
+    },
+    {
+      "name": "Chair Rentals",
+      "description": "Comfortable chair options for ceremonies, receptions, and family gatherings.",
+      "buttonText": "View Chair Options"
+    },
+    {
+      "name": "Bundled Event Packages",
+      "description": "Pre-built combinations of tents, tables, and chairs to simplify planning and setup.",
+      "buttonText": "Compare Packages"
+    }
+  ],
+  "homepage": {
+    "mainHeadline": "Tent, Table, and Chair Rentals That Make Your Event Feel Ready",
+    "supportingText": "From weddings to backyard celebrations, we deliver polished setups with clear pricing and straightforward booking.",
+    "heroSlides": [
+      {
+        "altText": "White reception tent with round dining tables and neutral linens",
+        "imageIdea": "Golden-hour outdoor wedding reception setup"
+      },
+      {
+        "altText": "Backyard birthday setup with banquet tables and covered seating",
+        "imageIdea": "Family birthday event with practical shaded layout"
+      },
+      {
+        "altText": "Evening celebration tent with string lighting and guest tables",
+        "imageIdea": "Nighttime celebration scene with warm lighting"
+      }
+    ],
+    "primaryButtonText": "Request a Booking",
+    "introSectionText": "We help local families and planners host smooth events with practical packages, dependable delivery windows, and layouts that look clean from arrival to pickup.",
+    "featuredPackageSlugs": [
+      "garden-party-package",
+      "classic-celebration-package",
+      "wedding-reception-package"
+    ],
+    "galleryPreviewIds": [
+      "gallery-001",
+      "gallery-002",
+      "gallery-003",
+      "gallery-004",
+      "gallery-005",
+      "gallery-006"
+    ],
+    "testimonialIds": ["testimonial-001", "testimonial-002", "testimonial-003"],
+    "serviceAreaSlugs": ["riverview", "lakeside", "caldwell"],
+    "finalCallToActionHeading": "Tell Us Your Date, Town, and Guest Count",
+    "finalCallToActionText": "Send a booking request and we will confirm availability, then follow up with your rental details.",
+    "finalCallToActionButtonText": "Check My Event Date",
+    "seo": {
+      "metaTitle": "Tent, Table, and Chair Rentals Near You",
+      "metaDescription": "Local event rental packages for tents, tables, and chairs with a quick booking request process."
+    }
+  },
+  "packages": [
+    {
+      "slug": "garden-party-package",
+      "packageName": "Garden Party Package",
+      "price": "From $595",
+      "shortDescription": "Perfect for birthdays and showers with a clean 40-guest layout.",
+      "fullDescription": "A reliable starter package for smaller celebrations that need shade, seating, and easy table flow.",
+      "guestCapacity": 40,
+      "includedItems": [
+        "20x20 frame tent",
+        "40 white folding chairs",
+        "6 banquet tables"
+      ],
+      "optionalAddOns": ["Bistro lighting", "Cake table setup", "Gift table"],
+      "featured": true,
+      "buttonText": "Request Garden Package",
+      "photoAltText": "Garden party rental setup with white tent and banquet tables"
+    },
+    {
+      "slug": "classic-celebration-package",
+      "packageName": "Classic Celebration Package",
+      "price": "From $895",
+      "shortDescription": "Balanced package for 60 guests with upgraded layout flexibility.",
+      "fullDescription": "Built for engagement parties, graduations, and weekend events where comfort and table spacing matter.",
+      "guestCapacity": 60,
+      "includedItems": [
+        "20x30 high-peak tent",
+        "60 white resin chairs",
+        "8 banquet tables",
+        "8 linen sets"
+      ],
+      "optionalAddOns": ["Cocktail tables", "Welcome sign easel", "Portable bar table"],
+      "featured": true,
+      "buttonText": "Request Classic Package",
+      "photoAltText": "Outdoor celebration package with high-peak tent and dining layout"
+    },
+    {
+      "slug": "wedding-reception-package",
+      "packageName": "Wedding Reception Package",
+      "price": "From $1,450",
+      "shortDescription": "Elegant 100-guest reception setup with ceremony-ready seating.",
+      "fullDescription": "Designed for couples who want a refined tented reception with cohesive table and chair planning.",
+      "guestCapacity": 100,
+      "includedItems": [
+        "30x40 reception tent",
+        "100 cross-back chairs",
+        "12 round guest tables",
+        "Head table setup"
+      ],
+      "optionalAddOns": ["String lighting", "Tent sidewalls", "Lounge seating cluster"],
+      "featured": true,
+      "buttonText": "Request Wedding Package",
+      "photoAltText": "Wedding reception tent with formal round tables"
+    },
+    {
+      "slug": "backyard-basics-package",
+      "packageName": "Backyard Basics Package",
+      "price": "From $395",
+      "shortDescription": "Simple essentials for casual neighborhood and family events.",
+      "fullDescription": "A practical setup for weekend gatherings that need fast planning and no guesswork.",
+      "guestCapacity": 25,
+      "includedItems": ["20x20 tent", "25 folding chairs", "4 banquet tables"],
+      "optionalAddOns": ["Extra chairs", "Extra tables", "Setup extension"],
+      "featured": false,
+      "buttonText": "Request Basics Package",
+      "photoAltText": "Compact backyard setup with tent and seating"
+    }
+  ],
+  "gallery": [
+    {
+      "id": "gallery-001",
+      "title": "Backyard Reception Layout",
+      "caption": "Round dining tables, shade coverage, and clear guest flow.",
+      "eventType": "Wedding",
+      "photoAltText": "Backyard wedding reception layout under a white tent"
+    },
+    {
+      "id": "gallery-002",
+      "title": "Evening Birthday Setup",
+      "caption": "String-lit layout for dinner and dessert stations.",
+      "eventType": "Birthday",
+      "photoAltText": "Evening birthday setup with lit tent and long tables"
+    },
+    {
+      "id": "gallery-003",
+      "title": "Graduation Open House",
+      "caption": "Flexible table placement for food service and guest seating.",
+      "eventType": "Graduation",
+      "photoAltText": "Graduation open-house tent with buffet and seating"
+    },
+    {
+      "id": "gallery-004",
+      "title": "Family Reunion Celebration",
+      "caption": "Large dining layout built for all-day gatherings.",
+      "eventType": "Family Reunion",
+      "photoAltText": "Family reunion setup with many chairs and banquet tables"
+    },
+    {
+      "id": "gallery-005",
+      "title": "Bridal Shower Garden Setup",
+      "caption": "Soft linens and compact seating for a refined look.",
+      "eventType": "Bridal Shower",
+      "photoAltText": "Bridal shower garden setup with decorated tables"
+    },
+    {
+      "id": "gallery-006",
+      "title": "Corporate Picnic Layout",
+      "caption": "Durable table and shade options for group attendance.",
+      "eventType": "Corporate Event",
+      "photoAltText": "Corporate picnic tent layout with grouped tables"
+    },
+    {
+      "id": "gallery-007",
+      "title": "Tent Ceremony Rows",
+      "caption": "Ceremony chairs and aisle spacing for better guest views.",
+      "eventType": "Wedding",
+      "photoAltText": "Wedding ceremony seating arranged under tent coverage"
+    },
+    {
+      "id": "gallery-008",
+      "title": "Anniversary Dinner Setup",
+      "caption": "Intimate seating and warm evening styling.",
+      "eventType": "Anniversary",
+      "photoAltText": "Anniversary dinner setup with elegant place settings"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "testimonial-001",
+      "customerName": "Carla M.",
+      "testimonialText": "The setup looked polished, and communication was clear from first message to pickup.",
+      "eventType": "Wedding",
+      "town": "Riverview"
+    },
+    {
+      "id": "testimonial-002",
+      "customerName": "Andre P.",
+      "testimonialText": "We booked for a birthday and everything arrived on time, exactly as promised.",
+      "eventType": "Birthday",
+      "town": "Lakeside"
+    },
+    {
+      "id": "testimonial-003",
+      "customerName": "Lena J.",
+      "testimonialText": "Their package recommendations saved us time and made planning much easier.",
+      "eventType": "Family Reunion",
+      "town": "Caldwell"
+    }
+  ],
+  "businessInformation": {
+    "businessName": "Caldwell Tents",
+    "businessLogoAltText": "Caldwell Tents logo",
+    "phoneNumber": "(555) 318-2247",
+    "emailAddress": "bookings@caldwelltents.com",
+    "addressOrServiceBase": "Serving Riverview, Lakeside, Caldwell, and nearby towns",
+    "mapLocation": "https://maps.google.com/?q=Riverview",
+    "hours": "Mon-Sat: 8:00 AM to 6:00 PM",
+    "instagramUrl": "",
+    "facebookUrl": "",
+    "bookingInstructions": "Submit a booking request with your event date, location, and guest count. We confirm availability and follow up to finalize your rental details.",
+    "seo": {
+      "metaTitle": "Caldwell Tents | Tent, Table & Chair Rentals",
+      "metaDescription": "Caldwell Tents offers tent, table, and chair rentals in Riverview, Lakeside, and Caldwell with fast quotes and easy booking requests."
+    }
+  },
+  "serviceAreas": [
+    {
+      "slug": "riverview",
+      "townName": "Riverview",
+      "shortDescription": "Party rentals in Riverview for birthdays, receptions, and backyard celebrations.",
+      "seoText": "Need tent rentals in Riverview? We provide table and chair rentals, bundled event packages, and dependable delivery windows across local neighborhoods.",
+      "serviceAreaSlides": [
+        {
+          "altText": "Riverview backyard event with tent and banquet tables",
+          "imageIdea": "Family event setup in Riverview"
+        },
+        {
+          "altText": "Riverview evening setup with lit reception tent",
+          "imageIdea": "Evening event in Riverview"
+        },
+        {
+          "altText": "Riverview celebration with round guest tables",
+          "imageIdea": "Wedding-style setup in Riverview"
+        }
+      ],
+      "seo": {
+        "metaTitle": "Tent Rentals in Riverview",
+        "metaDescription": "Tent, table, and chair rentals in Riverview for weddings, birthdays, and community events."
+      }
+    },
+    {
+      "slug": "lakeside",
+      "townName": "Lakeside",
+      "shortDescription": "Event rental packages in Lakeside for home and venue gatherings.",
+      "seoText": "From tent rentals to complete table and chair packages, our Lakeside setups keep planning simple and event-day logistics clear.",
+      "serviceAreaSlides": [
+        {
+          "altText": "Lakeside reception tent with elegant table styling",
+          "imageIdea": "Outdoor reception in Lakeside"
+        },
+        {
+          "altText": "Lakeside birthday setup with long banquet tables",
+          "imageIdea": "Birthday party layout in Lakeside"
+        },
+        {
+          "altText": "Lakeside ceremony seating under weather coverage",
+          "imageIdea": "Ceremony arrangement in Lakeside"
+        }
+      ],
+      "seo": {
+        "metaTitle": "Party Rentals in Lakeside",
+        "metaDescription": "Lakeside event rentals for tents, tables, chairs, and bundled celebration packages."
+      }
+    },
+    {
+      "slug": "caldwell",
+      "townName": "Caldwell",
+      "shortDescription": "Caldwell tent, table, and chair rentals with practical package options.",
+      "seoText": "Looking for event rentals in Caldwell? We offer clean setup packages, flexible guest-count options, and responsive local support.",
+      "serviceAreaSlides": [
+        {
+          "altText": "Caldwell family reunion setup with shaded seating",
+          "imageIdea": "Family reunion event in Caldwell"
+        },
+        {
+          "altText": "Caldwell backyard reception tent and dining tables",
+          "imageIdea": "Backyard reception in Caldwell"
+        },
+        {
+          "altText": "Caldwell daytime event with ceremony chair rows",
+          "imageIdea": "Daytime ceremony setup in Caldwell"
+        }
+      ],
+      "seo": {
+        "metaTitle": "Event Rentals in Caldwell",
+        "metaDescription": "Book tent rentals and table-and-chair packages in Caldwell for weddings and private events."
+      }
+    }
+  ],
+  "bookingRequestSample": {
+    "fullName": "Jordan Reyes",
+    "phoneNumber": "(555) 219-4488",
+    "emailAddress": "jordan.reyes@example.com",
+    "eventDate": "2026-07-18",
+    "eventLocation": "Riverview Community Garden",
+    "numberOfGuests": 75,
+    "selectedPackageSlug": "classic-celebration-package",
+    "additionalDetails": "Need setup complete by 2:00 PM. Please include quote options for cocktail tables.",
+    "website": ""
+  },
+  "ctaLibrary": {
+    "packagePage": "Request This Package",
+    "galleryPage": "Ask About Your Event Date",
+    "serviceAreaPage": "Check Availability in This Town",
+    "finalHomepageCta": "Start Your Booking Request"
+  }
+}
