@@ -96,9 +96,6 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
 
   return (
     <form className="form-shell" onSubmit={onSubmit} noValidate>
-      <p className="form-helper">
-        Submit this form to request your date. After we review availability, we&apos;ll reach out to finalize your rental details.
-      </p>
 
       {successMessage ? (
         <p className="form-alert form-alert-success" role="status">

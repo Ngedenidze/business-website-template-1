@@ -41,6 +41,7 @@ export function SanityImage({
         height={height}
         priority={priority}
         sizes="(max-width: 760px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        unoptimized
       />
     </div>
   );

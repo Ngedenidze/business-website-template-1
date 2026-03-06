@@ -149,9 +149,10 @@ export async function getGalleryPageData() {
 }
 
 export async function getBookingPageData() {
-  const [packages, businessInfo] = await Promise.all([
+  const [packages, businessInfo, homepageDoc] = await Promise.all([
     fetchOrNull<{ _id: string; packageName: string }[]>(packageOptionsQuery),
     fetchOrNull<BusinessInfo>(businessInfoQuery),
+    fetchOrNull<Homepage>(homepageQuery),
   ]);
 
   return {
@@ -160,6 +161,7 @@ export async function getBookingPageData() {
       : fallbackPackages.map((item) => ({ _id: item._id, packageName: item.packageName })),
     businessInfo: businessInfo ?? fallbackBusinessInfo,
     seo: businessInfo?.seo ?? fallbackBusinessInfo.seo,
+    heroImage: homepageDoc?.heroImage ?? fallbackHomepage.heroImage,
   };
 }
 

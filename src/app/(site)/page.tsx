@@ -25,39 +25,39 @@ export default async function HomePage() {
   return (
     <>
       <section className="section section-hero">
-        <div className="page-wrap">
-          <div className="hero-immersive">
-            <ImageSlideshow
-              images={homepage.heroSlides}
-              fallbackImage={homepage.heroImage}
-              aspectRatio="16 / 9"
-              autoplay
-              intervalMs={4000}
-              showControls
-              sizes="(max-width: 1280px) 100vw, 1280px"
-              className="hero-backdrop"
-              priority
-              fallbackLabel="Event setup photography"
-            />
-            <div className="hero-global-overlay" aria-hidden="true" />
-            <div className="hero-focus-vignette" aria-hidden="true" />
+        <div className="hero-immersive">
+          <ImageSlideshow
+            images={homepage.heroSlides}
+            fallbackImage={homepage.heroImage}
+            aspectRatio="16 / 9"
+            autoplay
+            intervalMs={4000}
+            showControls
+            sizes="100vw"
+            className="hero-backdrop"
+            priority
+            fallbackLabel="Event setup photography"
+          />
+          <div className="hero-global-overlay" aria-hidden="true" />
+          <div className="hero-focus-vignette" aria-hidden="true" />
 
-            <div className="hero-editorial-copy">
-              <span className="eyebrow">Local Event Rentals</span>
-              <h1>{homepage.mainHeadline}</h1>
-              <p>{homepage.supportingText}</p>
-              <div className="button-row">
-                <Link className="button button-primary" href={BOOKING_PATH}>
-                  {homepage.primaryButtonText || "Request a Booking"}
-                  <ArrowRight size={16} aria-hidden="true" />
-                </Link>
-                <Link className="button button-secondary" href="/packages">
-                  View Packages
-                </Link>
-              </div>
+          <div className="hero-editorial-copy">
+            <span className="eyebrow">Local Event Rentals</span>
+            <h1>{homepage.mainHeadline}</h1>
+            <p>{homepage.supportingText}</p>
+            <div className="button-row">
+              <Link className="button button-primary" href={BOOKING_PATH}>
+                {homepage.primaryButtonText || "Request a Booking"}
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+              <Link className="button button-secondary" href="/packages">
+                View Packages
+              </Link>
             </div>
           </div>
+        </div>
 
+        <div className="page-wrap">
           <div className="feature-strip">
             <div className="feature-card">
               <PackageCheck className="feature-icon" size={24} aria-hidden="true" />
