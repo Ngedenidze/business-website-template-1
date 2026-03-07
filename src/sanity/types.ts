@@ -61,6 +61,7 @@ export type BusinessInfo = {
   _id: string;
   businessName: string;
   businessLogo?: SanityImageWithAlt | null;
+  bookingPageImage?: SanityImageWithAlt | null;
   phoneNumber: string;
   emailAddress: string;
   addressOrServiceBase?: string;

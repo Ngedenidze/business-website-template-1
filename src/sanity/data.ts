@@ -161,7 +161,11 @@ export async function getBookingPageData() {
       : fallbackPackages.map((item) => ({ _id: item._id, packageName: item.packageName })),
     businessInfo: businessInfo ?? fallbackBusinessInfo,
     seo: businessInfo?.seo ?? fallbackBusinessInfo.seo,
-    heroImage: homepageDoc?.heroImage ?? fallbackHomepage.heroImage,
+    heroImage:
+      businessInfo?.bookingPageImage ??
+      homepageDoc?.heroImage ??
+      fallbackBusinessInfo.bookingPageImage ??
+      fallbackHomepage.heroImage,
   };
 }
 

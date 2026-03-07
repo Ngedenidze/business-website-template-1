@@ -269,6 +269,7 @@ export const fallbackBusinessInfo: BusinessInfo = {
   _id: "fallback-business-info",
   businessName: "Willow & Canvas Event Rentals",
   businessLogo: null,
+  bookingPageImage: null,
   phoneNumber: "(555) 318-2247",
   emailAddress: "bookings@willowandcanvas.com",
   addressOrServiceBase: "Serving Springfield and surrounding towns",

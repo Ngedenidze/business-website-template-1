@@ -72,6 +72,21 @@ export const businessInfoType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "bookingPageImage",
+      title: "Booking Page Image",
+      type: "image",
+      description: "Shown beside the form on the booking request page.",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Image Description",
+          type: "string",
+          validation: (rule) => rule.required(),
+        }),
+      ],
+    }),
+    defineField({
       name: "seo",
       title: "Contact Search Preview",
       type: "seo",

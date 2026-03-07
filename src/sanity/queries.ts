@@ -45,6 +45,7 @@ const businessInfoProjection = groq`{
   _id,
   businessName,
   businessLogo,
+  bookingPageImage,
   phoneNumber,
   emailAddress,
   addressOrServiceBase,
