@@ -49,6 +49,7 @@ export type TestimonialItem = {
 
 export type ServiceAreaItem = {
   _id: string;
+  county: string;
   townName: string;
   slug: SlugValue;
   shortDescription: string;

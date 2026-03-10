@@ -95,6 +95,7 @@ export default async function ContactPage() {
           <div className="service-grid">
             {serviceAreas.map((serviceArea) => (
               <article className="service-area-card" key={serviceArea._id}>
+                <p className="service-area-county">{serviceArea.county}</p>
                 <h3>{serviceArea.townName}</h3>
                 <p>{serviceArea.shortDescription}</p>
                 <Link href={`/service-areas/${serviceArea.slug.current}`}>

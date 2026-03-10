@@ -43,7 +43,7 @@ npm run dev
 npm run seed:content
 ```
 
-This script creates or replaces starter packages, gallery items, testimonials, service areas, homepage, and business information.
+This script creates starter packages, gallery items, testimonials, county-grouped service areas (Caldwell 30-mile coverage), homepage, and business information only when they do not already exist.
 
 ## Validate
 

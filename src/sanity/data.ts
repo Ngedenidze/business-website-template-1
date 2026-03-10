@@ -57,6 +57,7 @@ function normalizePackage(item: PackageItem): PackageItem {
 function normalizeServiceArea(item: ServiceAreaItem): ServiceAreaItem {
   return {
     ...item,
+    county: typeof item.county === "string" && item.county.trim() ? item.county : "Other Service Areas",
     serviceAreaSlides: Array.isArray(item.serviceAreaSlides) ? item.serviceAreaSlides : [],
   };
 }
@@ -194,7 +195,7 @@ export async function getServiceAreasPageData() {
     seo: {
       metaTitle: "Service Areas for Event Rentals",
       metaDescription:
-        "Find tent rentals, table and chair rentals, and party packages in nearby towns we serve.",
+        "Find tent rentals, table and chair rentals, and party packages in nearby towns grouped by county.",
     },
   };
 }

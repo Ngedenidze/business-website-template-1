@@ -799,6 +799,29 @@ img {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.service-county-section {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.service-county-section:last-of-type {
+  margin-bottom: 0;
+}
+
+.service-county-head {
+  margin-bottom: 0;
+}
+
+.service-county-head h2 {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.service-county-head p {
+  max-width: none;
+  font-size: 1rem;
+}
+
 .service-area-card {
   background: var(--surface);
   border-radius: var(--radius-card);
@@ -813,6 +836,15 @@ img {
 .service-area-card h2,
 .service-area-card h3 {
   font-size: 1.6rem;
+}
+
+.service-area-county {
+  margin: 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 .service-area-card a {

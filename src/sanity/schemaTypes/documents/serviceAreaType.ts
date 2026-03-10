@@ -6,6 +6,25 @@ export const serviceAreaType = defineType({
   type: "document",
   fields: [
     defineField({
+      name: "county",
+      title: "County / Region",
+      type: "string",
+      description: "Used to group service areas on the website.",
+      options: {
+        list: [
+          { title: "Essex County", value: "Essex County" },
+          { title: "Morris County", value: "Morris County" },
+          { title: "Passaic County", value: "Passaic County" },
+          { title: "Bergen County", value: "Bergen County" },
+          { title: "Hudson County", value: "Hudson County" },
+          { title: "Union County", value: "Union County" },
+          { title: "Somerset County", value: "Somerset County" },
+          { title: "New York (within ~30 miles)", value: "New York (within ~30 miles)" },
+        ],
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: "townName",
       title: "Town Name",
       type: "string",
@@ -64,6 +83,7 @@ export const serviceAreaType = defineType({
   preview: {
     select: {
       title: "townName",
+      subtitle: "county",
     },
   },
 });

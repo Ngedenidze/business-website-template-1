@@ -33,6 +33,7 @@ const testimonialProjection = groq`{
 
 const serviceAreaProjection = groq`{
   _id,
+  county,
   townName,
   slug,
   shortDescription,
@@ -85,21 +86,22 @@ export const businessInfoQuery =
   groq`*[_type == "businessInfo"][0]${businessInfoProjection}`;
 
 export const serviceAreasQuery =
-  groq`*[_type == "serviceArea"]|order(townName asc)${serviceAreaProjection}`;
+  groq`*[_type == "serviceArea" && defined(county)]|order(county asc, townName asc)${serviceAreaProjection}`;
 
 export const serviceAreaBySlugQuery =
   groq`*[_type == "serviceArea" && slug.current == $slug][0]${serviceAreaProjection}`;
 
 export const serviceAreaSlugsQuery =
-  groq`*[_type == "serviceArea" && defined(slug.current)]{ "slug": slug.current }`;
+  groq`*[_type == "serviceArea" && defined(county) && defined(slug.current)]{ "slug": slug.current }`;
 
 export const packageOptionsQuery =
   groq`*[_type == "package"]|order(packageName asc){ _id, packageName }`;
 
 export const siteShellQuery = groq`{
   "businessInfo": *[_type == "businessInfo"][0]${businessInfoProjection},
-  "serviceAreas": *[_type == "serviceArea"]|order(townName asc)[0...8]{
+  "serviceAreas": *[_type == "serviceArea" && defined(county)]|order(county asc, townName asc)[0...8]{
     _id,
+    county,
     townName,
     slug,
     shortDescription

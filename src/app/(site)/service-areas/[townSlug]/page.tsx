@@ -36,7 +36,7 @@ export async function generateMetadata({
       serviceArea.seo?.metaTitle || `Tent and Party Rentals in ${serviceArea.townName}`,
     description:
       serviceArea.seo?.metaDescription ||
-      `Tent rentals, table and chair rentals, and party packages in ${serviceArea.townName}.`,
+      `Tent rentals, table and chair rentals, and party packages in ${serviceArea.townName}, ${serviceArea.county}.`,
     path: `/service-areas/${serviceArea.slug.current}`,
   });
 }
@@ -60,6 +60,7 @@ export default async function ServiceAreaTownPage({
           <div>
             <p className="eyebrow">Local Service Area</p>
             <h1>Event Rentals in {serviceArea.townName}</h1>
+            <p className="service-area-county">{serviceArea.county}</p>
             <p>
               Tent rentals in {serviceArea.townName}, table and chair rentals in
               {` ${serviceArea.townName}`}, and event rental packages in {serviceArea.townName}.

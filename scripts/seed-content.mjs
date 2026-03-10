@@ -21,6 +21,180 @@ function reference(_ref) {
   return { _type: "reference", _ref };
 }
 
+function toSlug(value) {
+  return value
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+const serviceAreaTownsByCounty = {
+  "Essex County": [
+    "Caldwell",
+    "West Caldwell",
+    "North Caldwell",
+    "Essex Fells",
+    "Roseland",
+    "Livingston",
+    "West Orange",
+    "Verona",
+    "Cedar Grove",
+    "Montclair",
+    "Bloomfield",
+    "Glen Ridge",
+    "Nutley",
+    "Belleville",
+    "East Orange",
+    "Orange",
+    "Irvington",
+    "Maplewood",
+    "South Orange",
+    "Millburn",
+    "Newark",
+    "Fairfield",
+  ],
+  "Morris County": [
+    "East Hanover",
+    "Florham Park",
+    "Hanover",
+    "Parsippany-Troy Hills",
+    "Montville",
+    "Lincoln Park",
+    "Boonton",
+    "Boonton Township",
+    "Denville",
+    "Mountain Lakes",
+    "Rockaway Borough",
+    "Rockaway Township",
+    "Mendham",
+    "Mendham Township",
+    "Madison",
+    "Chatham Borough",
+    "Chatham Township",
+    "Harding Township",
+    "Long Hill Township",
+    "Chester Borough",
+    "Chester Township",
+    "Mount Olive",
+    "Jefferson",
+    "Butler",
+    "Kinnelon",
+  ],
+  "Passaic County": [
+    "Little Falls",
+    "Woodland Park",
+    "Totowa",
+    "Wayne",
+    "Clifton",
+    "Passaic",
+    "Paterson",
+    "Haledon",
+    "Prospect Park",
+    "North Haledon",
+    "Pompton Lakes",
+    "Ringwood",
+    "Bloomingdale",
+    "West Milford",
+    "Hawthorne",
+    "Wanaque",
+  ],
+  "Bergen County": [
+    "Garfield",
+    "Lodi",
+    "Hasbrouck Heights",
+    "Wood-Ridge",
+    "Moonachie",
+    "Carlstadt",
+    "Rutherford",
+    "East Rutherford",
+    "Wallington",
+    "South Hackensack",
+    "Hackensack",
+    "Teaneck",
+    "Bergenfield",
+    "Englewood",
+    "Englewood Cliffs",
+    "Fort Lee",
+    "Leonia",
+    "Ridgefield Park",
+    "Palisades Park",
+    "Cliffside Park",
+    "Edgewater",
+    "Fair Lawn",
+    "Paramus",
+    "Ridgewood",
+    "Glen Rock",
+    "Elmwood Park",
+    "Oradell",
+    "River Edge",
+    "New Milford",
+    "Dumont",
+    "Haworth",
+    "Cresskill",
+    "Tenafly",
+    "Alpine",
+    "Hillsdale",
+    "Park Ridge",
+    "Emerson",
+  ],
+  "Hudson County": [
+    "Jersey City",
+    "Hoboken",
+    "Union City",
+    "Weehawken",
+    "West New York",
+    "North Bergen",
+    "Guttenberg",
+    "Bayonne",
+    "Secaucus",
+    "Kearny",
+    "Harrison",
+  ],
+  "Union County": [
+    "Union",
+    "Springfield",
+    "Summit",
+    "New Providence",
+    "Berkeley Heights",
+    "Mountainside",
+    "Westfield",
+    "Scotch Plains",
+    "Fanwood",
+    "Plainfield",
+    "Cranford",
+    "Roselle",
+    "Roselle Park",
+    "Elizabeth",
+    "Kenilworth",
+    "Clark",
+    "Rahway",
+    "Linden",
+    "Hillside",
+  ],
+  "Somerset County": [
+    "Basking Ridge",
+    "Bernards Township",
+    "Bernardsville",
+    "Far Hills",
+    "Peapack-Gladstone",
+    "Bedminster",
+    "Bridgewater",
+    "Bound Brook",
+    "Somerville",
+  ],
+  "New York (within ~30 miles)": [
+    "New York City boroughs",
+    "Yonkers",
+    "Mount Vernon",
+    "New Rochelle",
+    "White Plains",
+    "Tarrytown",
+    "Sleepy Hollow",
+    "Nyack",
+  ],
+};
+
 const packages = [
   {
     _id: "seed-package-garden",
@@ -175,7 +349,7 @@ const testimonials = [
     testimonialText:
       "The setup looked clean and professional, and communication was clear from booking to pickup.",
     eventType: "Wedding",
-    town: "Springfield",
+    town: "Caldwell",
   },
   {
     _id: "seed-testimonial-2",
@@ -184,7 +358,7 @@ const testimonials = [
     testimonialText:
       "We needed tables and chairs quickly for a birthday. They arrived on time and the layout was exactly right.",
     eventType: "Birthday",
-    town: "Riverview",
+    town: "Montclair",
   },
   {
     _id: "seed-testimonial-3",
@@ -193,98 +367,55 @@ const testimonials = [
     testimonialText:
       "Pricing was clear, setup was smooth, and the team helped us pick the right package for our guest count.",
     eventType: "Family Reunion",
-    town: "Oak Hill",
+    town: "Wayne",
   },
 ];
 
-const serviceAreas = [
-  {
-    _id: "seed-service-springfield",
+const serviceAreaSeedEntries = Object.entries(serviceAreaTownsByCounty).flatMap(([county, towns]) =>
+  towns.map((townName) => ({ county, townName })),
+);
+
+const slugCounts = new Map();
+
+const serviceAreas = serviceAreaSeedEntries.map(({ county, townName }) => {
+  const baseSlug = toSlug(townName);
+  const baseSlugCount = slugCounts.get(baseSlug) || 0;
+  slugCounts.set(baseSlug, baseSlugCount + 1);
+  const uniqueSlug = baseSlugCount === 0 ? baseSlug : `${baseSlug}-${toSlug(county)}`;
+
+  return {
+    _id: `seed-service-${toSlug(county)}-${uniqueSlug}`,
     _type: "serviceArea",
-    townName: "Springfield",
-    slug: { _type: "slug", current: "springfield" },
-    shortDescription: "Tent rentals and package setups for weddings and backyard parties in Springfield.",
+    county,
+    townName,
+    slug: { _type: "slug", current: uniqueSlug },
+    shortDescription:
+      `Tent, table, and chair rentals in ${townName} with delivery coverage across ${county}.`,
     seoText:
-      "Need tent rentals in Springfield? We provide table and chair rentals, bundled event setups, and practical delivery windows for local venues and homes.",
+      `Need event rentals in ${townName}? We provide tent rentals, table and chair rentals, and package setups in ${townName} and nearby communities.`,
     serviceAreaSlides: [],
     seo: {
       _type: "seo",
-      metaTitle: "Tent Rentals in Springfield",
+      metaTitle: `Event Rentals in ${townName}`,
       metaDescription:
-        "Tent rentals, table and chair rentals, and party packages in Springfield for weddings and local events.",
+        `Tent rentals, table and chair rentals, and package setups in ${townName}.`,
     },
-  },
-  {
-    _id: "seed-service-riverview",
-    _type: "serviceArea",
-    townName: "Riverview",
-    slug: { _type: "slug", current: "riverview" },
-    shortDescription: "Party rentals in Riverview with complete tent, table, and chair package options.",
-    seoText:
-      "Our Riverview service includes setup support, clear package pricing, and dependable tent rentals for private events.",
-    serviceAreaSlides: [],
-  },
-  {
-    _id: "seed-service-oakhill",
-    _type: "serviceArea",
-    townName: "Oak Hill",
-    slug: { _type: "slug", current: "oak-hill" },
-    shortDescription: "Event rentals in Oak Hill for family celebrations, reunions, and seasonal gatherings.",
-    seoText:
-      "Looking for event rentals in Oak Hill? We handle tent layout planning and practical table and chair counts for your guest list.",
-    serviceAreaSlides: [],
-  },
-  {
-    _id: "seed-service-lakeside",
-    _type: "serviceArea",
-    townName: "Lakeside",
-    slug: { _type: "slug", current: "lakeside" },
-    shortDescription: "Tent and table rentals in Lakeside for weddings and outdoor receptions.",
-    seoText:
-      "Lakeside customers use our bundled packages for cleaner planning and predictable setup day scheduling.",
-    serviceAreaSlides: [],
-  },
-  {
-    _id: "seed-service-fairview",
-    _type: "serviceArea",
-    townName: "Fairview",
-    slug: { _type: "slug", current: "fairview" },
-    shortDescription: "Chair, table, and tent package rentals in Fairview with local delivery options.",
-    seoText:
-      "For party rentals in Fairview, we provide practical package guidance based on event size and site access.",
-    serviceAreaSlides: [],
-  },
-  {
-    _id: "seed-service-willow-creek",
-    _type: "serviceArea",
-    townName: "Willow Creek",
-    slug: { _type: "slug", current: "willow-creek" },
-    shortDescription: "Event rental packages in Willow Creek for birthdays, showers, and receptions.",
-    seoText:
-      "Willow Creek bookings include tent rentals near you with chair and table combinations that match your floor plan.",
-    serviceAreaSlides: [],
-  },
-  {
-    _id: "seed-service-cedar-grove",
-    _type: "serviceArea",
-    townName: "Cedar Grove",
-    slug: { _type: "slug", current: "cedar-grove" },
-    shortDescription: "Reliable event setup rentals in Cedar Grove for home and venue events.",
-    seoText:
-      "Book tent, table, and chair rentals in Cedar Grove with direct support during planning and scheduling.",
-    serviceAreaSlides: [],
-  },
-  {
-    _id: "seed-service-meadow-park",
-    _type: "serviceArea",
-    townName: "Meadow Park",
-    slug: { _type: "slug", current: "meadow-park" },
-    shortDescription: "Party rental bundles in Meadow Park with fast quote responses.",
-    seoText:
-      "Meadow Park families and couples use our packages for simple event planning and clean event-day setup.",
-    serviceAreaSlides: [],
-  },
+  };
+});
+
+const homepageServiceAreaPreviewTownNames = [
+  "Caldwell",
+  "West Caldwell",
+  "North Caldwell",
+  "Essex Fells",
+  "Roseland",
+  "Livingston",
 ];
+
+const homepageServiceAreaPreview = homepageServiceAreaPreviewTownNames
+  .map((townName) => serviceAreas.find((serviceArea) => serviceArea.townName === townName))
+  .filter(Boolean)
+  .map((serviceArea) => reference(serviceArea._id));
 
 const businessInfo = {
   _id: "businessInfo",
@@ -292,7 +423,7 @@ const businessInfo = {
   businessName: "Willow & Canvas Event Rentals",
   phoneNumber: "(555) 318-2247",
   emailAddress: "bookings@willowandcanvas.com",
-  addressOrServiceBase: "Serving Springfield and surrounding towns",
+  addressOrServiceBase: "Serving Caldwell, NJ and nearby counties within 30 miles",
   mapLocation: "https://maps.google.com",
   hours: "Mon-Sat: 8:00 AM - 6:00 PM",
   bookingInstructions:
@@ -336,12 +467,7 @@ const homepage = {
     reference("seed-testimonial-3"),
   ],
   serviceAreaPreview: [
-    reference("seed-service-springfield"),
-    reference("seed-service-riverview"),
-    reference("seed-service-oakhill"),
-    reference("seed-service-lakeside"),
-    reference("seed-service-fairview"),
-    reference("seed-service-willow-creek"),
+    ...homepageServiceAreaPreview,
   ],
   finalCallToActionHeading: "Tell Us Your Date and Guest Count",
   finalCallToActionText:
@@ -355,18 +481,18 @@ const homepage = {
   },
 };
 
-async function upsertAll() {
+async function seedIfMissingAll() {
   for (const doc of [...packages, ...gallery, ...testimonials, ...serviceAreas]) {
-    await client.createOrReplace(doc);
+    await client.createIfNotExists(doc);
   }
 
-  await client.createOrReplace(businessInfo);
-  await client.createOrReplace(homepage);
+  await client.createIfNotExists(businessInfo);
+  await client.createIfNotExists(homepage);
 }
 
-upsertAll()
+seedIfMissingAll()
   .then(() => {
-    console.log("Starter content seeded successfully.");
+    console.log("Starter content seeded successfully (existing documents were preserved).");
   })
   .catch((error) => {
     console.error("Seeding failed:", error.message);

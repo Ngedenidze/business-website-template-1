@@ -160,7 +160,7 @@ export const fallbackTestimonials: TestimonialItem[] = [
     testimonialText:
       "The setup looked clean and professional, and communication was clear from booking to pickup.",
     eventType: "Wedding",
-    town: "Springfield",
+    town: "Caldwell",
   },
   {
     _id: "fallback-testimonial-2",
@@ -168,7 +168,7 @@ export const fallbackTestimonials: TestimonialItem[] = [
     testimonialText:
       "We needed tables and chairs quickly for a birthday. They arrived on time and the layout was exactly right.",
     eventType: "Birthday",
-    town: "Riverview",
+    town: "Montclair",
   },
   {
     _id: "fallback-testimonial-3",
@@ -176,77 +176,91 @@ export const fallbackTestimonials: TestimonialItem[] = [
     testimonialText:
       "Pricing was clear, setup was smooth, and the team helped us pick the right package for our guest count.",
     eventType: "Family Reunion",
-    town: "Oak Hill",
+    town: "Wayne",
   },
 ];
 
 export const fallbackServiceAreas: ServiceAreaItem[] = [
   {
-    _id: "fallback-town-springfield",
-    townName: "Springfield",
-    slug: { current: "springfield" },
-    shortDescription: "Tent rentals and package setups for weddings and backyard parties in Springfield.",
+    _id: "fallback-town-caldwell",
+    county: "Essex County",
+    townName: "Caldwell",
+    slug: { current: "caldwell" },
+    shortDescription: "Tent, table, and chair rentals in Caldwell with delivery coverage across Essex County.",
     seoText:
-      "Need tent rentals in Springfield? We provide table and chair rentals, bundled event setups, and practical delivery windows for local venues and homes.",
+      "Need event rentals in Caldwell? We provide tent rentals, table and chair rentals, and package setups from our Caldwell, NJ base.",
     serviceAreaSlides: [],
     seo: {
-      metaTitle: "Tent Rentals in Springfield",
+      metaTitle: "Event Rentals in Caldwell",
       metaDescription:
-        "Tent rentals, table and chair rentals, and party packages in Springfield for weddings and local events.",
+        "Tent rentals, table and chair rentals, and party packages in Caldwell for weddings and local events.",
     },
   },
   {
-    _id: "fallback-town-riverview",
-    townName: "Riverview",
-    slug: { current: "riverview" },
-    shortDescription: "Party rentals in Riverview with complete tent, table, and chair package options.",
+    _id: "fallback-town-west-caldwell",
+    county: "Essex County",
+    townName: "West Caldwell",
+    slug: { current: "west-caldwell" },
+    shortDescription:
+      "Party rentals in West Caldwell with complete tent, table, and chair package options.",
     seoText:
-      "Our Riverview service includes setup support, clear package pricing, and dependable tent rentals for private events.",
-    serviceAreaSlides: [],
-    seo: {
-      metaTitle: "Party Rentals in Riverview",
-      metaDescription:
-        "Book tent, table, and chair rentals in Riverview with package options for birthdays and wedding receptions.",
-    },
-  },
-  {
-    _id: "fallback-town-oakhill",
-    townName: "Oak Hill",
-    slug: { current: "oak-hill" },
-    shortDescription: "Event rentals in Oak Hill for family celebrations, reunions, and seasonal gatherings.",
-    seoText:
-      "Looking for event rentals in Oak Hill? We handle tent layout planning and practical table and chair counts for your guest list.",
+      "Our West Caldwell service includes setup support, clear package pricing, and dependable tent rentals for private events.",
     serviceAreaSlides: [],
   },
   {
-    _id: "fallback-town-lakeside",
-    townName: "Lakeside",
-    slug: { current: "lakeside" },
-    shortDescription: "Tent and table rentals in Lakeside for weddings and outdoor receptions.",
+    _id: "fallback-town-north-caldwell",
+    county: "Essex County",
+    townName: "North Caldwell",
+    slug: { current: "north-caldwell" },
+    shortDescription:
+      "Event rentals in North Caldwell for family celebrations, reunions, and seasonal gatherings.",
     seoText:
-      "Lakeside customers use our bundled packages for cleaner planning and predictable setup day scheduling.",
+      "Looking for event rentals in North Caldwell? We handle tent layout planning and practical table and chair counts for your guest list.",
     serviceAreaSlides: [],
   },
   {
-    _id: "fallback-town-fairview",
-    townName: "Fairview",
-    slug: { current: "fairview" },
-    shortDescription: "Chair, table, and tent package rentals in Fairview with local delivery options.",
+    _id: "fallback-town-essex-fells",
+    county: "Essex County",
+    townName: "Essex Fells",
+    slug: { current: "essex-fells" },
+    shortDescription: "Tent and table rentals in Essex Fells for weddings and outdoor receptions.",
     seoText:
-      "For party rentals in Fairview, we provide practical package guidance based on event size and site access.",
+      "Essex Fells customers use our bundled packages for cleaner planning and predictable setup day scheduling.",
     serviceAreaSlides: [],
   },
   {
-    _id: "fallback-town-willow-creek",
-    townName: "Willow Creek",
-    slug: { current: "willow-creek" },
-    shortDescription: "Event rental packages in Willow Creek for birthdays, showers, and receptions.",
+    _id: "fallback-town-roseland",
+    county: "Essex County",
+    townName: "Roseland",
+    slug: { current: "roseland" },
+    shortDescription: "Chair, table, and tent package rentals in Roseland with local delivery options.",
     seoText:
-      "Willow Creek bookings include tent rentals near you with chair and table combinations that match your floor plan.",
+      "For party rentals in Roseland, we provide practical package guidance based on event size and site access.",
+    serviceAreaSlides: [],
+  },
+  {
+    _id: "fallback-town-livingston",
+    county: "Essex County",
+    townName: "Livingston",
+    slug: { current: "livingston" },
+    shortDescription: "Event rental packages in Livingston for birthdays, showers, and receptions.",
+    seoText:
+      "Livingston bookings include tent rentals near you with chair and table combinations that match your floor plan.",
+    serviceAreaSlides: [],
+  },
+  {
+    _id: "fallback-town-montclair",
+    county: "Essex County",
+    townName: "Montclair",
+    slug: { current: "montclair" },
+    shortDescription: "Reliable event setup rentals in Montclair for home and venue events.",
+    seoText:
+      "Book tent, table, and chair rentals in Montclair with direct support during planning and scheduling.",
     serviceAreaSlides: [],
   },
   {
     _id: "fallback-town-cedar-grove",
+    county: "Essex County",
     townName: "Cedar Grove",
     slug: { current: "cedar-grove" },
     shortDescription: "Reliable event setup rentals in Cedar Grove for home and venue events.",
@@ -255,12 +269,13 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     serviceAreaSlides: [],
   },
   {
-    _id: "fallback-town-meadow-park",
-    townName: "Meadow Park",
-    slug: { current: "meadow-park" },
-    shortDescription: "Party rental bundles in Meadow Park with fast quote responses.",
+    _id: "fallback-town-east-hanover",
+    county: "Morris County",
+    townName: "East Hanover",
+    slug: { current: "east-hanover" },
+    shortDescription: "Party rental bundles in East Hanover with fast quote responses.",
     seoText:
-      "Meadow Park families and couples use our packages for simple event planning and clean event-day setup.",
+      "East Hanover families and couples use our packages for simple event planning and clean event-day setup.",
     serviceAreaSlides: [],
   },
 ];
@@ -272,7 +287,7 @@ export const fallbackBusinessInfo: BusinessInfo = {
   bookingPageImage: null,
   phoneNumber: "(555) 318-2247",
   emailAddress: "bookings@willowandcanvas.com",
-  addressOrServiceBase: "Serving Springfield and surrounding towns",
+  addressOrServiceBase: "Serving Caldwell, NJ and nearby counties within 30 miles",
   mapLocation: "https://maps.google.com",
   hours: "Mon-Sat: 8:00 AM - 6:00 PM",
   bookingInstructions:
