@@ -9,6 +9,7 @@ const packageProjection = groq`{
   fullDescription,
   packagePhoto,
   guestCapacity,
+  capacityLabel,
   includedItems,
   optionalAddOns,
   featured,
@@ -53,6 +54,27 @@ const businessInfoProjection = groq`{
   mapLocation,
   hours,
   bookingInstructions,
+  rentalPolicyHighlights[]{
+    sectionTitle,
+    bulletPoints,
+    note
+  },
+  inventoryItems[]{
+    itemName,
+    itemImage
+  },
+  individualRentalPricing[]{
+    itemName,
+    price
+  },
+  deliveryFees[]{
+    distance,
+    fee
+  },
+  setupFees[]{
+    tent,
+    setupFee
+  },
   instagramUrl,
   facebookUrl,
   seo

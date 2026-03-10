@@ -1,9 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { ServiceAreaTownSearch } from "@/components/service-area-town-search";
 import { ImageSlideshow } from "@/components/image-slideshow";
 import { createPageMetadata } from "@/lib/metadata";
-import { getServiceAreaBySlug, getServiceAreaSlugs } from "@/sanity/data";
+import {
+  getServiceAreaBySlug,
+  getServiceAreaSlugs,
+  getServiceAreasPageData,
+} from "@/sanity/data";
 
 type PageParams = {
   townSlug: string;
@@ -47,11 +52,21 @@ export default async function ServiceAreaTownPage({
   params: Promise<PageParams>;
 }) {
   const { townSlug } = await params;
-  const serviceArea = await getServiceAreaBySlug(townSlug);
+  const [serviceArea, serviceAreaDirectory] = await Promise.all([
+    getServiceAreaBySlug(townSlug),
+    getServiceAreasPageData(),
+  ]);
 
   if (!serviceArea) {
     notFound();
   }
+
+  const towns = serviceAreaDirectory.serviceAreas.map((town) => ({
+    _id: town._id,
+    county: town.county,
+    townName: town.townName,
+    slug: town.slug,
+  }));
 
   return (
     <section className="section">
@@ -91,6 +106,14 @@ export default async function ServiceAreaTownPage({
               Back to Service Areas
             </Link>
           </div>
+        </div>
+
+        <div style={{ marginTop: "1.5rem" }}>
+          <ServiceAreaTownSearch
+            currentTownSlug={serviceArea.slug.current}
+            currentCounty={serviceArea.county}
+            towns={towns}
+          />
         </div>
       </div>
     </section>

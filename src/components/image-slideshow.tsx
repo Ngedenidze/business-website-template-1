@@ -24,7 +24,7 @@ function sanitizeSlides(images?: SanityImageWithAlt[] | null) {
     return [] as SanityImageWithAlt[];
   }
 
-  return images.filter((image) => Boolean(image?.asset));
+  return images.filter((image) => Boolean(image?.asset?._ref || image?.asset?.url));
 }
 
 export function ImageSlideshow({
@@ -97,9 +97,18 @@ export function ImageSlideshow({
     >
       <div className="slideshow-viewport">
         {slides.map((slide, index) => {
-          const imageUrl = urlFor(slide).width(1800).height(1200).fit("crop").url();
+          const directUrl = slide.asset?.url?.trim();
+          const imageUrl = directUrl
+            ? directUrl
+            : slide.asset?._ref
+              ? urlFor(slide).width(1800).height(1200).fit("crop").url()
+              : null;
           const altText = slide.alt?.trim() || "Event rental photo";
           const isActive = index === visibleIndex;
+
+          if (!imageUrl) {
+            return null;
+          }
 
           return (
             <div

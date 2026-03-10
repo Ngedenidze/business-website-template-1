@@ -3,153 +3,169 @@ import type {
   GalleryItem,
   Homepage,
   PackageItem,
+  SanityImageWithAlt,
   ServiceAreaItem,
   TestimonialItem,
 } from "@/sanity/types";
 
+function localImage(url: string, alt: string): SanityImageWithAlt {
+  return {
+    alt,
+    asset: {
+      _type: "sanity.imageAsset",
+      url,
+    },
+  };
+}
+
+const setupImages = {
+  popUp30Guests: localImage(
+    "/images/gallery/spirit-10x20-30-guests.png",
+    "10x20 pop-up tent setup with guest seating",
+  ),
+  popUpBuffet: localImage(
+    "/images/gallery/spirit-10x20-buffet.png",
+    "10x20 pop-up tent buffet table layout",
+  ),
+  popUpCocktail: localImage(
+    "/images/gallery/spirit-10x20-cocktail.png",
+    "10x20 pop-up tent cocktail setup",
+  ),
+  frame20x26: localImage(
+    "/images/gallery/spirit-20x26-frame.png",
+    "20x26 frame tent with tables and chairs",
+  ),
+  frame20x38: localImage(
+    "/images/gallery/spirit-20x38-frame.png",
+    "20x38.5 frame tent reception layout",
+  ),
+};
+
+const inventoryImages = {
+  foldingChairs: localImage(
+    "/images/inventory/spirit-folding-chair.png",
+    "Folding chair rental item",
+  ),
+  banquetTable: localImage(
+    "/images/inventory/spirit-banquet-table-30x96.png",
+    "30 by 96 inch banquet table rental item",
+  ),
+  roundTable: localImage(
+    "/images/inventory/spirit-round-table.png",
+    "Round table rental item",
+  ),
+  cocktailTable: localImage(
+    "/images/inventory/spirit-cocktail-table.png",
+    "Cocktail table rental item",
+  ),
+  popUpTent10x20: localImage(
+    "/images/inventory/spirit-tent-10x20-pop-up.png",
+    "10 by 20 pop-up tent rental item",
+  ),
+  frameTent20x26: localImage(
+    "/images/inventory/spirit-tent-20x26-frame.png",
+    "20 by 26 frame tent rental item",
+  ),
+  frameTent20x40: localImage(
+    "/images/inventory/spirit-tent-20x40-frame.png",
+    "20 by 40 frame tent rental item",
+  ),
+};
+
+const defaultServiceAreaSlides = [
+  setupImages.frame20x38,
+  setupImages.frame20x26,
+  setupImages.popUpCocktail,
+];
+
 export const fallbackPackages: PackageItem[] = [
   {
-    _id: "fallback-package-garden",
-    packageName: "Garden Party Package",
-    price: "From $595",
-    shortDescription: "40 chairs, 6 banquet tables, and a clean white tent for family events.",
+    _id: "fallback-package-small-backyard",
+    packageName: "Small Backyard Package",
+    price: "$325",
+    shortDescription: "Designed for intimate gatherings and backyard celebrations.",
     fullDescription:
-      "Best for birthdays, bridal showers, and small receptions where you need a polished setup without overbuilding your budget.",
-    guestCapacity: 40,
-    includedItems: ["20x20 frame tent", "40 white folding chairs", "6 eight-foot banquet tables"],
-    optionalAddOns: ["Bistro lighting", "Cake table setup"],
+      "Designed for intimate gatherings and backyard celebrations. This package is ideal for small birthday parties, baby showers, or family get-togethers. The 10x20 pop-up tent provides comfortable shade while the tables and chairs allow guests to relax and socialize without worrying about seating arrangements. A simple, affordable setup for smaller events.",
+    guestCapacity: 30,
+    capacityLabel: "20-30 guests",
+    includedItems: ["10' x 20' pop-up tent", "4 tables", "30 chairs"],
+    optionalAddOns: [],
     featured: true,
-    buttonText: "Request Garden Package",
-    slug: { current: "garden-party-package" },
-    packagePhoto: null,
+    buttonText: "Request Small Backyard Package",
+    slug: { current: "small-backyard-package" },
+    packagePhoto: inventoryImages.popUpTent10x20,
   },
   {
-    _id: "fallback-package-classic",
-    packageName: "Classic Celebration Package",
-    price: "From $895",
-    shortDescription: "60 guest setup with upgraded table linens and wider layout options.",
+    _id: "fallback-package-backyard-party",
+    packageName: "Backyard Party Package",
+    price: "$575",
+    shortDescription:
+      "A great option for medium-sized events such as graduation parties, family reunions, or backyard celebrations.",
     fullDescription:
-      "Designed for graduation parties, engagement events, and weekend celebrations where guest flow and comfort matter.",
-    guestCapacity: 60,
-    includedItems: [
-      "20x30 high-peak tent",
-      "60 white resin chairs",
-      "8 banquet tables",
-      "8 premium table linens",
-    ],
-    optionalAddOns: ["Cocktail tables", "Dance floor section"],
+      "A great option for medium-sized events such as graduation parties, family reunions, or backyard celebrations. The larger frame tent creates a spacious covered area while the additional seating accommodates a bigger group of guests. This package balances space and affordability for hosts who want a comfortable event setup without overcomplicating logistics.",
+    guestCapacity: 50,
+    capacityLabel: "40-50 guests",
+    includedItems: ["20' x 26' frame tent", "6 tables", "50 chairs"],
+    optionalAddOns: [],
     featured: true,
-    buttonText: "Request Classic Package",
-    slug: { current: "classic-celebration-package" },
-    packagePhoto: null,
+    buttonText: "Request Backyard Party Package",
+    slug: { current: "backyard-party-package" },
+    packagePhoto: inventoryImages.frameTent20x26,
   },
   {
-    _id: "fallback-package-wedding",
-    packageName: "Wedding Reception Package",
-    price: "From $1,450",
-    shortDescription: "Elegant tented reception setup for up to 100 guests.",
+    _id: "fallback-package-large-party",
+    packageName: "Large Party Package",
+    price: "$875",
+    shortDescription:
+      "Perfect for large gatherings such as backyard weddings, engagement parties, and major celebrations.",
     fullDescription:
-      "A complete reception-ready package for couples who want a warm, refined outdoor setup with seating and dining covered.",
-    guestCapacity: 100,
-    includedItems: [
-      "30x40 tent",
-      "100 cross-back chairs",
-      "12 round guest tables",
-      "Head table setup",
-    ],
-    optionalAddOns: ["String lighting", "Tent sidewalls", "Lounge furniture"],
+      "Perfect for large gatherings such as backyard weddings, engagement parties, and major celebrations. The 20x40 frame tent provides a spacious covered environment suitable for dining, socializing, and event activities. With seating for up to 80 guests, this package gives hosts everything needed for a well-organized outdoor event.",
+    guestCapacity: 80,
+    capacityLabel: "70-80 guests",
+    includedItems: ["20' x 40' frame tent", "10 tables", "80 chairs"],
+    optionalAddOns: [],
     featured: true,
-    buttonText: "Request Wedding Package",
-    slug: { current: "wedding-reception-package" },
-    packagePhoto: null,
-  },
-  {
-    _id: "fallback-package-backyard",
-    packageName: "Backyard Basics Package",
-    price: "From $395",
-    shortDescription: "Practical essentials for simple gatherings with quick setup.",
-    fullDescription:
-      "A starter package for weekend cookouts and neighborhood gatherings that need shade, seating, and table space.",
-    guestCapacity: 25,
-    includedItems: ["20x20 pole tent", "25 folding chairs", "4 banquet tables"],
-    optionalAddOns: ["Additional chairs", "Additional tables"],
-    featured: false,
-    buttonText: "Request Basics Package",
-    slug: { current: "backyard-basics-package" },
-    packagePhoto: null,
+    buttonText: "Request Large Party Package",
+    slug: { current: "large-party-package" },
+    packagePhoto: inventoryImages.frameTent20x40,
   },
 ];
 
 export const fallbackGallery: GalleryItem[] = [
   {
     _id: "fallback-gallery-1",
-    title: "Backyard Reception Layout",
-    caption: "Tent, sweetheart table, and guest seating in a private yard.",
-    eventType: "Wedding",
-    eventPhoto: null,
+    title: "10x20 Pop-Up Seating Setup",
+    caption: "30-guest table and chair layout under a commercial-grade 10x20 pop-up tent.",
+    eventType: "Backyard Party",
+    eventPhoto: setupImages.popUp30Guests,
   },
   {
     _id: "fallback-gallery-2",
-    title: "Evening Birthday Setup",
-    caption: "String-lit dining arrangement for a 50-person birthday party.",
-    eventType: "Birthday",
-    eventPhoto: null,
+    title: "10x20 Buffet Setup",
+    caption: "Buffet table and prep layout using the 10x20 pop-up tent package.",
+    eventType: "Graduation Party",
+    eventPhoto: setupImages.popUpBuffet,
   },
   {
     _id: "fallback-gallery-3",
-    title: "Graduation Open House",
-    caption: "Open tent flow with buffet and standing cocktail tables.",
-    eventType: "Graduation",
-    eventPhoto: null,
+    title: "10x20 Cocktail Setup",
+    caption: "Cocktail-style arrangement with standing tables and decor-ready spacing.",
+    eventType: "Cocktail Reception",
+    eventPhoto: setupImages.popUpCocktail,
   },
   {
     _id: "fallback-gallery-4",
-    title: "Family Reunion",
-    caption: "Large table cluster with weather coverage and lounge zone.",
-    eventType: "Family Reunion",
-    eventPhoto: null,
+    title: "20x26 Frame Tent Layout",
+    caption: "Mid-size frame tent setup for dinner seating and guest circulation.",
+    eventType: "Family Celebration",
+    eventPhoto: setupImages.frame20x26,
   },
   {
     _id: "fallback-gallery-5",
-    title: "Bridal Shower Garden",
-    caption: "Soft linen palette and compact guest table arrangement.",
-    eventType: "Bridal Shower",
-    eventPhoto: null,
-  },
-  {
-    _id: "fallback-gallery-6",
-    title: "Corporate Picnic",
-    caption: "Shade-focused setup with flexible table groupings.",
-    eventType: "Corporate Event",
-    eventPhoto: null,
-  },
-  {
-    _id: "fallback-gallery-7",
-    title: "Tent Ceremony",
-    caption: "Ceremony chairs and aisle spacing for an outdoor wedding.",
-    eventType: "Wedding",
-    eventPhoto: null,
-  },
-  {
-    _id: "fallback-gallery-8",
-    title: "Anniversary Dinner",
-    caption: "Intimate dinner setup with premium seating and linens.",
-    eventType: "Anniversary",
-    eventPhoto: null,
-  },
-  {
-    _id: "fallback-gallery-9",
-    title: "Neighborhood Block Party",
-    caption: "Durable tent setup ready for high guest turnover.",
-    eventType: "Community Event",
-    eventPhoto: null,
-  },
-  {
-    _id: "fallback-gallery-10",
-    title: "Kids Party Setup",
-    caption: "Compact layout with family seating and food station tables.",
-    eventType: "Kids Party",
-    eventPhoto: null,
+    title: "20x38.5 Frame Tent Layout",
+    caption: "Large frame tent setup for receptions with round tables and floral centerpieces.",
+    eventType: "Wedding Reception",
+    eventPhoto: setupImages.frame20x38,
   },
 ];
 
@@ -186,14 +202,15 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     county: "Essex County",
     townName: "Caldwell",
     slug: { current: "caldwell" },
-    shortDescription: "Tent, table, and chair rentals in Caldwell with delivery coverage across Essex County.",
+    shortDescription:
+      "Tent, table, and chair rentals in Caldwell with delivery coverage across Essex County.",
     seoText:
-      "Need event rentals in Caldwell? We provide tent rentals, table and chair rentals, and package setups from our Caldwell, NJ base.",
-    serviceAreaSlides: [],
+      "Need event rentals in Caldwell? We provide tent rentals, table and chair rentals, and bundled packages from our Caldwell, NJ service base.",
+    serviceAreaSlides: defaultServiceAreaSlides,
     seo: {
-      metaTitle: "Event Rentals in Caldwell",
+      metaTitle: "Event Rentals in Caldwell, NJ",
       metaDescription:
-        "Tent rentals, table and chair rentals, and party packages in Caldwell for weddings and local events.",
+        "Tent rentals, table and chair rentals, and party packages in Caldwell for weddings and private events.",
     },
   },
   {
@@ -204,8 +221,8 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     shortDescription:
       "Party rentals in West Caldwell with complete tent, table, and chair package options.",
     seoText:
-      "Our West Caldwell service includes setup support, clear package pricing, and dependable tent rentals for private events.",
-    serviceAreaSlides: [],
+      "Our West Caldwell service includes delivery, setup options, and straightforward pricing for tent rentals and event packages.",
+    serviceAreaSlides: defaultServiceAreaSlides,
   },
   {
     _id: "fallback-town-north-caldwell",
@@ -215,8 +232,8 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     shortDescription:
       "Event rentals in North Caldwell for family celebrations, reunions, and seasonal gatherings.",
     seoText:
-      "Looking for event rentals in North Caldwell? We handle tent layout planning and practical table and chair counts for your guest list.",
-    serviceAreaSlides: [],
+      "Looking for event rentals in North Caldwell? We handle tent layout planning with practical table and chair counts for your guest list.",
+    serviceAreaSlides: defaultServiceAreaSlides,
   },
   {
     _id: "fallback-town-essex-fells",
@@ -225,8 +242,8 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     slug: { current: "essex-fells" },
     shortDescription: "Tent and table rentals in Essex Fells for weddings and outdoor receptions.",
     seoText:
-      "Essex Fells customers use our bundled packages for cleaner planning and predictable setup day scheduling.",
-    serviceAreaSlides: [],
+      "Essex Fells customers use our bundled packages for simpler planning and predictable setup day scheduling.",
+    serviceAreaSlides: defaultServiceAreaSlides,
   },
   {
     _id: "fallback-town-roseland",
@@ -236,7 +253,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     shortDescription: "Chair, table, and tent package rentals in Roseland with local delivery options.",
     seoText:
       "For party rentals in Roseland, we provide practical package guidance based on event size and site access.",
-    serviceAreaSlides: [],
+    serviceAreaSlides: defaultServiceAreaSlides,
   },
   {
     _id: "fallback-town-livingston",
@@ -246,7 +263,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     shortDescription: "Event rental packages in Livingston for birthdays, showers, and receptions.",
     seoText:
       "Livingston bookings include tent rentals near you with chair and table combinations that match your floor plan.",
-    serviceAreaSlides: [],
+    serviceAreaSlides: defaultServiceAreaSlides,
   },
   {
     _id: "fallback-town-montclair",
@@ -256,7 +273,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     shortDescription: "Reliable event setup rentals in Montclair for home and venue events.",
     seoText:
       "Book tent, table, and chair rentals in Montclair with direct support during planning and scheduling.",
-    serviceAreaSlides: [],
+    serviceAreaSlides: defaultServiceAreaSlides,
   },
   {
     _id: "fallback-town-cedar-grove",
@@ -266,7 +283,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     shortDescription: "Reliable event setup rentals in Cedar Grove for home and venue events.",
     seoText:
       "Book tent, table, and chair rentals in Cedar Grove with direct support during planning and scheduling.",
-    serviceAreaSlides: [],
+    serviceAreaSlides: defaultServiceAreaSlides,
   },
   {
     _id: "fallback-town-east-hanover",
@@ -276,52 +293,172 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     shortDescription: "Party rental bundles in East Hanover with fast quote responses.",
     seoText:
       "East Hanover families and couples use our packages for simple event planning and clean event-day setup.",
-    serviceAreaSlides: [],
+    serviceAreaSlides: defaultServiceAreaSlides,
   },
 ];
 
 export const fallbackBusinessInfo: BusinessInfo = {
   _id: "fallback-business-info",
-  businessName: "Willow & Canvas Event Rentals",
+  businessName: "Spirit Event Rentals",
   businessLogo: null,
-  bookingPageImage: null,
-  phoneNumber: "(555) 318-2247",
-  emailAddress: "bookings@willowandcanvas.com",
-  addressOrServiceBase: "Serving Caldwell, NJ and nearby counties within 30 miles",
-  mapLocation: "https://maps.google.com",
-  hours: "Mon-Sat: 8:00 AM - 6:00 PM",
+  bookingPageImage: setupImages.frame20x38,
+  phoneNumber: "973 632-6516",
+  emailAddress: "spiriteventrentals@yahoo.com",
+  addressOrServiceBase: "23 Westville Ave. Caldwell, NJ, 07006",
+  mapLocation: "https://maps.google.com/?q=23+Westville+Ave,+Caldwell,+NJ+07006",
+  hours: "By appointment for delivery and setup windows",
   bookingInstructions:
-    "Submit a booking request with your event date and location. We confirm availability and reach out to finalize your booking.",
+    "Submit your booking request with the event date and location. We review availability, send the rental agreement manually, then send a Stripe payment link for your deposit or final payment.",
+  rentalPolicyHighlights: [
+    {
+      sectionTitle: "Site Requirements (Tents)",
+      bulletPoints: [
+        "Installation surface must be level and clear.",
+        "Underground utilities must be disclosed prior to staking.",
+        "Client must call NJ One Call (811) before installation if staking is required.",
+        "If staking is not possible, additional weighting fees apply.",
+        "Access path must be minimum ___ feet wide.",
+      ],
+      note: "If site is unsuitable upon arrival, Rental Company may cancel without refund.",
+    },
+    {
+      sectionTitle: "Weather Policy",
+      bulletPoints: [
+        "Tents are temporary structures and are not designed to withstand severe weather.",
+        "Client assumes full responsibility for monitoring weather conditions.",
+        "Tents must be evacuated in high winds (typically 35+ mph), lightning, or severe storms.",
+        "No refunds due to weather.",
+        "Rental Company may refuse installation due to unsafe forecasted conditions.",
+      ],
+    },
+    {
+      sectionTitle: "Linen (Tablecloth) Policy",
+      bulletPoints: [
+        "Linens must be shaken free of food and debris before stacking.",
+        "Wax, burns, paint, permanent stains, or mildew will result in replacement charges.",
+        "Client must not place damp linens in bags or containers.",
+      ],
+    },
+    {
+      sectionTitle: "Care, Damage & Loss",
+      bulletPoints: ["Damage", "Theft", "Loss", "Vandalism", "Excessive cleaning"],
+      note:
+        "Client assumes full responsibility for equipment from delivery until pickup. Full replacement value will be charged if items are not returned.",
+    },
+    {
+      sectionTitle: "Delivery & Pickup",
+      bulletPoints: [
+        "Client or responsible adult must be present.",
+        "Equipment must be accessible at scheduled pickup time.",
+        "Additional labor fees may apply if equipment is moved or inaccessible.",
+        "Same-day teardown times are approximate and may occur late evening.",
+      ],
+    },
+    {
+      sectionTitle: "Permits & Compliance (New Jersey)",
+      bulletPoints: [
+        "Municipal tent permits (if required)",
+        "Fire inspections",
+        "Zoning compliance",
+        "HOA approvals",
+        "Occupancy compliance",
+        "Fire extinguisher requirements (if required by township)",
+      ],
+      note: "Rental Company is not responsible for permit denial.",
+    },
+    {
+      sectionTitle: "Indemnification & Liability",
+      bulletPoints: [
+        "Weather-related damages",
+        "Injury due to misuse",
+        "Underground utility damage if not disclosed",
+        "Property damage caused by staking when utilities were not identified",
+      ],
+      note:
+        "Client agrees to indemnify and hold harmless Rental Company from all claims, injuries, damages, or losses arising from use of rented equipment. Liability shall not exceed total rental amount paid.",
+    },
+  ],
+  inventoryItems: [
+    {
+      itemName: "Folding Chairs",
+      itemImage: inventoryImages.foldingChairs,
+    },
+    {
+      itemName: "30\" x 96\" Banquet Table",
+      itemImage: inventoryImages.banquetTable,
+    },
+    {
+      itemName: "Round Table",
+      itemImage: inventoryImages.roundTable,
+    },
+    {
+      itemName: "Cocktail Table",
+      itemImage: inventoryImages.cocktailTable,
+    },
+    {
+      itemName: "10' x 20' Pop-up Tent",
+      itemImage: inventoryImages.popUpTent10x20,
+    },
+    {
+      itemName: "20' x 26' Frame Tent",
+      itemImage: inventoryImages.frameTent20x26,
+    },
+    {
+      itemName: "20' x 40' Frame Tent",
+      itemImage: inventoryImages.frameTent20x40,
+    },
+  ],
+  individualRentalPricing: [
+    { itemName: "Chair", price: "$2.25" },
+    { itemName: "60\" Round Table", price: "$14" },
+    { itemName: "72\" Round Table", price: "$16" },
+    { itemName: "8' Banquet Table", price: "$12" },
+    { itemName: "High-Top Table", price: "$18" },
+    { itemName: "Table Linens", price: "$15" },
+    { itemName: "10x20 Pop-Up Tent", price: "$125" },
+    { itemName: "20x26 Tent", price: "$350" },
+    { itemName: "20x40 Tent", price: "$550" },
+  ],
+  deliveryFees: [
+    { distance: "0–10 miles", fee: "$50" },
+    { distance: "10–20 miles", fee: "$100" },
+    { distance: "20–30 miles", fee: "$150" },
+  ],
+  setupFees: [
+    { tent: "10x20 Pop-Up", setupFee: "$50" },
+    { tent: "20x26 Frame", setupFee: "$100" },
+    { tent: "20x40 Frame", setupFee: "$150" },
+  ],
   instagramUrl: "",
   facebookUrl: "",
   seo: {
-    metaTitle: "Willow & Canvas Event Rentals",
+    metaTitle: "Spirit Event Rentals | Caldwell, NJ",
     metaDescription:
-      "Local tent rentals, table and chair rentals, and event packages for weddings and private events.",
+      "Tent rentals, table and chair rentals, and event packages in Caldwell, NJ and nearby towns.",
   },
 };
 
 export const fallbackHomepage: Homepage = {
   _id: "fallback-homepage",
-  mainHeadline: "Tent, Table, and Chair Rentals for Events That Feel Put Together",
+  mainHeadline: "Tent, Table, and Chair Rentals in Caldwell, NJ",
   supportingText:
-    "We help local families and couples host clean, comfortable events with practical package options and clear booking steps.",
-  heroImage: null,
-  heroSlides: [],
+    "Spirit Event Rentals provides clean, dependable setups for backyard parties, graduations, baby showers, and small weddings.",
+  heroImage: setupImages.frame20x38,
+  heroSlides: [setupImages.frame20x38, setupImages.frame20x26, setupImages.popUpCocktail],
   primaryButtonText: "Request a Booking",
   introSectionText:
-    "From backyard birthdays to wedding receptions, we rent tents, tables, chairs, and bundled setup packages with straightforward communication and reliable scheduling.",
+    "Our packages are designed for small private events between 20 and 80 guests. We deliver tents, tables, and chairs, then follow up with a rental agreement and Stripe payment link after your request is approved.",
   featuredPackages: fallbackPackages.filter((item) => item.featured).slice(0, 3),
-  galleryPreview: fallbackGallery.slice(0, 6),
+  galleryPreview: fallbackGallery.slice(0, 5),
   testimonialsPreview: fallbackTestimonials,
   serviceAreaPreview: fallbackServiceAreas.slice(0, 6),
-  finalCallToActionHeading: "Tell Us Your Date and Guest Count",
+  finalCallToActionHeading: "Tell Us Your Event Date and Guest Count",
   finalCallToActionText:
-    "We will review your request, confirm availability, and reach out to finalize your booking.",
+    "We will review your request, confirm availability, and send your contract and payment link manually.",
   finalCallToActionButtonText: "Request a Booking",
   seo: {
-    metaTitle: "Tent, Table, and Chair Rentals",
+    metaTitle: "Spirit Event Rentals | Tent, Table & Chair Rentals",
     metaDescription:
-      "Local event rental packages for tents, tables, and chairs with simple booking request flow.",
+      "Book tent rentals, table and chair rentals, and bundled event packages in Caldwell, NJ and nearby towns.",
   },
 };

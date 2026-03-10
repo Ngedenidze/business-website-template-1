@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ImageSlideshow } from "@/components/image-slideshow";
+import { ServiceAreasBrowser } from "@/components/service-areas-browser";
 import { createPageMetadata } from "@/lib/metadata";
 import { getServiceAreasPageData } from "@/sanity/data";
 
@@ -15,20 +15,26 @@ export async function generateMetadata() {
   });
 }
 
-export default async function ServiceAreasPage() {
+type ServiceAreasPageSearchParams = {
+  county?: string;
+};
+
+export default async function ServiceAreasPage({
+  searchParams,
+}: {
+  searchParams: Promise<ServiceAreasPageSearchParams>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const selectedCountyQuery =
+    typeof resolvedSearchParams?.county === "string" ? resolvedSearchParams.county : null;
   const { serviceAreas } = await getServiceAreasPageData();
-  const serviceAreasByCounty = serviceAreas.reduce<Record<string, typeof serviceAreas>>(
-    (groups, serviceArea) => {
-      const county = serviceArea.county || "Other Service Areas";
-      if (!groups[county]) {
-        groups[county] = [];
-      }
-      groups[county].push(serviceArea);
-      return groups;
-    },
-    {},
-  );
-  const countyOrder = Object.keys(serviceAreasByCounty).sort((left, right) => left.localeCompare(right));
+  const directoryItems = serviceAreas.map((serviceArea) => ({
+    _id: serviceArea._id,
+    county: serviceArea.county,
+    townName: serviceArea.townName,
+    shortDescription: serviceArea.shortDescription,
+    slug: serviceArea.slug,
+  }));
 
   return (
     <section className="section">
@@ -44,36 +50,13 @@ export default async function ServiceAreasPage() {
           </div>
         </div>
 
-        {countyOrder.map((county) => (
-          <section key={county} className="service-county-section">
-            <div className="section-head left-aligned service-county-head">
-              <h2>{county}</h2>
-              <p>{serviceAreasByCounty[county].length} towns and cities in this coverage area.</p>
-            </div>
+        <ServiceAreasBrowser serviceAreas={directoryItems} selectedCountyQuery={selectedCountyQuery} />
 
-            <div className="service-grid">
-              {serviceAreasByCounty[county].map((serviceArea) => (
-                <article key={serviceArea._id} className="service-area-card">
-                  <ImageSlideshow
-                    images={serviceArea.serviceAreaSlides}
-                    aspectRatio="4 / 3"
-                    autoplay
-                    intervalMs={4000}
-                    showControls
-                    className="service-area-media"
-                    fallbackLabel={`${serviceArea.townName} setup photos`}
-                  />
-                  <p className="service-area-county">{serviceArea.county}</p>
-                  <h3>{serviceArea.townName}</h3>
-                  <p>{serviceArea.shortDescription}</p>
-                  <Link href={`/service-areas/${serviceArea.slug.current}`}>
-                    Party rentals in {serviceArea.townName}
-                  </Link>
-                </article>
-              ))}
-            </div>
-          </section>
-        ))}
+        <div className="button-row" style={{ marginTop: "2rem" }}>
+          <Link className="button button-secondary" href="/booking-request">
+            Request a Booking
+          </Link>
+        </div>
       </div>
     </section>
   );

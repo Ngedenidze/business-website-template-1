@@ -17,7 +17,10 @@ export async function generateMetadata() {
 }
 
 export default async function PackagesPage() {
-  const { packages } = await getPackagesPageData();
+  const { packages, businessInfo } = await getPackagesPageData();
+  const individualPricing = Array.isArray(businessInfo.individualRentalPricing)
+    ? businessInfo.individualRentalPricing
+    : [];
 
   return (
     <section className="section">
@@ -53,7 +56,9 @@ export default async function PackagesPage() {
                 <p style={{ fontSize: "1.1rem", color: "var(--text-muted)" }}>{packageItem.shortDescription}</p>
                 <div className="meta-row">
                   <span className="meta-pill">{packageItem.price}</span>
-                  <span className="meta-pill">Up to {packageItem.guestCapacity} guests</span>
+                  <span className="meta-pill">
+                    {packageItem.capacityLabel?.trim() || `Up to ${packageItem.guestCapacity} guests`}
+                  </span>
                 </div>
 
                 <p style={{ lineHeight: "1.7" }}>{packageItem.fullDescription}</p>
@@ -88,6 +93,36 @@ export default async function PackagesPage() {
             );
           })}
         </div>
+
+        {individualPricing.length > 0 ? (
+          <section className="section-surface policy-pricing-surface" style={{ marginTop: "3rem" }}>
+            <h2>Individual Item Pricing</h2>
+            <p>Need extras beyond package quantities? Use this pricing list for individual rentals.</p>
+
+            <article className="policy-pricing-card">
+              <table className="policy-price-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {individualPricing.map((row) => (
+                    <tr key={`${row.itemName}-${row.price}`}>
+                      <td>{row.itemName}</td>
+                      <td>{row.price}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </article>
+
+            <p className="form-helper">
+              Delivery and setup fees are listed on the <Link href="/policy">policy page</Link>.
+            </p>
+          </section>
+        ) : null}
       </div>
     </section>
   );

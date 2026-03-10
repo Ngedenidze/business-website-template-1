@@ -21,7 +21,12 @@ export function SanityImage({
   fallbackLabel = "Event photo placeholder",
   className,
 }: SanityImageProps) {
-  const imageUrl = image?.asset ? urlFor(image).width(width * 2).height(height * 2).fit("crop").url() : null;
+  const directUrl = image?.asset?.url?.trim();
+  const imageUrl = directUrl
+    ? directUrl
+    : image?.asset?._ref
+      ? urlFor(image).width(width * 2).height(height * 2).fit("crop").url()
+      : null;
   const imageAlt = image?.alt?.trim() || alt || "Event rental setup";
 
   if (!imageUrl) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 
 type PackageOption = {
   _id: string;
@@ -43,6 +44,7 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
   const [submitError, setSubmitError] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [agreedToPolicy, setAgreedToPolicy] = useState(false);
 
   const minimumDate = useMemo(() => new Date().toISOString().split("T")[0], []);
 
@@ -65,14 +67,12 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
       body: JSON.stringify(formState),
     });
 
-    const payload = (await response.json().catch(() => null)) as
-      | {
-        ok: boolean;
-        requestId?: string;
-        error?: string;
-        fieldErrors?: FieldErrors;
-      }
-      | null;
+    const payload = (await response.json().catch(() => null)) as {
+      ok: boolean;
+      requestId?: string;
+      error?: string;
+      fieldErrors?: FieldErrors;
+    } | null;
 
     if (!response.ok || !payload?.ok) {
       if (payload?.error === "VALIDATION_ERROR" && payload.fieldErrors) {
@@ -92,11 +92,11 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
     setFormState(initialState);
     setFieldErrors({});
     setIsSubmitting(false);
+    setAgreedToPolicy(false);
   }
 
   return (
     <form className="form-shell" onSubmit={onSubmit} noValidate>
-
       {successMessage ? (
         <p className="form-alert form-alert-success" role="status">
           {successMessage}
@@ -121,7 +121,9 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
             aria-invalid={Boolean(fieldErrors.fullName)}
             required
           />
-          {fieldErrors.fullName ? <span className="form-helper">{fieldErrors.fullName}</span> : null}
+          {fieldErrors.fullName ? (
+            <span className="form-helper">{fieldErrors.fullName}</span>
+          ) : null}
         </div>
 
         <div className="form-field">
@@ -148,7 +150,9 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
             autoComplete="email"
             type="email"
             value={formState.emailAddress}
-            onChange={(event) => updateField("emailAddress", event.target.value)}
+            onChange={(event) =>
+              updateField("emailAddress", event.target.value)
+            }
             aria-invalid={Boolean(fieldErrors.emailAddress)}
             required
           />
@@ -169,7 +173,9 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
             aria-invalid={Boolean(fieldErrors.eventDate)}
             required
           />
-          {fieldErrors.eventDate ? <span className="form-helper">{fieldErrors.eventDate}</span> : null}
+          {fieldErrors.eventDate ? (
+            <span className="form-helper">{fieldErrors.eventDate}</span>
+          ) : null}
         </div>
 
         <div className="form-field">
@@ -178,7 +184,9 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
             id="eventLocation"
             name="eventLocation"
             value={formState.eventLocation}
-            onChange={(event) => updateField("eventLocation", event.target.value)}
+            onChange={(event) =>
+              updateField("eventLocation", event.target.value)
+            }
             aria-invalid={Boolean(fieldErrors.eventLocation)}
             required
           />
@@ -194,7 +202,9 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
             name="numberOfGuests"
             inputMode="numeric"
             value={formState.numberOfGuests}
-            onChange={(event) => updateField("numberOfGuests", event.target.value)}
+            onChange={(event) =>
+              updateField("numberOfGuests", event.target.value)
+            }
             aria-invalid={Boolean(fieldErrors.numberOfGuests)}
             required
           />
@@ -209,7 +219,9 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
             id="selectedPackageId"
             name="selectedPackageId"
             value={formState.selectedPackageId}
-            onChange={(event) => updateField("selectedPackageId", event.target.value)}
+            onChange={(event) =>
+              updateField("selectedPackageId", event.target.value)
+            }
           >
             <option value="">Select a package (optional)</option>
             {packages.map((packageItem) => (
@@ -226,10 +238,31 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
             id="additionalDetails"
             name="additionalDetails"
             value={formState.additionalDetails}
-            onChange={(event) => updateField("additionalDetails", event.target.value)}
+            onChange={(event) =>
+              updateField("additionalDetails", event.target.value)
+            }
             placeholder="Tell us about your event timeline, setup needs, or any special requests."
           />
         </div>
+      </div>
+
+      <div className="form-field full checkbox-field">
+        <label className="checkbox-label" htmlFor="agreedToPolicy">
+          <input
+            id="agreedToPolicy"
+            type="checkbox"
+            required
+            checked={agreedToPolicy}
+            onChange={(e) => setAgreedToPolicy(e.target.checked)}
+          />
+          <span>
+            I have read and agree to the{" "}
+            <Link href="/policy" target="_blank">
+              Rental Policy
+            </Link>
+            .
+          </span>
+        </label>
       </div>
 
       <div className="sr-only" aria-hidden="true">
@@ -244,7 +277,11 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
         />
       </div>
 
-      <button className="button button-primary" type="submit" disabled={isSubmitting}>
+      <button
+        className="button button-primary"
+        type="submit"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Sending request..." : "Submit Booking Request"}
       </button>
     </form>

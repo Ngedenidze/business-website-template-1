@@ -45,6 +45,28 @@ npm run seed:content
 
 This script creates starter packages, gallery items, testimonials, county-grouped service areas (Caldwell 30-mile coverage), homepage, and business information only when they do not already exist.
 
+## Inventory Sync Setup
+
+Dry-run (validates local files and prints the sync plan, no Sanity writes):
+
+```bash
+npm run prepare:inventory-sync
+```
+
+Apply sync (uploads inventory images and sets `Business Information -> Inventory Items` in Sanity):
+
+```bash
+npm run sync:inventory
+```
+
+## Package Sync
+
+Force-synces the 3 core packages (Small Backyard, Backyard Party, Large Party), assigns tent-matched package photos, updates homepage featured package references, and removes outdated package documents:
+
+```bash
+npm run sync:packages
+```
+
 ## Validate
 
 ```bash

@@ -7,10 +7,22 @@
   "navigation": {
     "brandSubtitle": "Event Rentals",
     "links": [
-      { "label": "Packages", "href": "/packages" },
-      { "label": "Gallery", "href": "/gallery" },
-      { "label": "Service Areas", "href": "/service-areas" },
-      { "label": "Contact", "href": "/contact" }
+      {
+        "label": "Packages",
+        "href": "/packages"
+      },
+      {
+        "label": "Gallery",
+        "href": "/gallery"
+      },
+      {
+        "label": "Service Areas",
+        "href": "/service-areas"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      }
     ],
     "primaryCta": "Request a Booking"
   },
@@ -68,8 +80,16 @@
       "gallery-005",
       "gallery-006"
     ],
-    "testimonialIds": ["testimonial-001", "testimonial-002", "testimonial-003"],
-    "serviceAreaSlugs": ["riverview", "lakeside", "caldwell"],
+    "testimonialIds": [
+      "testimonial-001",
+      "testimonial-002",
+      "testimonial-003"
+    ],
+    "serviceAreaSlugs": [
+      "riverview",
+      "lakeside",
+      "caldwell"
+    ],
     "finalCallToActionHeading": "Tell Us Your Date, Town, and Guest Count",
     "finalCallToActionText": "Send a booking request and we will confirm availability, then follow up with your rental details.",
     "finalCallToActionButtonText": "Check My Event Date",
@@ -80,70 +100,58 @@
   },
   "packages": [
     {
-      "slug": "garden-party-package",
-      "packageName": "Garden Party Package",
-      "price": "From $595",
-      "shortDescription": "Perfect for birthdays and showers with a clean 40-guest layout.",
-      "fullDescription": "A reliable starter package for smaller celebrations that need shade, seating, and easy table flow.",
-      "guestCapacity": 40,
+      "slug": "small-backyard-package",
+      "packageName": "Small Backyard Package",
+      "price": "$325",
+      "shortDescription": "Designed for intimate gatherings and backyard celebrations.",
+      "fullDescription": "Designed for intimate gatherings and backyard celebrations. This package is ideal for small birthday parties, baby showers, or family get-togethers. The 10x20 pop-up tent provides comfortable shade while the tables and chairs allow guests to relax and socialize without worrying about seating arrangements. A simple, affordable setup for smaller events.",
+      "guestCapacity": 30,
+      "capacityLabel": "20-30 guests",
       "includedItems": [
-        "20x20 frame tent",
-        "40 white folding chairs",
-        "6 banquet tables"
+        "10' x 20' pop-up tent",
+        "4 tables",
+        "30 chairs"
       ],
-      "optionalAddOns": ["Bistro lighting", "Cake table setup", "Gift table"],
+      "optionalAddOns": [],
       "featured": true,
-      "buttonText": "Request Garden Package",
-      "photoAltText": "Garden party rental setup with white tent and banquet tables"
+      "buttonText": "Request Small Backyard Package",
+      "photoAltText": "10 by 20 pop-up tent for small backyard rental package"
     },
     {
-      "slug": "classic-celebration-package",
-      "packageName": "Classic Celebration Package",
-      "price": "From $895",
-      "shortDescription": "Balanced package for 60 guests with upgraded layout flexibility.",
-      "fullDescription": "Built for engagement parties, graduations, and weekend events where comfort and table spacing matter.",
-      "guestCapacity": 60,
+      "slug": "backyard-party-package",
+      "packageName": "Backyard Party Package",
+      "price": "$575",
+      "shortDescription": "A great option for medium-sized events such as graduation parties, family reunions, or backyard celebrations.",
+      "fullDescription": "A great option for medium-sized events such as graduation parties, family reunions, or backyard celebrations. The larger frame tent creates a spacious covered area while the additional seating accommodates a bigger group of guests. This package balances space and affordability for hosts who want a comfortable event setup without overcomplicating logistics.",
+      "guestCapacity": 50,
+      "capacityLabel": "40-50 guests",
       "includedItems": [
-        "20x30 high-peak tent",
-        "60 white resin chairs",
-        "8 banquet tables",
-        "8 linen sets"
+        "20' x 26' frame tent",
+        "6 tables",
+        "50 chairs"
       ],
-      "optionalAddOns": ["Cocktail tables", "Welcome sign easel", "Portable bar table"],
+      "optionalAddOns": [],
       "featured": true,
-      "buttonText": "Request Classic Package",
-      "photoAltText": "Outdoor celebration package with high-peak tent and dining layout"
+      "buttonText": "Request Backyard Party Package",
+      "photoAltText": "20 by 26 frame tent for medium backyard party package"
     },
     {
-      "slug": "wedding-reception-package",
-      "packageName": "Wedding Reception Package",
-      "price": "From $1,450",
-      "shortDescription": "Elegant 100-guest reception setup with ceremony-ready seating.",
-      "fullDescription": "Designed for couples who want a refined tented reception with cohesive table and chair planning.",
-      "guestCapacity": 100,
+      "slug": "large-party-package",
+      "packageName": "Large Party Package",
+      "price": "$875",
+      "shortDescription": "Perfect for large gatherings such as backyard weddings, engagement parties, and major celebrations.",
+      "fullDescription": "Perfect for large gatherings such as backyard weddings, engagement parties, and major celebrations. The 20x40 frame tent provides a spacious covered environment suitable for dining, socializing, and event activities. With seating for up to 80 guests, this package gives hosts everything needed for a well-organized outdoor event.",
+      "guestCapacity": 80,
+      "capacityLabel": "70-80 guests",
       "includedItems": [
-        "30x40 reception tent",
-        "100 cross-back chairs",
-        "12 round guest tables",
-        "Head table setup"
+        "20' x 40' frame tent",
+        "10 tables",
+        "80 chairs"
       ],
-      "optionalAddOns": ["String lighting", "Tent sidewalls", "Lounge seating cluster"],
+      "optionalAddOns": [],
       "featured": true,
-      "buttonText": "Request Wedding Package",
-      "photoAltText": "Wedding reception tent with formal round tables"
-    },
-    {
-      "slug": "backyard-basics-package",
-      "packageName": "Backyard Basics Package",
-      "price": "From $395",
-      "shortDescription": "Simple essentials for casual neighborhood and family events.",
-      "fullDescription": "A practical setup for weekend gatherings that need fast planning and no guesswork.",
-      "guestCapacity": 25,
-      "includedItems": ["20x20 tent", "25 folding chairs", "4 banquet tables"],
-      "optionalAddOns": ["Extra chairs", "Extra tables", "Setup extension"],
-      "featured": false,
-      "buttonText": "Request Basics Package",
-      "photoAltText": "Compact backyard setup with tent and seating"
+      "buttonText": "Request Large Party Package",
+      "photoAltText": "20 by 40 frame tent for large party rental package"
     }
   ],
   "gallery": [
@@ -228,20 +236,196 @@
     }
   ],
   "businessInformation": {
-    "businessName": "Caldwell Tents",
-    "businessLogoAltText": "Caldwell Tents logo",
-    "phoneNumber": "(555) 318-2247",
-    "emailAddress": "bookings@caldwelltents.com",
-    "addressOrServiceBase": "Serving Riverview, Lakeside, Caldwell, and nearby towns",
-    "mapLocation": "https://maps.google.com/?q=Riverview",
-    "hours": "Mon-Sat: 8:00 AM to 6:00 PM",
+    "businessName": "Spirit Event Rentals",
+    "businessLogoAltText": "Spirit Event Rentals logo",
+    "phoneNumber": "973 632-6516",
+    "emailAddress": "spiriteventrentals@yahoo.com",
+    "addressOrServiceBase": "23 Westville Ave. Caldwell, NJ, 07006",
+    "mapLocation": "https://maps.google.com/?q=23+Westville+Ave,+Caldwell,+NJ+07006",
+    "hours": "By appointment for delivery and setup windows",
     "instagramUrl": "",
     "facebookUrl": "",
-    "bookingInstructions": "Submit a booking request with your event date, location, and guest count. We confirm availability and follow up to finalize your rental details.",
+    "bookingInstructions": "Submit your booking request with the event date and location. We review availability, send the rental agreement manually, then send a Stripe payment link for your deposit or final payment.",
     "seo": {
-      "metaTitle": "Caldwell Tents | Tent, Table & Chair Rentals",
-      "metaDescription": "Caldwell Tents offers tent, table, and chair rentals in Riverview, Lakeside, and Caldwell with fast quotes and easy booking requests."
-    }
+      "metaTitle": "Spirit Event Rentals | Caldwell, NJ",
+      "metaDescription": "Tent rentals, table and chair rentals, and event packages in Caldwell, NJ and nearby towns."
+    },
+    "rentalPolicyHighlights": [
+      {
+        "sectionTitle": "Site Requirements (Tents)",
+        "bulletPoints": [
+          "Installation surface must be level and clear.",
+          "Underground utilities must be disclosed prior to staking.",
+          "Client must call NJ One Call (811) before installation if staking is required.",
+          "If staking is not possible, additional weighting fees apply.",
+          "Access path must be minimum ___ feet wide."
+        ],
+        "note": "If site is unsuitable upon arrival, Rental Company may cancel without refund."
+      },
+      {
+        "sectionTitle": "Weather Policy",
+        "bulletPoints": [
+          "Tents are temporary structures and are not designed to withstand severe weather.",
+          "Client assumes full responsibility for monitoring weather conditions.",
+          "Tents must be evacuated in high winds (typically 35+ mph), lightning, or severe storms.",
+          "No refunds due to weather.",
+          "Rental Company may refuse installation due to unsafe forecasted conditions."
+        ]
+      },
+      {
+        "sectionTitle": "Linen (Tablecloth) Policy",
+        "bulletPoints": [
+          "Linens must be shaken free of food and debris before stacking.",
+          "Wax, burns, paint, permanent stains, or mildew will result in replacement charges.",
+          "Client must not place damp linens in bags or containers."
+        ]
+      },
+      {
+        "sectionTitle": "Care, Damage & Loss",
+        "bulletPoints": [
+          "Damage",
+          "Theft",
+          "Loss",
+          "Vandalism",
+          "Excessive cleaning"
+        ],
+        "note": "Client assumes full responsibility for equipment from delivery until pickup. Full replacement value will be charged if items are not returned."
+      },
+      {
+        "sectionTitle": "Delivery & Pickup",
+        "bulletPoints": [
+          "Client or responsible adult must be present.",
+          "Equipment must be accessible at scheduled pickup time.",
+          "Additional labor fees may apply if equipment is moved or inaccessible.",
+          "Same-day teardown times are approximate and may occur late evening."
+        ]
+      },
+      {
+        "sectionTitle": "Permits & Compliance (New Jersey)",
+        "bulletPoints": [
+          "Municipal tent permits (if required)",
+          "Fire inspections",
+          "Zoning compliance",
+          "HOA approvals",
+          "Occupancy compliance",
+          "Fire extinguisher requirements (if required by township)"
+        ],
+        "note": "Rental Company is not responsible for permit denial."
+      },
+      {
+        "sectionTitle": "Indemnification & Liability",
+        "bulletPoints": [
+          "Weather-related damages",
+          "Injury due to misuse",
+          "Underground utility damage if not disclosed",
+          "Property damage caused by staking when utilities were not identified"
+        ],
+        "note": "Client agrees to indemnify and hold harmless Rental Company from all claims, injuries, damages, or losses arising from use of rented equipment. Liability shall not exceed total rental amount paid."
+      }
+    ],
+    "inventoryItems": [
+      {
+        "itemName": "Folding Chairs",
+        "imagePath": "/images/inventory/spirit-folding-chair.png",
+        "altText": "Folding chair rental item"
+      },
+      {
+        "itemName": "30\" x 96\" Banquet Table",
+        "imagePath": "/images/inventory/spirit-banquet-table-30x96.png",
+        "altText": "30 by 96 inch banquet table rental item"
+      },
+      {
+        "itemName": "Round Table",
+        "imagePath": "/images/inventory/spirit-round-table.png",
+        "altText": "Round table rental item"
+      },
+      {
+        "itemName": "Cocktail Table",
+        "imagePath": "/images/inventory/spirit-cocktail-table.png",
+        "altText": "Cocktail table rental item"
+      },
+      {
+        "itemName": "10' x 20' Pop-up Tent",
+        "imagePath": "/images/inventory/spirit-tent-10x20-pop-up.png",
+        "altText": "10 by 20 pop-up tent rental item"
+      },
+      {
+        "itemName": "20' x 26' Frame Tent",
+        "imagePath": "/images/inventory/spirit-tent-20x26-frame.png",
+        "altText": "20 by 26 frame tent rental item"
+      },
+      {
+        "itemName": "20' x 40' Frame Tent",
+        "imagePath": "/images/inventory/spirit-tent-20x40-frame.png",
+        "altText": "20 by 40 frame tent rental item"
+      }
+    ],
+    "individualRentalPricing": [
+      {
+        "itemName": "Chair",
+        "price": "$2.25"
+      },
+      {
+        "itemName": "60\" Round Table",
+        "price": "$14"
+      },
+      {
+        "itemName": "72\" Round Table",
+        "price": "$16"
+      },
+      {
+        "itemName": "8' Banquet Table",
+        "price": "$12"
+      },
+      {
+        "itemName": "High-Top Table",
+        "price": "$18"
+      },
+      {
+        "itemName": "Table Linens",
+        "price": "$15"
+      },
+      {
+        "itemName": "10x20 Pop-Up Tent",
+        "price": "$125"
+      },
+      {
+        "itemName": "20x26 Tent",
+        "price": "$350"
+      },
+      {
+        "itemName": "20x40 Tent",
+        "price": "$550"
+      }
+    ],
+    "deliveryFees": [
+      {
+        "distance": "0–10 miles",
+        "fee": "$50"
+      },
+      {
+        "distance": "10–20 miles",
+        "fee": "$100"
+      },
+      {
+        "distance": "20–30 miles",
+        "fee": "$150"
+      }
+    ],
+    "setupFees": [
+      {
+        "tent": "10x20 Pop-Up",
+        "setupFee": "$50"
+      },
+      {
+        "tent": "20x26 Frame",
+        "setupFee": "$100"
+      },
+      {
+        "tent": "20x40 Frame",
+        "setupFee": "$150"
+      }
+    ]
   },
   "serviceAreas": [
     {

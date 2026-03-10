@@ -109,7 +109,9 @@ export default async function HomePage() {
                   <p>{packageItem.shortDescription}</p>
                   <div className="meta-row">
                     <span className="meta-pill">{packageItem.price}</span>
-                    <span className="meta-pill">Up to {packageItem.guestCapacity} guests</span>
+                    <span className="meta-pill">
+                      {packageItem.capacityLabel?.trim() || `Up to ${packageItem.guestCapacity} guests`}
+                    </span>
                   </div>
                   <Link href={BOOKING_PATH} className="button button-primary">
                     Request This Package

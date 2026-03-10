@@ -7,7 +7,10 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "seed:content": "node scripts/seed-content.mjs"
+    "seed:content": "node scripts/seed-content.mjs",
+    "prepare:inventory-sync": "node scripts/sync-inventory-items.mjs",
+    "sync:inventory": "node scripts/sync-inventory-items.mjs --apply",
+    "sync:packages": "node scripts/sync-packages.mjs"
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "^5.2.11",

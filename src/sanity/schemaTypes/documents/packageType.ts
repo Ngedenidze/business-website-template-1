@@ -53,6 +53,12 @@ export const packageType = defineType({
       validation: (rule) => rule.required().min(1).max(5000),
     }),
     defineField({
+      name: "capacityLabel",
+      title: "Capacity Text",
+      type: "string",
+      description: "Example: 20-30 guests. Optional display label for capacity.",
+    }),
+    defineField({
       name: "includedItems",
       title: "Included Items",
       type: "array",

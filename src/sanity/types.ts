@@ -25,6 +25,7 @@ export type PackageItem = {
   fullDescription: string;
   packagePhoto?: SanityImageWithAlt | null;
   guestCapacity: number;
+  capacityLabel?: string;
   includedItems: string[];
   optionalAddOns: string[];
   featured: boolean;
@@ -71,6 +72,27 @@ export type BusinessInfo = {
   bookingInstructions: string;
   instagramUrl?: string;
   facebookUrl?: string;
+  rentalPolicyHighlights?: {
+    sectionTitle: string;
+    bulletPoints: string[];
+    note?: string;
+  }[];
+  inventoryItems?: {
+    itemName: string;
+    itemImage?: SanityImageWithAlt | null;
+  }[];
+  individualRentalPricing?: {
+    itemName: string;
+    price: string;
+  }[];
+  deliveryFees?: {
+    distance: string;
+    fee: string;
+  }[];
+  setupFees?: {
+    tent: string;
+    setupFee: string;
+  }[];
   seo?: SeoFields;
 };
 
