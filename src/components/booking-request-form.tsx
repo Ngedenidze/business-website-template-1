@@ -12,6 +12,7 @@ type FieldErrors = Partial<Record<string, string>>;
 
 type BookingRequestFormProps = {
   packages: PackageOption[];
+  initialSelectedPackageId?: string;
 };
 
 type FormState = {
@@ -26,20 +27,27 @@ type FormState = {
   website: string;
 };
 
-const initialState: FormState = {
-  fullName: "",
-  phoneNumber: "",
-  emailAddress: "",
-  eventDate: "",
-  eventLocation: "",
-  numberOfGuests: "",
-  selectedPackageId: "",
-  additionalDetails: "",
-  website: "",
-};
+function buildInitialState(selectedPackageId = ""): FormState {
+  return {
+    fullName: "",
+    phoneNumber: "",
+    emailAddress: "",
+    eventDate: "",
+    eventLocation: "",
+    numberOfGuests: "",
+    selectedPackageId,
+    additionalDetails: "",
+    website: "",
+  };
+}
 
-export function BookingRequestForm({ packages }: BookingRequestFormProps) {
-  const [formState, setFormState] = useState<FormState>(initialState);
+export function BookingRequestForm({
+  packages,
+  initialSelectedPackageId = "",
+}: BookingRequestFormProps) {
+  const [formState, setFormState] = useState<FormState>(() =>
+    buildInitialState(initialSelectedPackageId),
+  );
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [submitError, setSubmitError] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
@@ -89,7 +97,7 @@ export function BookingRequestForm({ packages }: BookingRequestFormProps) {
     setSuccessMessage(
       "Thanks, your booking request is in. We will review it and reach out to finalize your booking.",
     );
-    setFormState(initialState);
+    setFormState(buildInitialState());
     setFieldErrors({});
     setIsSubmitting(false);
     setAgreedToPolicy(false);

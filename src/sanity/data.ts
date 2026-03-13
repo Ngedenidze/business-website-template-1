@@ -1,6 +1,7 @@
 import { client } from "@/sanity/client";
 import {
   businessInfoQuery,
+  faqPageQuery,
   galleryQuery,
   homepageQuery,
   packageOptionsQuery,
@@ -13,6 +14,7 @@ import {
 } from "@/sanity/queries";
 import {
   fallbackBusinessInfo,
+  fallbackFaqPage,
   fallbackGallery,
   fallbackHomepage,
   fallbackPackages,
@@ -21,6 +23,7 @@ import {
 } from "@/sanity/fallback-content";
 import type {
   BusinessInfo,
+  FAQPage,
   GalleryItem,
   Homepage,
   PackageItem,
@@ -140,6 +143,49 @@ function normalizeSetupFeeRows(
     .filter(
       (row) => row.tent.trim().length > 0 && row.setupFee.trim().length > 0,
     );
+}
+
+function normalizeFaqItems(
+  value: unknown,
+  fallback: FAQPage["faqItems"] = [],
+): FAQPage["faqItems"] {
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
+
+  const normalized = value
+    .map((item) => ({
+      question: typeof item?.question === "string" ? item.question : "",
+      answer: typeof item?.answer === "string" ? item.answer : "",
+      category: typeof item?.category === "string" ? item.category : undefined,
+      featured: Boolean(item?.featured),
+    }))
+    .filter(
+      (item) => item.question.trim().length > 0 && item.answer.trim().length > 0,
+    );
+
+  return normalized.length > 0 ? normalized : fallback;
+}
+
+function normalizeFaqPage(item: FAQPage | null | undefined): FAQPage {
+  const faqItems = normalizeFaqItems(item?.faqItems, fallbackFaqPage.faqItems);
+
+  return {
+    _id: item?._id || fallbackFaqPage._id,
+    eyebrow:
+      typeof item?.eyebrow === "string" && item.eyebrow.trim().length > 0
+        ? item.eyebrow
+        : fallbackFaqPage.eyebrow,
+    title:
+      typeof item?.title === "string" && item.title.trim().length > 0
+        ? item.title
+        : fallbackFaqPage.title,
+    introText:
+      typeof item?.introText === "string" && item.introText.trim().length > 0
+        ? item.introText
+        : fallbackFaqPage.introText,
+    faqItems,
+  };
 }
 
 function normalizeBusinessInfo(
@@ -413,6 +459,21 @@ export async function getPolicyPageData() {
       metaTitle: "Rental Policies & Delivery Fees | Spirit Event Rentals",
       metaDescription:
         "Review our event rental policies, site requirements, weather guidelines, and delivery fees for tents, tables, and chairs.",
+    },
+  };
+}
+
+export async function getFaqPageData() {
+  const faqPage = await fetchOrNull<FAQPage>(faqPageQuery);
+  const resolvedFaqPage = normalizeFaqPage(faqPage);
+
+  return {
+    faqPage: resolvedFaqPage,
+    seo: {
+      metaTitle: resolvedFaqPage.title || "Frequently Asked Questions",
+      metaDescription:
+        resolvedFaqPage.introText ||
+        "Read answers to common questions about booking, delivery, setup, and event rental policies.",
     },
   };
 }

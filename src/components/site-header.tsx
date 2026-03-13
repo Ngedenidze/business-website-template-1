@@ -19,7 +19,7 @@ function toTelLink(phoneNumber: string): string {
 export function SiteHeader({ businessName, businessLogo, phoneNumber }: SiteHeaderProps) {
   const resolvedBusinessName = businessName?.trim() || SITE_NAME;
   const logoUrl = businessLogo?.asset
-    ? urlFor(businessLogo).width(144).height(144).fit("max").auto("format").url()
+    ? urlFor(businessLogo).width(480).height(150).fit("max").auto("format").url()
     : null;
   const logoAlt = businessLogo?.alt?.trim() || `${resolvedBusinessName} logo`;
 
@@ -29,11 +29,7 @@ export function SiteHeader({ businessName, businessLogo, phoneNumber }: SiteHead
         <div className="site-header-inner">
           <Link className="brand-mark" href="/" aria-label={`${resolvedBusinessName} home`}>
             <span className="brand-icon" aria-hidden="true">
-              <BrandLogo logoUrl={logoUrl} alt={logoAlt} />
-            </span>
-            <span className="brand-text">
-              <span className="brand-title">{resolvedBusinessName}</span>
-              <span className="brand-subtitle">Event Rentals</span>
+              <BrandLogo logoUrl={logoUrl} alt={logoAlt} width={100} height={32} />
             </span>
           </Link>
 

@@ -17,8 +17,38 @@ export async function generateMetadata() {
   });
 }
 
-export default async function BookingRequestPage() {
+type BookingRequestPageSearchParams = {
+  package?: string;
+  packageId?: string;
+  selectedPackageId?: string;
+};
+
+function normalizePackageName(value: string) {
+  return value.trim().toLowerCase();
+}
+
+export default async function BookingRequestPage({
+  searchParams,
+}: {
+  searchParams: Promise<BookingRequestPageSearchParams>;
+}) {
+  const resolvedSearchParams = await searchParams;
   const { packages, businessInfo, heroImage } = await getBookingPageData();
+  const selectedPackageIdQuery = [
+    resolvedSearchParams?.selectedPackageId,
+    resolvedSearchParams?.packageId,
+  ].find((value): value is string => typeof value === "string" && value.trim().length > 0);
+  const selectedPackageNameQuery =
+    typeof resolvedSearchParams?.package === "string" && resolvedSearchParams.package.trim().length > 0
+      ? resolvedSearchParams.package
+      : "";
+  const initialSelectedPackageId =
+    packages.find((packageItem) => packageItem._id === selectedPackageIdQuery)?._id ||
+    packages.find(
+      (packageItem) =>
+        normalizePackageName(packageItem.packageName) === normalizePackageName(selectedPackageNameQuery),
+    )?._id ||
+    "";
 
   return (
     <>
@@ -44,10 +74,12 @@ export default async function BookingRequestPage() {
             </div>
 
             <BookingRequestForm
+              key={initialSelectedPackageId || "none"}
               packages={packages.map(({ _id, packageName }) => ({
                 _id,
                 packageName,
               }))}
+              initialSelectedPackageId={initialSelectedPackageId}
             />
           </div>
         </div>

@@ -9,6 +9,7 @@ const staticPaths = [
   "/booking-request",
   "/contact",
   "/service-areas",
+  "/faq",
   "/policy",
 ];
 

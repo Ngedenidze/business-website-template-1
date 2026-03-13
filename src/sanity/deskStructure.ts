@@ -12,6 +12,10 @@ export const deskStructure: StructureResolver = (S) =>
         .title("Business Information")
         .id("business-info-singleton")
         .child(S.document().schemaType("businessInfo").documentId("businessInfo")),
+      S.listItem()
+        .title("Frequently Asked Questions")
+        .id("faq-page-singleton")
+        .child(S.document().schemaType("faqPage").documentId("faqPage")),
       S.divider(),
       S.listItem().title("Packages").child(S.documentTypeList("package")),
       S.listItem().title("Gallery").child(S.documentTypeList("galleryItem")),

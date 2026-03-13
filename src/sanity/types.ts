@@ -97,6 +97,21 @@ export type BusinessInfo = {
   seo?: SeoFields;
 };
 
+export type FAQItem = {
+  question: string;
+  answer: string;
+  category?: string;
+  featured?: boolean;
+};
+
+export type FAQPage = {
+  _id: string;
+  eyebrow?: string;
+  title: string;
+  introText?: string;
+  faqItems: FAQItem[];
+};
+
 export type Homepage = {
   _id: string;
   mainHeadline: string;

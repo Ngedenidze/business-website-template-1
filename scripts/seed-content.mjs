@@ -1,4 +1,7 @@
 import { createClient } from "@sanity/client";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "uprm88en";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -17,6 +20,10 @@ const client = createClient({
   useCdn: false,
 });
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const showcaseContentPath = path.join(__dirname, "..", "showcase-content.sample.json");
+
 function reference(_ref) {
   return { _type: "reference", _ref };
 }
@@ -27,6 +34,180 @@ function toSlug(value) {
     .replace(/&/g, " and ")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
+}
+
+function normalizeText(value) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function sanitizePolicySentence(value) {
+  return normalizeText(value)
+    .replace(/___\s*feet\s*wide/gi, "minimum required width")
+    .replace(/\s+/g, " ");
+}
+
+function getFaqCategory(sectionTitle) {
+  const title = normalizeText(sectionTitle).toLowerCase();
+
+  if (title.includes("weather")) return "Weather";
+  if (title.includes("delivery") || title.includes("pickup")) return "Delivery";
+  if (title.includes("permit") || title.includes("compliance")) return "Permits";
+  if (title.includes("liability") || title.includes("indemn")) return "Liability";
+  if (title.includes("site")) return "Site Requirements";
+  if (title.includes("linen")) return "Linens";
+  if (title.includes("care") || title.includes("damage") || title.includes("loss")) return "Equipment Care";
+  return "Policy";
+}
+
+function buildSectionAnswer(section) {
+  const bullets = Array.isArray(section?.bulletPoints)
+    ? section.bulletPoints
+        .map(sanitizePolicySentence)
+        .filter((entry) => entry.length > 0)
+        .slice(0, 3)
+    : [];
+
+  if (bullets.length === 0) {
+    return normalizeText(section?.note);
+  }
+
+  const areShortLabels = bullets.every((entry) => entry.split(/\s+/).length <= 3);
+  let answer = areShortLabels
+    ? `This policy covers ${bullets.map((entry) => entry.toLowerCase()).join(", ")}.`
+    : bullets.join(" ");
+
+  const note = sanitizePolicySentence(section?.note);
+  if (note) {
+    answer = `${answer} ${note}`;
+  }
+
+  return answer.trim();
+}
+
+function buildFaqItemsFromShowcaseContent(showcaseContent) {
+  const businessInformation = showcaseContent?.businessInformation ?? {};
+  const policySections = Array.isArray(businessInformation.rentalPolicyHighlights)
+    ? businessInformation.rentalPolicyHighlights
+    : [];
+
+  const sectionFaqs = policySections
+    .map((section) => {
+      const sectionTitle = normalizeText(section?.sectionTitle);
+      if (!sectionTitle) return null;
+
+      const answer = buildSectionAnswer(section);
+      if (!answer) return null;
+
+      return {
+        _type: "faqItem",
+        question: `What is your ${sectionTitle}?`,
+        answer,
+        category: getFaqCategory(sectionTitle),
+        featured: false,
+      };
+    })
+    .filter(Boolean);
+
+  const bookingInstructions = normalizeText(businessInformation.bookingInstructions);
+  if (bookingInstructions) {
+    sectionFaqs.push({
+      _type: "faqItem",
+      question: "How does the booking process work?",
+      answer: bookingInstructions,
+      category: "Booking",
+      featured: true,
+    });
+  }
+
+  const deliveryFees = Array.isArray(businessInformation.deliveryFees)
+    ? businessInformation.deliveryFees
+    : [];
+  if (deliveryFees.length > 0) {
+    const deliveryAnswer = deliveryFees
+      .map((row) => {
+        const distance = normalizeText(row?.distance);
+        const fee = normalizeText(row?.fee);
+        if (!distance || !fee) return "";
+        return `${distance}: ${fee}`;
+      })
+      .filter(Boolean)
+      .join("; ");
+
+    if (deliveryAnswer) {
+      sectionFaqs.push({
+        _type: "faqItem",
+        question: "How are delivery fees calculated?",
+        answer: `Delivery pricing is distance-based. ${deliveryAnswer}.`,
+        category: "Delivery",
+        featured: false,
+      });
+    }
+  }
+
+  const setupFees = Array.isArray(businessInformation.setupFees)
+    ? businessInformation.setupFees
+    : [];
+  if (setupFees.length > 0) {
+    const setupAnswer = setupFees
+      .map((row) => {
+        const tent = normalizeText(row?.tent);
+        const fee = normalizeText(row?.setupFee);
+        if (!tent || !fee) return "";
+        return `${tent}: ${fee}`;
+      })
+      .filter(Boolean)
+      .join("; ");
+
+    if (setupAnswer) {
+      sectionFaqs.push({
+        _type: "faqItem",
+        question: "Do tent setup fees apply separately?",
+        answer: `Yes. Setup support is priced by tent size. ${setupAnswer}.`,
+        category: "Setup",
+        featured: false,
+      });
+    }
+  }
+
+  return sectionFaqs.slice(0, 10);
+}
+
+function loadShowcaseFaqContent() {
+  try {
+    const raw = fs.readFileSync(showcaseContentPath, "utf8");
+    const parsed = JSON.parse(raw);
+    const faqItems = buildFaqItemsFromShowcaseContent(parsed);
+    if (faqItems.length > 0) {
+      return {
+        sourcePath: showcaseContentPath,
+        eyebrow: "FAQ",
+        title: "Frequently Asked Questions",
+        introText:
+          "Answers to common questions about booking requests, delivery, setup, and policy requirements.",
+        faqItems,
+      };
+    }
+  } catch {
+    // fall through to fallback below
+  }
+
+  return {
+    sourcePath: "seed-content defaults",
+    eyebrow: "FAQ",
+    title: "Frequently Asked Questions",
+    introText:
+      "Answers to common questions about booking requests, delivery, setup, and policy requirements.",
+    faqItems: [
+      {
+        _type: "faqItem",
+        question: "How does the booking process work?",
+        answer:
+          "Submit your booking request with the event date, location, and guest count. We manually review availability, send your rental agreement, then share a Stripe payment link.",
+        category: "Booking",
+        featured: true,
+      },
+    ],
+  };
 }
 
 const serviceAreaTownsByCounty = {
@@ -531,6 +712,17 @@ const homepage = {
   },
 };
 
+const faqSeed = loadShowcaseFaqContent();
+
+const faqPage = {
+  _id: "faqPage",
+  _type: "faqPage",
+  eyebrow: faqSeed.eyebrow,
+  title: faqSeed.title,
+  introText: faqSeed.introText,
+  faqItems: faqSeed.faqItems,
+};
+
 async function seedIfMissingAll() {
   for (const doc of [...packages, ...gallery, ...testimonials, ...serviceAreas]) {
     await client.createIfNotExists(doc);
@@ -538,11 +730,14 @@ async function seedIfMissingAll() {
 
   await client.createIfNotExists(businessInfo);
   await client.createIfNotExists(homepage);
+  await client.createOrReplace(faqPage);
 }
 
 seedIfMissingAll()
   .then(() => {
     console.log("Starter content seeded successfully (existing documents were preserved).");
+    console.log(`FAQ entries seeded: ${faqPage.faqItems.length}`);
+    console.log(`FAQ source: ${faqSeed.sourcePath}`);
   })
   .catch((error) => {
     console.error("Seeding failed:", error.message);

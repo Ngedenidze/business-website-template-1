@@ -10,6 +10,7 @@ export const NAV_LINKS = [
   { href: "/packages", label: "Packages" },
   { href: "/gallery", label: "Gallery" },
   { href: "/service-areas", label: "Service Areas" },
+  { href: "/faq", label: "FAQ" },
   { href: "/policy", label: "Policy" },
   { href: "/contact", label: "Contact" },
 ];

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays, MapPin, PackageCheck } from "lucide-react";
 import { ImageSlideshow } from "@/components/image-slideshow";
 import { SanityImage } from "@/components/sanity-image";
-import { BOOKING_PATH, SITE_NAME, SITE_URL, DEFAULT_META_DESCRIPTION } from "@/lib/site";
+import { BOOKING_PATH, SITE_URL, DEFAULT_META_DESCRIPTION } from "@/lib/site";
 import { createPageMetadata } from "@/lib/metadata";
 import { getHomePageData } from "@/sanity/data";
 
@@ -18,8 +18,19 @@ export async function generateMetadata() {
   });
 }
 
+function splitPackageItemLabel(item: string) {
+  const normalized = item.trim();
+  const match = normalized.match(/^\s*([0-9][0-9'"xX\s.-]*)\s+(.*)$/);
+
+  if (!match) {
+    return { quantity: null as string | null, label: normalized };
+  }
+
+  return { quantity: match[1].trim(), label: match[2].trim() };
+}
+
 export default async function HomePage() {
-  const { homepage, featuredPackages, galleryItems, testimonials, serviceAreas } =
+  const { homepage, featuredPackages, testimonials, serviceAreas } =
     await getHomePageData();
   const essexFeaturedTowns = serviceAreas
     .filter((serviceArea) => serviceArea.county.toLowerCase().includes("essex"))
@@ -93,28 +104,38 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <div className="page-wrap">
-          <div className="feature-strip">
-            <div className="feature-card">
-              <PackageCheck className="feature-icon" size={24} aria-hidden="true" />
-              <span className="feature-label">Tents, tables, chairs, bundles</span>
-            </div>
-            <div className="feature-card">
-              <CalendarDays className="feature-icon" size={24} aria-hidden="true" />
-              <span className="feature-label">Simple online booking requests</span>
-            </div>
-            <div className="feature-card">
-              <MapPin className="feature-icon" size={24} aria-hidden="true" />
-              <span className="feature-label">Serving nearby towns</span>
-            </div>
+        <div className="feature-strip">
+          <div className="feature-card">
+            <PackageCheck className="feature-icon" size={24} aria-hidden="true" />
+            <span className="feature-label">Tents, tables, chairs, bundles</span>
+          </div>
+          <div className="feature-card">
+            <CalendarDays className="feature-icon" size={24} aria-hidden="true" />
+            <span className="feature-label">Simple online booking requests</span>
+          </div>
+          <div className="feature-card">
+            <MapPin className="feature-icon" size={24} aria-hidden="true" />
+            <span className="feature-label">Serving nearby towns</span>
           </div>
         </div>
       </section>
 
-      <section className="section section-tight">
+      <section className="section section-tight" style={{ padding: "5rem 0" }}>
         <div className="page-wrap">
-          <div className="section-surface">
-            <p>{homepage.introSectionText}</p>
+          <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div style={{ width: "32px", height: "1px", background: "var(--accent)", marginBottom: "2.5rem", opacity: 0.4 }} aria-hidden="true" />
+            <p style={{
+              fontFamily: "var(--font-heading), serif",
+              fontSize: "clamp(1.8rem, 4vw, 2.7rem)",
+              lineHeight: "1.35",
+              color: "#1a1512",
+              fontWeight: 400,
+              letterSpacing: "-0.01em",
+              margin: 0
+            }}>
+              {homepage.introSectionText}
+            </p>
+            <div style={{ width: "32px", height: "1px", background: "var(--accent)", marginTop: "2.5rem", opacity: 0.4 }} aria-hidden="true" />
           </div>
         </div>
       </section>
@@ -147,49 +168,69 @@ export default async function HomePage() {
                     />
                   </div>
                   <div className="catalogue-body">
-                    <h3>{packageItem.packageName}</h3>
-                    <p>{packageItem.shortDescription}</p>
-                    <div className="meta-row">
-                      <span className="meta-pill">{packageItem.price}</span>
-                      <span className="meta-pill">
-                        {packageItem.capacityLabel?.trim() || `Up to ${packageItem.guestCapacity} guests`}
-                      </span>
-                    </div>
-                    <p style={{ lineHeight: "1.7" }}>{packageItem.fullDescription}</p>
-
-                    <div
-                      style={{
-                        display: "grid",
-                        gap: "1rem",
-                        width: "100%",
-                        gridTemplateColumns: optionalAddOns.length > 0 ? "1fr 1fr" : "1fr",
-                        marginTop: "0.5rem",
-                      }}
-                    >
-                      <div>
-                        <h4 style={{ fontSize: "1.02rem", marginBottom: "0.6rem" }}>Included Items</h4>
-                        <ul className="list-clean">
-                          {includedItems.map((item) => (
-                            <li key={item}>{item}</li>
-                          ))}
-                        </ul>
+                    <div className="home-featured-package-card">
+                      <div className="home-featured-package-header">
+                        <h3>{packageItem.packageName}</h3>
+                        <div className="meta-row">
+                          <span className="meta-pill">{packageItem.price}</span>
+                          <span className="meta-pill">
+                            {packageItem.capacityLabel?.trim() || `Up to ${packageItem.guestCapacity} guests`}
+                          </span>
+                        </div>
                       </div>
 
-                      {optionalAddOns.length > 0 ? (
-                        <div>
-                          <h4 style={{ fontSize: "1.02rem", marginBottom: "0.6rem" }}>Optional Add-ons</h4>
-                          <ul className="list-clean">
-                            {optionalAddOns.map((item) => (
-                              <li key={item}>{item}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      ) : null}
-                    </div>
+                      <div className="home-featured-package-body">
+                        <p className="home-featured-description">{packageItem.fullDescription}</p>
 
-                    <Link href={BOOKING_PATH} className="button button-primary">
-                      Request This Package
-                    </Link>
+                        <div
+                          className="home-featured-package-items"
+                          style={{
+                            gridTemplateColumns: optionalAddOns.length > 0 ? "1fr 1fr" : "1fr",
+                          }}
+                        >
+                          <div>
+                            <h2 className="included-items-title">Included Items</h2>
+                            <ul className={`list-clean package-line-list ${includedItems.length > 6 ? "package-line-list-columns" : ""}`}>
+                              {includedItems.map((item) => {
+                                const { quantity, label } = splitPackageItemLabel(item);
+                                return (
+                                  <li key={item}>
+                                    {quantity ? <span className="package-item-qty">{quantity}</span> : null}
+                                    <span>{label}</span>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+
+                          {optionalAddOns.length > 0 ? (
+                            <div>
+                              <h4>Optional Add-ons</h4>
+                              <ul className={`list-clean package-line-list ${optionalAddOns.length > 6 ? "package-line-list-columns" : ""}`}>
+                                {optionalAddOns.map((item) => {
+                                  const { quantity, label } = splitPackageItemLabel(item);
+                                  return (
+                                    <li key={item}>
+                                      {quantity ? <span className="package-item-qty">{quantity}</span> : null}
+                                      <span>{label}</span>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+
+                      <div className="home-featured-package-cta">
+                        <Link
+                          href={`${BOOKING_PATH}?packageId=${encodeURIComponent(packageItem._id)}&package=${encodeURIComponent(packageItem.packageName)}`}
+                          className="button button-primary"
+                        >
+                          Request This Package
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </article>
               );
@@ -199,41 +240,6 @@ export default async function HomePage() {
           <div className="button-row" style={{ marginTop: "4rem" }}>
             <Link className="button button-secondary" href="/packages">
               Explore All Packages
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section-tight">
-        <div className="page-wrap">
-          <div className="section-head">
-            <h2>Recent Celebrations</h2>
-            <p>See how our premium rentals elevate real events in our community.</p>
-          </div>
-
-          <div className="gallery-grid">
-            {galleryItems.map((galleryItem) => (
-              <figure key={galleryItem._id} className="gallery-item">
-                <div className="gallery-media">
-                  <SanityImage
-                    image={galleryItem.eventPhoto}
-                    alt={galleryItem.title || "Event setup photo"}
-                    width={960}
-                    height={720}
-                    fallbackLabel="Gallery image placeholder"
-                  />
-                </div>
-                <figcaption>
-                  {galleryItem.title ? <strong>{galleryItem.title}</strong> : null}
-                  {galleryItem.caption ? <span>{galleryItem.caption}</span> : null}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-
-          <div className="button-row" style={{ marginTop: "2rem" }}>
-            <Link className="button button-secondary" href="/gallery">
-              View Full Gallery
             </Link>
           </div>
         </div>

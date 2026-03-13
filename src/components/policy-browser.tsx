@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { ChevronRight, Search } from "lucide-react";
 
 type PolicySection = {
   sectionTitle: string;
@@ -103,21 +103,35 @@ export function PolicyBrowser({
                   id={slugify(section.sectionTitle)}
                   className="booking-policy-item"
                 >
-                  <h2>{section.sectionTitle}</h2>
-                  <ul className="list-clean">
-                    {section.bulletPoints.map((point) => (
-                      <li key={point}>{point}</li>
-                    ))}
-                  </ul>
-                  {section.note ? (
-                    <p className="booking-policy-note">{section.note}</p>
-                  ) : null}
+                  <div className="policy-card-content">
+                    <div className="policy-card-header">
+                      <h2>{section.sectionTitle}</h2>
+                    </div>
+                    <div className="policy-card-body">
+                      <ul className="list-clean">
+                        {section.bulletPoints.map((point) => (
+                          <li key={point}>{point}</li>
+                        ))}
+                      </ul>
+                      {section.note ? (
+                        <p className="booking-policy-note">{section.note}</p>
+                      ) : null}
+                    </div>
+                  </div>
+                  <div className="policy-card-footer">
+                    <Link className="button button-primary" href="/contact">
+                      Clarify this section
+                      <ChevronRight size={16} aria-hidden="true" />
+                    </Link>
+                  </div>
                 </article>
               ))}
             </div>
           ) : (
             <div className="policy-empty-state">
-              <p>No policy sections match "{searchQuery}".</p>
+              <p>
+                No policy sections match <strong>{searchQuery}</strong>.
+              </p>
               <button
                 onClick={() => setSearchQuery("")}
                 className="button button-secondary"
@@ -143,45 +157,57 @@ export function PolicyBrowser({
             <div className="policy-pricing-grid">
               {deliveryFees.length > 0 ? (
                 <article className="policy-pricing-card">
-                  <h3>Delivery Fees</h3>
-                  <table className="policy-price-table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Distance</th>
-                        <th scope="col">Fee</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {deliveryFees.map((row) => (
-                        <tr key={`${row.distance}-${row.fee}`}>
-                          <td>{row.distance}</td>
-                          <td>{row.fee}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="policy-card-content">
+                    <div className="policy-card-header">
+                      <h3>Delivery Fees</h3>
+                    </div>
+                    <div className="policy-card-body">
+                      <table className="policy-price-table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Distance</th>
+                            <th scope="col">Fee</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {deliveryFees.map((row) => (
+                            <tr key={`${row.distance}-${row.fee}`}>
+                              <td>{row.distance}</td>
+                              <td>{row.fee}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </article>
               ) : null}
 
               {setupFees.length > 0 ? (
                 <article className="policy-pricing-card">
-                  <h3>Setup Fees</h3>
-                  <table className="policy-price-table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Tent</th>
-                        <th scope="col">Setup Fee</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {setupFees.map((row) => (
-                        <tr key={`${row.tent}-${row.setupFee}`}>
-                          <td>{row.tent}</td>
-                          <td>{row.setupFee}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="policy-card-content">
+                    <div className="policy-card-header">
+                      <h3>Setup Fees</h3>
+                    </div>
+                    <div className="policy-card-body">
+                      <table className="policy-price-table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Tent</th>
+                            <th scope="col">Setup Fee</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {setupFees.map((row) => (
+                            <tr key={`${row.tent}-${row.setupFee}`}>
+                              <td>{row.tent}</td>
+                              <td>{row.setupFee}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </article>
               ) : null}
             </div>

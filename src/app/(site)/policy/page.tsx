@@ -28,17 +28,20 @@ export default async function PolicyPage() {
     : [];
 
   return (
-    <section className="section">
-      <div className="page-wrap">
-        <div className="section-head left-aligned">
+    <section className="section policy-page">
+      <div className="page-wrap policy-page-wrap">
+        <header className="section-head left-aligned policy-hero">
           <p className="eyebrow">Rental Policy</p>
-          <h1>Rental Terms and Policy Details</h1>
-          <p>
+          <h1 className="policy-hero-title">
+            <span>Rental Terms</span>
+            <span className="policy-hero-title-muted">Policy Details</span>
+          </h1>
+          <p className="policy-hero-copy">
             Please review these terms before your event date. These policies
             cover site requirements, weather, linens, care, delivery, and
             liability responsibilities.
           </p>
-        </div>
+        </header>
 
         <PolicyBrowser
           sections={sections}
@@ -46,14 +49,14 @@ export default async function PolicyPage() {
           setupFees={setupFees}
         />
 
-        <section className="section section-tight">
-          <div className="cta-band">
+        <section className="section section-tight policy-support-section">
+          <div className="cta-band policy-support-card">
             <h2>Need Clarification Before Booking?</h2>
             <p>
               Contact our team if you have questions about setup conditions,
               permits, or event-day responsibilities.
             </p>
-            <div className="button-row">
+            <div className="button-row policy-support-actions">
               <Link className="button button-primary" href="/booking-request">
                 Request a Booking
               </Link>

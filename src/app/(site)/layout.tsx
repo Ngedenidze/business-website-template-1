@@ -16,6 +16,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
       <main className="site-main">{children}</main>
       <SiteFooter
         businessName={shellData.businessInfo?.businessName}
+        businessLogo={shellData.businessInfo?.businessLogo}
         phoneNumber={shellData.businessInfo?.phoneNumber}
         emailAddress={shellData.businessInfo?.emailAddress}
         addressOrServiceBase={shellData.businessInfo?.addressOrServiceBase}

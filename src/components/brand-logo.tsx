@@ -7,10 +7,16 @@ import { useState } from "react";
 type BrandLogoProps = {
   logoUrl?: string | null;
   alt: string;
-  size?: number;
+  width?: number;
+  height?: number;
 };
 
-export function BrandLogo({ logoUrl, alt, size = 36 }: BrandLogoProps) {
+export function BrandLogo({
+  logoUrl,
+  alt,
+  width = 100,
+  height = 32,
+}: BrandLogoProps) {
   const [hasError, setHasError] = useState(false);
 
   if (!logoUrl || hasError) {
@@ -21,8 +27,8 @@ export function BrandLogo({ logoUrl, alt, size = 36 }: BrandLogoProps) {
     <Image
       src={logoUrl}
       alt={alt}
-      width={size}
-      height={size}
+      width={width}
+      height={height}
       unoptimized
       onError={() => setHasError(true)}
     />

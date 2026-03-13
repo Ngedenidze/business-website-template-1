@@ -1,5 +1,6 @@
 import type {
   BusinessInfo,
+  FAQPage,
   GalleryItem,
   Homepage,
   PackageItem,
@@ -518,4 +519,56 @@ export const fallbackHomepage: Homepage = {
     metaDescription:
       "Local event rental packages for tents, tables, and chairs in Caldwell, NJ. Fast booking requests, clear pricing, and dependable delivery for your next party.",
   },
+};
+
+export const fallbackFaqPage: FAQPage = {
+  _id: "fallback-faq-page",
+  eyebrow: "FAQ",
+  title: "Frequently Asked Questions",
+  introText:
+    "Answers to common questions about booking, delivery windows, weather, and setup expectations.",
+  faqItems: [
+    {
+      question: "How does the booking process work?",
+      answer:
+        "Submit your booking request with your event date, location, and guest count. We review availability, then send your rental agreement and Stripe payment link manually.",
+      category: "Booking",
+    },
+    {
+      question: "What are your site requirements for tents?",
+      answer:
+        "The installation surface must be level and clear, and underground utilities must be disclosed before staking. If staking is not possible, additional weighting fees may apply.",
+      category: "Site Requirements",
+    },
+    {
+      question: "What is your weather policy?",
+      answer:
+        "Tents are temporary structures and must be evacuated during high winds, lightning, or severe storms. No refunds are issued due to weather, and we may refuse installation when conditions are unsafe.",
+      category: "Weather",
+    },
+    {
+      question: "Do clients need permits?",
+      answer:
+        "Clients are responsible for permits and approvals when required, including municipal permits, fire inspections, zoning, and HOA compliance.",
+      category: "Permits",
+    },
+    {
+      question: "How are delivery fees priced?",
+      answer:
+        "Delivery fees are based on distance from our service base. We provide clear distance-based pricing tiers before your booking is finalized.",
+      category: "Delivery",
+    },
+    {
+      question: "Are setup fees separate from rental pricing?",
+      answer:
+        "Yes. Tent setup fees are listed separately by tent size so you can see the full event cost up front.",
+      category: "Setup",
+    },
+    {
+      question: "Who is responsible for rented equipment during the event?",
+      answer:
+        "You are responsible for equipment condition from delivery until pickup, including damage, loss, theft, or excessive cleaning requirements.",
+      category: "Liability",
+    },
+  ],
 };

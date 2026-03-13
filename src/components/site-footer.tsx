@@ -1,6 +1,8 @@
 import Link from "next/link";
-import { ArrowRight, Facebook, Instagram } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 import { SITE_NAME } from "@/lib/site";
+import { urlFor } from "@/sanity/image";
+import type { SanityImageWithAlt } from "@/sanity/types";
 
 type FooterServiceArea = {
   _id: string;
@@ -9,7 +11,7 @@ type FooterServiceArea = {
 
 type SiteFooterProps = {
   businessName?: string;
-  businessLogo?: any;
+  businessLogo?: SanityImageWithAlt | null;
   phoneNumber?: string;
   emailAddress?: string;
   addressOrServiceBase?: string;
@@ -36,6 +38,10 @@ export function SiteFooter({
   serviceAreas,
 }: SiteFooterProps) {
   const name = businessName ?? SITE_NAME;
+  const hasSocials = Boolean(instagramUrl || facebookUrl);
+  const logoUrl = businessLogo?.asset
+    ? urlFor(businessLogo).width(420).height(140).fit("max").auto("format").url()
+    : null;
   const counties = Array.from(
     new Set(
       serviceAreas
@@ -43,15 +49,16 @@ export function SiteFooter({
         .filter((county): county is string => Boolean(county)),
     ),
   ).sort((left, right) => left.localeCompare(right));
+  const visibleCounties = counties.slice(0, 4);
 
   return (
     <footer className="footer">
-      <div className="footer-inner">
+      <div className={`footer-inner ${hasSocials ? "footer-inner-with-socials" : ""}`}>
         <div className="footer-col" style={{ paddingRight: "2rem" }}>
           <div className="footer-brand">
             <div className="footer-brand-icon">
-              {businessLogo?.asset ? (
-                <img src={businessLogo.asset.url} alt={`${name} logo`} />
+              {logoUrl ? (
+                <img src={logoUrl} alt={`${name} logo`} />
               ) : (
                 <span
                   style={{
@@ -64,28 +71,20 @@ export function SiteFooter({
                 </span>
               )}
             </div>
-            <span className="footer-title">{name}</span>
           </div>
           <p>
             Premium event setups including tents, tables, and chairs for
             weddings, backyard parties, and local celebrations.
           </p>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.25rem",
-              marginTop: "0.5rem",
-            }}
-          >
+          <div className="footer-contact-links">
             {phoneNumber ? (
               <a href={toTelLink(phoneNumber)}>
-                {phoneNumber} <ArrowRight size={14} />
+                {phoneNumber} <span className="footer-arrow" aria-hidden="true">→</span>
               </a>
             ) : null}
             {emailAddress ? (
               <a href={`mailto:${emailAddress}`}>
-                {emailAddress} <ArrowRight size={14} />
+                {emailAddress} <span className="footer-arrow" aria-hidden="true">→</span>
               </a>
             ) : null}
           </div>
@@ -94,24 +93,17 @@ export function SiteFooter({
         <div className="footer-col">
           <h4>Service Areas</h4>
           <ul className="footer-list">
-            {counties.map((county) => (
+            {visibleCounties.map((county) => (
               <li key={county}>
-                <Link
-                  href={`/service-areas?county=${encodeURIComponent(county)}`}
-                >
+                <Link href={`/service-areas?county=${encodeURIComponent(county)}`}>
                   {county}
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                href="/service-areas"
-                style={{ color: "#fff", fontWeight: 600 }}
-              >
-                View All Areas <ArrowRight size={14} />
-              </Link>
-            </li>
           </ul>
+          <Link className="footer-view-all-link" href="/service-areas">
+            View All Areas <span className="footer-arrow" aria-hidden="true">→</span>
+          </Link>
         </div>
 
         <div className="footer-col">
@@ -130,12 +122,18 @@ export function SiteFooter({
               <Link href="/policy">Rental Policy</Link>
             </li>
             <li>
+              <Link href="/faq">FAQ</Link>
+            </li>
+            <li>
               <Link href="/contact">Contact Us</Link>
             </li>
           </ul>
+        </div>
 
-          {(instagramUrl || facebookUrl) && (
-            <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+        {hasSocials ? (
+          <div className="footer-col">
+            <h4>Social</h4>
+            <div className="footer-socials">
               {instagramUrl ? (
                 <a
                   href={instagramUrl}
@@ -144,6 +142,7 @@ export function SiteFooter({
                   aria-label="Instagram"
                 >
                   <Instagram size={20} />
+                  Instagram
                 </a>
               ) : null}
               {facebookUrl ? (
@@ -154,11 +153,12 @@ export function SiteFooter({
                   aria-label="Facebook"
                 >
                   <Facebook size={20} />
+                  Facebook
                 </a>
               ) : null}
             </div>
-          )}
-        </div>
+          </div>
+        ) : null}
       </div>
 
       <div className="footer-bottom">

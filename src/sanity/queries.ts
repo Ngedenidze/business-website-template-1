@@ -43,6 +43,19 @@ const serviceAreaProjection = groq`{
   seo
 }`;
 
+const faqPageProjection = groq`{
+  _id,
+  eyebrow,
+  title,
+  introText,
+  faqItems[]{
+    question,
+    answer,
+    category,
+    featured
+  }
+}`;
+
 const businessInfoProjection = groq`{
   _id,
   businessName,
@@ -119,6 +132,8 @@ export const serviceAreaSlugsQuery =
 
 export const packageOptionsQuery =
   groq`*[_type == "package"]|order(packageName asc){ _id, packageName }`;
+
+export const faqPageQuery = groq`*[_type == "faqPage"][0]${faqPageProjection}`;
 
 export const siteShellQuery = groq`{
   "businessInfo": *[_type == "businessInfo"][0]${businessInfoProjection},
