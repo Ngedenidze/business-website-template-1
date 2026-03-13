@@ -65,7 +65,8 @@ const businessInfoProjection = groq`{
   },
   individualRentalPricing[]{
     itemName,
-    price
+    price,
+    itemImage
   },
   deliveryFees[]{
     distance,
@@ -121,7 +122,7 @@ export const packageOptionsQuery =
 
 export const siteShellQuery = groq`{
   "businessInfo": *[_type == "businessInfo"][0]${businessInfoProjection},
-  "serviceAreas": *[_type == "serviceArea" && defined(county)]|order(county asc, townName asc)[0...8]{
+  "serviceAreas": *[_type == "serviceArea" && defined(county)]|order(county asc, townName asc){
     _id,
     county,
     townName,

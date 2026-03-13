@@ -96,7 +96,9 @@ export function SiteFooter({
           <ul className="footer-list">
             {counties.map((county) => (
               <li key={county}>
-                <Link href={`/service-areas?county=${encodeURIComponent(county)}`}>
+                <Link
+                  href={`/service-areas?county=${encodeURIComponent(county)}`}
+                >
                   {county}
                 </Link>
               </li>
@@ -104,7 +106,7 @@ export function SiteFooter({
             <li>
               <Link
                 href="/service-areas"
-                style={{ color: "var(--text-main)", fontWeight: 600 }}
+                style={{ color: "#fff", fontWeight: 600 }}
               >
                 View All Areas <ArrowRight size={14} />
               </Link>

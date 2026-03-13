@@ -84,6 +84,7 @@ export type BusinessInfo = {
   individualRentalPricing?: {
     itemName: string;
     price: string;
+    itemImage?: SanityImageWithAlt | null;
   }[];
   deliveryFees?: {
     distance: string;

@@ -173,11 +173,25 @@ export const businessInfoType = defineType({
               type: "string",
               validation: (rule) => rule.required(),
             }),
+            defineField({
+              name: "itemImage",
+              title: "Item Photo (Optional)",
+              type: "image",
+              options: { hotspot: true },
+              fields: [
+                defineField({
+                  name: "alt",
+                  title: "Image Description",
+                  type: "string",
+                }),
+              ],
+            }),
           ],
           preview: {
             select: {
               title: "itemName",
               subtitle: "price",
+              media: "itemImage",
             },
           },
         }),

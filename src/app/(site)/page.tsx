@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays, MapPin, PackageCheck } from "lucide-react";
 import { ImageSlideshow } from "@/components/image-slideshow";
 import { SanityImage } from "@/components/sanity-image";
-import { BOOKING_PATH } from "@/lib/site";
+import { BOOKING_PATH, SITE_NAME, SITE_URL, DEFAULT_META_DESCRIPTION } from "@/lib/site";
 import { createPageMetadata } from "@/lib/metadata";
 import { getHomePageData } from "@/sanity/data";
 
@@ -21,9 +21,45 @@ export async function generateMetadata() {
 export default async function HomePage() {
   const { homepage, featuredPackages, galleryItems, testimonials, serviceAreas } =
     await getHomePageData();
+  const essexFeaturedTowns = serviceAreas
+    .filter((serviceArea) => serviceArea.county.toLowerCase().includes("essex"))
+    .slice(0, 6);
+  const featuredTownCards = essexFeaturedTowns.length > 0 ? essexFeaturedTowns : serviceAreas.slice(0, 6);
+
+  // Generate LocalBusiness Schema
+  const schemaOrgJSONLD = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "Spirit Event Rentals",
+    image: homepage.heroImage?.asset?.url || "",
+    telephone: "973-632-6516", // Format based on known fallback
+    email: "spiriteventrentals@yahoo.com",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "23 Westville Ave",
+      addressLocality: "Caldwell",
+      addressRegion: "NJ",
+      postalCode: "07006",
+      addressCountry: "US",
+    },
+    url: SITE_URL,
+    description: homepage?.seo?.metaDescription || DEFAULT_META_DESCRIPTION,
+    areaServed: serviceAreas.map((area) => ({
+      "@type": "City",
+      name: area.townName,
+      containedInPlace: {
+        "@type": "AdministrativeArea",
+        name: area.county,
+      },
+    })),
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgJSONLD) }}
+      />
       <section className="section section-hero">
         <div className="hero-immersive">
           <ImageSlideshow
@@ -93,32 +129,71 @@ export default async function HomePage() {
           </div>
 
           <div className="catalogue-list">
-            {featuredPackages.map((packageItem) => (
-              <article key={packageItem._id} className="catalogue-item">
-                <div className="catalogue-media">
-                  <SanityImage
-                    image={packageItem.packagePhoto}
-                    alt={`${packageItem.packageName} package photo`}
-                    width={900}
-                    height={675}
-                    fallbackLabel={`${packageItem.packageName} photo placeholder`}
-                  />
-                </div>
-                <div className="catalogue-body">
-                  <h3>{packageItem.packageName}</h3>
-                  <p>{packageItem.shortDescription}</p>
-                  <div className="meta-row">
-                    <span className="meta-pill">{packageItem.price}</span>
-                    <span className="meta-pill">
-                      {packageItem.capacityLabel?.trim() || `Up to ${packageItem.guestCapacity} guests`}
-                    </span>
+            {featuredPackages.map((packageItem) => {
+              const includedItems = Array.isArray(packageItem.includedItems) ? packageItem.includedItems : [];
+              const optionalAddOns = Array.isArray(packageItem.optionalAddOns)
+                ? packageItem.optionalAddOns
+                : [];
+
+              return (
+                <article key={packageItem._id} className="catalogue-item">
+                  <div className="catalogue-media">
+                    <SanityImage
+                      image={packageItem.packagePhoto}
+                      alt={`${packageItem.packageName} package photo`}
+                      width={900}
+                      height={675}
+                      fallbackLabel={`${packageItem.packageName} photo placeholder`}
+                    />
                   </div>
-                  <Link href={BOOKING_PATH} className="button button-primary">
-                    Request This Package
-                  </Link>
-                </div>
-              </article>
-            ))}
+                  <div className="catalogue-body">
+                    <h3>{packageItem.packageName}</h3>
+                    <p>{packageItem.shortDescription}</p>
+                    <div className="meta-row">
+                      <span className="meta-pill">{packageItem.price}</span>
+                      <span className="meta-pill">
+                        {packageItem.capacityLabel?.trim() || `Up to ${packageItem.guestCapacity} guests`}
+                      </span>
+                    </div>
+                    <p style={{ lineHeight: "1.7" }}>{packageItem.fullDescription}</p>
+
+                    <div
+                      style={{
+                        display: "grid",
+                        gap: "1rem",
+                        width: "100%",
+                        gridTemplateColumns: optionalAddOns.length > 0 ? "1fr 1fr" : "1fr",
+                        marginTop: "0.5rem",
+                      }}
+                    >
+                      <div>
+                        <h4 style={{ fontSize: "1.02rem", marginBottom: "0.6rem" }}>Included Items</h4>
+                        <ul className="list-clean">
+                          {includedItems.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {optionalAddOns.length > 0 ? (
+                        <div>
+                          <h4 style={{ fontSize: "1.02rem", marginBottom: "0.6rem" }}>Optional Add-ons</h4>
+                          <ul className="list-clean">
+                            {optionalAddOns.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <Link href={BOOKING_PATH} className="button button-primary">
+                      Request This Package
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
           </div>
 
           <div className="button-row" style={{ marginTop: "4rem" }}>
@@ -195,7 +270,7 @@ export default async function HomePage() {
           </div>
 
           <div className="service-grid">
-            {serviceAreas.map((serviceArea) => (
+            {featuredTownCards.map((serviceArea) => (
               <article className="service-area-card" key={serviceArea._id}>
                 <p className="service-area-county">{serviceArea.county}</p>
                 <h3>{serviceArea.townName}</h3>
@@ -203,6 +278,12 @@ export default async function HomePage() {
                 <Link href={`/service-areas/${serviceArea.slug.current}`}>View Service Area</Link>
               </article>
             ))}
+          </div>
+
+          <div className="button-row" style={{ marginTop: "2rem" }}>
+            <Link className="button button-secondary" href="/service-areas">
+              See All Towns
+            </Link>
           </div>
         </div>
       </section>

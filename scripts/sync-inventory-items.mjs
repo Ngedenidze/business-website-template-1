@@ -56,6 +56,60 @@ function toStableKey(value, index) {
   return `${slug || "inventory-item"}-${index + 1}`;
 }
 
+function normalizeText(value) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function resolvePricingImageFileName(itemName) {
+  const normalized = normalizeText(itemName);
+
+  if (normalized.includes("chair")) {
+    return "spirit-folding-chair.png";
+  }
+
+  if (
+    (normalized.includes("60") || normalized.includes("72")) &&
+    normalized.includes("round") &&
+    normalized.includes("table")
+  ) {
+    return "spirit-round-table.png";
+  }
+
+  if (normalized.includes("banquet") && normalized.includes("table")) {
+    return "spirit-banquet-table-30x96.png";
+  }
+
+  if (
+    (normalized.includes("high top") || normalized.includes("cocktail")) &&
+    normalized.includes("table")
+  ) {
+    return "spirit-cocktail-table.png";
+  }
+
+  if (
+    (normalized.includes("10x20") || normalized.includes("10 x 20")) &&
+    normalized.includes("tent")
+  ) {
+    return "spirit-tent-10x20-pop-up.png";
+  }
+
+  if (
+    (normalized.includes("20x26") || normalized.includes("20 x 26")) &&
+    normalized.includes("tent")
+  ) {
+    return "spirit-tent-20x26-frame.png";
+  }
+
+  if (
+    (normalized.includes("20x40") || normalized.includes("20 x 40")) &&
+    normalized.includes("tent")
+  ) {
+    return "spirit-tent-20x40-frame.png";
+  }
+
+  return null;
+}
+
 function assertLocalFilesExist() {
   const missing = inventoryItems.filter((item) => !fs.existsSync(path.join(inventoryDir, item.fileName)));
   if (missing.length > 0) {
@@ -95,6 +149,9 @@ async function runDryMode() {
   }
 
   console.log("");
+  console.log("Apply mode also attempts to attach matching images to Individual Rental Pricing rows.");
+
+  console.log("");
   console.log("When ready, run:");
   console.log("npm run sync:inventory");
 }
@@ -103,7 +160,17 @@ async function runApplyMode() {
   assertLocalFilesExist();
 
   const client = createSanityClient();
-  const businessInfoDoc = await client.fetch(`*[_type == "businessInfo"][0]{_id, businessName}`);
+  const businessInfoDoc = await client.fetch(
+    `*[_type == "businessInfo"][0]{
+      _id,
+      businessName,
+      individualRentalPricing[]{
+        _key,
+        itemName,
+        price
+      }
+    }`,
+  );
 
   if (!businessInfoDoc?._id) {
     throw new Error("No businessInfo document found. Seed content first, then retry.");
@@ -111,6 +178,7 @@ async function runApplyMode() {
 
   console.log(`Uploading ${inventoryItems.length} inventory images to Sanity...`);
 
+  const assetIdByFileName = new Map();
   const syncedItems = [];
   for (const [index, item] of inventoryItems.entries()) {
     const filePath = path.join(inventoryDir, item.fileName);
@@ -118,6 +186,7 @@ async function runApplyMode() {
       filename: item.fileName,
       contentType: "image/png",
     });
+    assetIdByFileName.set(item.fileName, asset._id);
 
     syncedItems.push({
       _type: "inventoryItem",
@@ -134,9 +203,54 @@ async function runApplyMode() {
     });
   }
 
-  await client.patch(businessInfoDoc._id).set({ inventoryItems: syncedItems }).commit();
+  const existingPricingRows = Array.isArray(businessInfoDoc.individualRentalPricing)
+    ? businessInfoDoc.individualRentalPricing
+    : [];
+
+  const syncedPricingRows = existingPricingRows
+    .map((row, index) => {
+      const itemName = typeof row?.itemName === "string" ? row.itemName : "";
+      const price = typeof row?.price === "string" ? row.price : "";
+      if (!itemName.trim() || !price.trim()) {
+        return null;
+      }
+
+      const resolvedFileName = resolvePricingImageFileName(itemName);
+      const resolvedAssetId = resolvedFileName ? assetIdByFileName.get(resolvedFileName) : null;
+
+      return {
+        _type: "individualPricingRow",
+        _key: typeof row?._key === "string" ? row._key : toStableKey(itemName, index),
+        itemName,
+        price,
+        ...(resolvedAssetId
+          ? {
+              itemImage: {
+                _type: "image",
+                asset: {
+                  _type: "reference",
+                  _ref: resolvedAssetId,
+                },
+                alt: `${itemName} pricing item`,
+              },
+            }
+          : {}),
+      };
+    })
+    .filter(Boolean);
+
+  await client
+    .patch(businessInfoDoc._id)
+    .set({
+      inventoryItems: syncedItems,
+      ...(syncedPricingRows.length > 0 ? { individualRentalPricing: syncedPricingRows } : {}),
+    })
+    .commit();
 
   console.log(`Inventory sync complete for "${businessInfoDoc.businessName || "Business Information"}".`);
+  if (syncedPricingRows.length > 0) {
+    console.log(`Attached images to ${syncedPricingRows.length} individual pricing rows when matched.`);
+  }
 }
 
 if (applyMode) {

@@ -36,7 +36,9 @@ for (const item of fallbackPackages) {
   }
 }
 const fallbackPackagesByName = new Map(
-  fallbackPackages.map((item) => [item.packageName.toLowerCase(), item] as const),
+  fallbackPackages.map(
+    (item) => [item.packageName.toLowerCase(), item] as const,
+  ),
 );
 const fallbackGalleryByTitle = new Map<string, GalleryItem>();
 for (const item of fallbackGallery) {
@@ -64,7 +66,9 @@ function isNonEmptyArray<T>(value: T[] | null | undefined): value is T[] {
 }
 
 function normalizeStringArray(value: unknown): string[] {
-  return Array.isArray(value) ? value.filter((entry): entry is string => typeof entry === "string") : [];
+  return Array.isArray(value)
+    ? value.filter((entry): entry is string => typeof entry === "string")
+    : [];
 }
 
 function normalizeIndividualPricingRows(
@@ -79,8 +83,11 @@ function normalizeIndividualPricingRows(
     .map((row) => ({
       itemName: typeof row?.itemName === "string" ? row.itemName : "",
       price: typeof row?.price === "string" ? row.price : "",
+      itemImage: row?.itemImage ?? null,
     }))
-    .filter((row) => row.itemName.trim().length > 0 && row.price.trim().length > 0);
+    .filter(
+      (row) => row.itemName.trim().length > 0 && row.price.trim().length > 0,
+    );
 }
 
 function normalizeInventoryItems(
@@ -112,7 +119,9 @@ function normalizeDeliveryFeeRows(
       distance: typeof row?.distance === "string" ? row.distance : "",
       fee: typeof row?.fee === "string" ? row.fee : "",
     }))
-    .filter((row) => row.distance.trim().length > 0 && row.fee.trim().length > 0);
+    .filter(
+      (row) => row.distance.trim().length > 0 && row.fee.trim().length > 0,
+    );
 }
 
 function normalizeSetupFeeRows(
@@ -128,10 +137,14 @@ function normalizeSetupFeeRows(
       tent: typeof row?.tent === "string" ? row.tent : "",
       setupFee: typeof row?.setupFee === "string" ? row.setupFee : "",
     }))
-    .filter((row) => row.tent.trim().length > 0 && row.setupFee.trim().length > 0);
+    .filter(
+      (row) => row.tent.trim().length > 0 && row.setupFee.trim().length > 0,
+    );
 }
 
-function normalizeBusinessInfo(item: BusinessInfo | null | undefined): BusinessInfo {
+function normalizeBusinessInfo(
+  item: BusinessInfo | null | undefined,
+): BusinessInfo {
   const rawSections = Array.isArray(item?.rentalPolicyHighlights)
     ? item.rentalPolicyHighlights
     : fallbackBusinessInfo.rentalPolicyHighlights;
@@ -139,11 +152,18 @@ function normalizeBusinessInfo(item: BusinessInfo | null | undefined): BusinessI
   const rentalPolicyHighlights = Array.isArray(rawSections)
     ? rawSections
         .map((section) => ({
-          sectionTitle: typeof section?.sectionTitle === "string" ? section.sectionTitle : "",
+          sectionTitle:
+            typeof section?.sectionTitle === "string"
+              ? section.sectionTitle
+              : "",
           bulletPoints: normalizeStringArray(section?.bulletPoints),
           note: typeof section?.note === "string" ? section.note : undefined,
         }))
-        .filter((section) => section.sectionTitle.trim().length > 0 && section.bulletPoints.length > 0)
+        .filter(
+          (section) =>
+            section.sectionTitle.trim().length > 0 &&
+            section.bulletPoints.length > 0,
+        )
     : [];
   const individualRentalPricing = normalizeIndividualPricingRows(
     item?.individualRentalPricing,
@@ -157,12 +177,16 @@ function normalizeBusinessInfo(item: BusinessInfo | null | undefined): BusinessI
     item?.deliveryFees,
     fallbackBusinessInfo.deliveryFees ?? [],
   );
-  const setupFees = normalizeSetupFeeRows(item?.setupFees, fallbackBusinessInfo.setupFees ?? []);
+  const setupFees = normalizeSetupFeeRows(
+    item?.setupFees,
+    fallbackBusinessInfo.setupFees ?? [],
+  );
 
   return {
     ...fallbackBusinessInfo,
     ...item,
-    bookingPageImage: item?.bookingPageImage ?? fallbackBusinessInfo.bookingPageImage,
+    bookingPageImage:
+      item?.bookingPageImage ?? fallbackBusinessInfo.bookingPageImage,
     businessLogo: item?.businessLogo ?? fallbackBusinessInfo.businessLogo,
     rentalPolicyHighlights,
     inventoryItems,
@@ -194,7 +218,9 @@ function normalizePackage(item: PackageItem): PackageItem {
 }
 
 function normalizeGalleryItem(item: GalleryItem): GalleryItem {
-  const fallbackByTitle = item.title ? fallbackGalleryByTitle.get(item.title.toLowerCase()) : null;
+  const fallbackByTitle = item.title
+    ? fallbackGalleryByTitle.get(item.title.toLowerCase())
+    : null;
 
   return {
     ...item,
@@ -210,16 +236,20 @@ function normalizeServiceArea(item: ServiceAreaItem): ServiceAreaItem {
 
   return {
     ...item,
-    county: typeof item.county === "string" && item.county.trim() ? item.county : "Other Service Areas",
+    county:
+      typeof item.county === "string" && item.county.trim()
+        ? item.county
+        : "Other Service Areas",
     serviceAreaSlides:
       Array.isArray(item.serviceAreaSlides) && item.serviceAreaSlides.length > 0
         ? item.serviceAreaSlides
-        : fallbackServiceArea?.serviceAreaSlides ?? [],
+        : (fallbackServiceArea?.serviceAreaSlides ?? []),
   };
 }
 
 function normalizeHomepage(item: Homepage): Homepage {
-  const hasHeroSlides = Array.isArray(item.heroSlides) && item.heroSlides.length > 0;
+  const hasHeroSlides =
+    Array.isArray(item.heroSlides) && item.heroSlides.length > 0;
 
   return {
     ...item,
@@ -238,27 +268,38 @@ export async function getSiteShellData() {
     businessInfo: normalizeBusinessInfo(shellData?.businessInfo),
     serviceAreas: isNonEmptyArray(shellData?.serviceAreas)
       ? shellData.serviceAreas.map(normalizeServiceArea)
-      : fallbackServiceAreas.slice(0, 8).map(normalizeServiceArea),
+      : fallbackServiceAreas.map(normalizeServiceArea),
   };
 }
 
 export async function getHomePageData() {
-  const [homepageDoc, packages, galleryItems, testimonials, serviceAreas] = await Promise.all([
-    fetchOrNull<Homepage>(homepageQuery),
-    fetchOrNull<PackageItem[]>(packagesQuery),
-    fetchOrNull<GalleryItem[]>(galleryQuery),
-    fetchOrNull<TestimonialItem[]>(testimonialsQuery),
-    fetchOrNull<ServiceAreaItem[]>(serviceAreasQuery),
-  ]);
+  const [homepageDoc, packages, galleryItems, testimonials, serviceAreas] =
+    await Promise.all([
+      fetchOrNull<Homepage>(homepageQuery),
+      fetchOrNull<PackageItem[]>(packagesQuery),
+      fetchOrNull<GalleryItem[]>(galleryQuery),
+      fetchOrNull<TestimonialItem[]>(testimonialsQuery),
+      fetchOrNull<ServiceAreaItem[]>(serviceAreasQuery),
+    ]);
 
-  const resolvedPackages = isNonEmptyArray(packages) ? packages.map(normalizePackage) : fallbackPackages.map(normalizePackage);
+  const resolvedPackages = isNonEmptyArray(packages)
+    ? packages.map(normalizePackage)
+    : fallbackPackages.map(normalizePackage);
   const resolvedGallery = isNonEmptyArray(galleryItems)
     ? galleryItems.map(normalizeGalleryItem)
     : fallbackGallery.map(normalizeGalleryItem);
-  const resolvedTestimonials = isNonEmptyArray(testimonials) ? testimonials : fallbackTestimonials;
+  const resolvedTestimonials = isNonEmptyArray(testimonials)
+    ? testimonials
+    : fallbackTestimonials;
   const resolvedServiceAreas = isNonEmptyArray(serviceAreas)
     ? serviceAreas.map(normalizeServiceArea)
     : fallbackServiceAreas.map(normalizeServiceArea);
+  const essexServiceAreas = resolvedServiceAreas.filter((item) =>
+    item.county.toLowerCase().includes("essex"),
+  );
+  const homeServiceAreaPreview = (
+    essexServiceAreas.length > 0 ? essexServiceAreas : resolvedServiceAreas
+  ).slice(0, 6);
 
   const homepage = normalizeHomepage({
     ...fallbackHomepage,
@@ -272,9 +313,7 @@ export async function getHomePageData() {
     testimonialsPreview: isNonEmptyArray(homepageDoc?.testimonialsPreview)
       ? homepageDoc.testimonialsPreview
       : resolvedTestimonials.slice(0, 3),
-    serviceAreaPreview: isNonEmptyArray(homepageDoc?.serviceAreaPreview)
-      ? homepageDoc.serviceAreaPreview.map(normalizeServiceArea)
-      : resolvedServiceAreas.slice(0, 6),
+    serviceAreaPreview: homeServiceAreaPreview,
   });
 
   return {
@@ -294,7 +333,9 @@ export async function getPackagesPageData() {
   ]);
 
   return {
-    packages: isNonEmptyArray(packages) ? packages.map(normalizePackage) : fallbackPackages.map(normalizePackage),
+    packages: isNonEmptyArray(packages)
+      ? packages.map(normalizePackage)
+      : fallbackPackages.map(normalizePackage),
     businessInfo: normalizeBusinessInfo(businessInfo),
     seo: homepageDoc?.seo ?? fallbackHomepage.seo,
   };
@@ -310,7 +351,12 @@ export async function getGalleryPageData() {
     galleryItems: isNonEmptyArray(galleryItems)
       ? galleryItems.map(normalizeGalleryItem)
       : fallbackGallery.map(normalizeGalleryItem),
-    seo: homepageDoc?.seo ?? fallbackHomepage.seo,
+    seo: homepageDoc?.seo ?? {
+      metaTitle:
+        "Event Rental Gallery | Wedding & Party Tent Setups | Spirit Event Rentals",
+      metaDescription:
+        "View photos of our event rental setups. See how our tents, tables, and chairs look at real weddings, backyard parties, and corporate events in New Jersey.",
+    },
   };
 }
 
@@ -324,7 +370,10 @@ export async function getBookingPageData() {
   return {
     packages: isNonEmptyArray(packages)
       ? packages
-      : fallbackPackages.map((item) => ({ _id: item._id, packageName: item.packageName })),
+      : fallbackPackages.map((item) => ({
+          _id: item._id,
+          packageName: item.packageName,
+        })),
     businessInfo: normalizeBusinessInfo(businessInfo),
     seo: businessInfo?.seo ?? fallbackBusinessInfo.seo,
     heroImage:
@@ -346,7 +395,11 @@ export async function getContactPageData() {
     serviceAreas: isNonEmptyArray(serviceAreas)
       ? serviceAreas.map(normalizeServiceArea).slice(0, 6)
       : fallbackServiceAreas.map(normalizeServiceArea).slice(0, 6),
-    seo: businessInfo?.seo ?? fallbackBusinessInfo.seo,
+    seo: businessInfo?.seo ?? {
+      metaTitle: "Contact Us | Spirit Event Rentals Caldwell",
+      metaDescription:
+        "Need help planning your event setup? Contact Spirit Event Rentals in Caldwell, NJ via phone or email for questions about tents, tables, and chairs.",
+    },
   };
 }
 
@@ -356,7 +409,11 @@ export async function getPolicyPageData() {
 
   return {
     businessInfo: resolvedBusinessInfo,
-    seo: resolvedBusinessInfo.seo ?? fallbackBusinessInfo.seo,
+    seo: resolvedBusinessInfo.seo ?? {
+      metaTitle: "Rental Policies & Delivery Fees | Spirit Event Rentals",
+      metaDescription:
+        "Review our event rental policies, site requirements, weather guidelines, and delivery fees for tents, tables, and chairs.",
+    },
   };
 }
 
@@ -368,21 +425,26 @@ export async function getServiceAreasPageData() {
       ? serviceAreas.map(normalizeServiceArea)
       : fallbackServiceAreas.map(normalizeServiceArea),
     seo: {
-      metaTitle: "Service Areas for Event Rentals",
+      metaTitle: "Local Event Rentals & Service Areas | Spirit Event Rentals",
       metaDescription:
-        "Find tent rentals, table and chair rentals, and party packages in nearby towns grouped by county.",
+        "We deliver party rentals, tents, tables, and chairs to Caldwell, Riverview, Lakeside, and surrounding New Jersey towns. Check if we serve your area.",
     },
   };
 }
 
 export async function getServiceAreaBySlug(slug: string) {
-  const serviceArea = await fetchOrNull<ServiceAreaItem>(serviceAreaBySlugQuery, { slug });
+  const serviceArea = await fetchOrNull<ServiceAreaItem>(
+    serviceAreaBySlugQuery,
+    { slug },
+  );
 
   if (serviceArea) {
     return normalizeServiceArea(serviceArea);
   }
 
-  const fallbackServiceArea = fallbackServiceAreas.find((item) => item.slug.current === slug);
+  const fallbackServiceArea = fallbackServiceAreas.find(
+    (item) => item.slug.current === slug,
+  );
   return fallbackServiceArea ? normalizeServiceArea(fallbackServiceArea) : null;
 }
 

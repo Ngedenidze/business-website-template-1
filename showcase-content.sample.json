@@ -363,23 +363,28 @@
     "individualRentalPricing": [
       {
         "itemName": "Chair",
-        "price": "$2.25"
+        "price": "$2.25",
+        "imagePath": "/images/inventory/spirit-folding-chair.png"
       },
       {
         "itemName": "60\" Round Table",
-        "price": "$14"
+        "price": "$14",
+        "imagePath": "/images/inventory/spirit-round-table.png"
       },
       {
         "itemName": "72\" Round Table",
-        "price": "$16"
+        "price": "$16",
+        "imagePath": "/images/inventory/spirit-round-table.png"
       },
       {
         "itemName": "8' Banquet Table",
-        "price": "$12"
+        "price": "$12",
+        "imagePath": "/images/inventory/spirit-banquet-table-30x96.png"
       },
       {
         "itemName": "High-Top Table",
-        "price": "$18"
+        "price": "$18",
+        "imagePath": "/images/inventory/spirit-cocktail-table.png"
       },
       {
         "itemName": "Table Linens",
@@ -387,15 +392,18 @@
       },
       {
         "itemName": "10x20 Pop-Up Tent",
-        "price": "$125"
+        "price": "$125",
+        "imagePath": "/images/inventory/spirit-tent-10x20-pop-up.png"
       },
       {
         "itemName": "20x26 Tent",
-        "price": "$350"
+        "price": "$350",
+        "imagePath": "/images/inventory/spirit-tent-20x26-frame.png"
       },
       {
         "itemName": "20x40 Tent",
-        "price": "$550"
+        "price": "$550",
+        "imagePath": "/images/inventory/spirit-tent-20x40-frame.png"
       }
     ],
     "deliveryFees": [

@@ -59,6 +59,8 @@ Apply sync (uploads inventory images and sets `Business Information -> Inventory
 npm run sync:inventory
 ```
 
+When item names match, this also attaches images to `Business Information -> Individual Rental Pricing` rows.
+
 ## Package Sync
 
 Force-synces the 3 core packages (Small Backyard, Backyard Party, Large Party), assigns tent-matched package photos, updates homepage featured package references, and removes outdated package documents:

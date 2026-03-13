@@ -25,9 +25,13 @@ export function SanityImage({
   const imageUrl = directUrl
     ? directUrl
     : image?.asset?._ref
-      ? urlFor(image).width(width * 2).height(height * 2).fit("crop").url()
+      ? urlFor(image)
+          .width(width * 2)
+          .height(height * 2)
+          .fit("crop")
+          .url()
       : null;
-  const imageAlt = image?.alt?.trim() || alt || "Event rental setup";
+  const imageAlt = image?.alt?.trim() || alt?.trim() || "Event rental setup";
 
   if (!imageUrl) {
     return (
