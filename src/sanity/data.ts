@@ -408,17 +408,22 @@ export async function getGalleryPageData() {
 
 export async function getBookingPageData() {
   const [packages, businessInfo, homepageDoc] = await Promise.all([
-    fetchOrNull<{ _id: string; packageName: string }[]>(packageOptionsQuery),
+    fetchOrNull<{ _id: string; packageName: string; optionalAddOns?: string[] }[]>(packageOptionsQuery),
     fetchOrNull<BusinessInfo>(businessInfoQuery),
     fetchOrNull<Homepage>(homepageQuery),
   ]);
 
   return {
     packages: isNonEmptyArray(packages)
-      ? packages
+      ? packages.map((item) => ({
+          _id: item._id,
+          packageName: item.packageName,
+          optionalAddOns: normalizeStringArray(item.optionalAddOns),
+        }))
       : fallbackPackages.map((item) => ({
           _id: item._id,
           packageName: item.packageName,
+          optionalAddOns: normalizeStringArray(item.optionalAddOns),
         })),
     businessInfo: normalizeBusinessInfo(businessInfo),
     seo: businessInfo?.seo ?? fallbackBusinessInfo.seo,

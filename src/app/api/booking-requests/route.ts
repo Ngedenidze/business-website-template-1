@@ -43,6 +43,8 @@ export async function POST(request: Request) {
             _ref: payload.selectedPackageId,
           }
         : undefined,
+      selectedAddOns:
+        payload.selectedAddOns.length > 0 ? payload.selectedAddOns : undefined,
       additionalDetails: payload.additionalDetails,
       status: "New",
       submittedAt: new Date().toISOString(),

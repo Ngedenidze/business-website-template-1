@@ -374,11 +374,11 @@ img {
 }
 
 .section {
-  padding: 6rem 0;
+  padding: 2rem 0;
 }
 
 .section-tight {
-  padding: 4rem 0;
+  padding: 1rem 0;
 }
 
 .section-hero {
@@ -749,6 +749,7 @@ img {
   align-items: flex-start;
 }
 
+.section-head h1,
 .section-head h2 {
   font-size: clamp(2rem, 3.3vw, 2.8rem);
   line-height: 1.12;
@@ -760,6 +761,21 @@ img {
   color: var(--text-muted);
   font-size: 1.02rem;
   line-height: 1.65;
+}
+
+.packages-hero-title {
+  display: grid;
+  gap: 0.04em;
+  line-height: 1.03;
+}
+
+.packages-hero-title span {
+  display: block;
+}
+
+.packages-hero-title-muted {
+  color: var(--text-muted);
+  font-weight: 400;
 }
 
 .catalogue-list {
@@ -863,7 +879,7 @@ img {
   margin-top: clamp(5rem, 8vw, 6.25rem);
 }
 
-.packages-page .packages-pricing-head {
+.packages-pricing-head {
   display: grid;
   gap: 0.65rem;
   max-width: 760px;
@@ -1284,9 +1300,17 @@ img {
   gap: 1.2rem;
 }
 
+.service-directory-shell-county {
+  gap: 0;
+}
+
 .service-directory-tools {
   display: grid;
   gap: 0.65rem;
+}
+
+.service-directory-tools-county {
+  margin-bottom: clamp(1.8rem, 3vw, 2.6rem);
 }
 
 .service-directory-tools h2 {
@@ -1299,27 +1323,44 @@ img {
 }
 
 .service-search-control {
+  position: relative;
   display: flex;
+  width: min(100%, 460px);
+}
+
+.service-search-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(67, 50, 41, 0.58);
+  pointer-events: none;
 }
 
 .service-search-input {
-  width: min(100%, 520px);
-  border: 1px solid var(--border-strong);
+  width: 100%;
+  border: 1px solid rgba(67, 50, 41, 0.16);
   border-radius: 999px;
-  padding: 0.72rem 1rem;
+  padding: 0.72rem 1rem 0.72rem 2.5rem;
   font: inherit;
   color: var(--text-main);
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.9);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .service-search-input:focus {
-  outline: 2px solid rgba(94, 75, 60, 0.3);
-  outline-offset: 2px;
+  outline: none;
+  border-color: rgba(67, 50, 41, 0.34);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(67, 50, 41, 0.12);
 }
 
 .service-county-grid {
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
@@ -1329,24 +1370,33 @@ img {
   background: var(--surface);
   box-shadow: var(--shadow-soft);
   text-align: left;
-  padding: 1.1rem;
-  display: grid;
-  gap: 0.4rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   cursor: pointer;
   color: var(--text-main);
   font: inherit;
   transition:
     transform 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.service-county-card strong {
-  font-size: 1.2rem;
+.service-county-title {
+  font-family: var(--font-heading), serif;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  color: #1a1512;
+  margin: 0;
 }
 
 .service-county-card:hover {
   transform: translateY(-1px);
   border-color: rgba(94, 75, 60, 0.35);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
 }
 
 .service-county-card:focus-visible {
@@ -1356,7 +1406,24 @@ img {
 
 .service-county-count {
   color: var(--text-muted);
-  font-size: 0.92rem;
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+.service-county-preview {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.service-county-linkcue {
+  margin-top: 0.24rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .service-back-button {
@@ -1526,7 +1593,7 @@ img {
 
 .footer {
   position: relative;
-  margin-top: 6rem;
+  margin-top: 0;
   padding: 4.5rem 0 3rem;
   background: #433229;
   border-top: none;
@@ -1668,6 +1735,10 @@ img {
   width: clamp(8.6rem, 18vw, 12rem);
   min-height: clamp(2.7rem, 5.5vw, 3.3rem);
   position: relative;
+  background: #fff;
+  border-radius: 999px;
+  aspect-ratio: 1;
+  padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1751,6 +1822,42 @@ img {
   resize: vertical;
 }
 
+.booking-addon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.booking-addon-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.65rem 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.booking-addon-option:hover {
+  border-color: var(--border-strong);
+  background: #fff;
+}
+
+.booking-addon-option input {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.08rem;
+  accent-color: var(--accent);
+}
+
+.booking-addon-option span {
+  color: var(--text-main);
+  font-size: 0.94rem;
+  line-height: 1.4;
+}
+
 .form-helper {
   font-size: 0.85rem;
   color: #c0392b;
@@ -1806,6 +1913,31 @@ img {
   background: var(--surface-soft);
   border-radius: 10px;
   color: var(--accent);
+}
+
+.contact-cta-text {
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.contact-cta-band {
+  width: 100%;
+  padding: 2rem 1.4rem;
+  margin: 2rem auto;
+  align-items: center;
+  text-align: left;
+  gap: 0.85rem;
+}
+
+.contact-cta-band h2 {
+  font-size: clamp(1.45rem, 3vw, 1.9rem);
+  line-height: 1.15;
+}
+
+.contact-cta-band p {
+  max-width: none;
+  font-size: 0.98rem;
 }
 
 .contact-info-content {
@@ -1868,8 +2000,8 @@ img {
 }
 
 .contact-cta-button {
-  margin-top: 0.5rem;
-  width: 100%;
+  margin-top: 0.25rem;
+  width: auto;
   justify-content: center;
 }
 
@@ -1937,45 +2069,49 @@ img {
   box-shadow: var(--shadow-soft);
 }
 
-.booking-policy-surface {
-  margin-top: 2rem;
-  text-align: left;
+.booking-policy-head {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.booking-policy-layout {
   display: grid;
-  gap: 1rem;
+  grid-template-columns: 2.5fr minmax(240px, 1fr);
+  gap: 2.25rem;
+  align-items: flex-start;
 }
 
-.booking-policy-surface h2 {
-  font-size: clamp(1.8rem, 2.5vw, 2.3rem);
+.booking-policy-main {
+  min-width: 0;
 }
 
-.booking-policy-surface>p {
-  font-family: var(--font-body), sans-serif;
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  line-height: 1.6;
+.booking-policy-quicklinks {
+  position: relative;
+}
+
+.booking-policy-toc {
+  position: sticky;
+  top: 7rem;
 }
 
 .booking-policy-list {
   display: grid;
   gap: 1rem;
-  margin-top: 1rem;
 }
 
 .booking-policy-item {
-  display: grid;
-  gap: 0.8rem;
-  padding: 1rem 1.1rem;
-  border-radius: var(--radius-control);
-  border: 1px solid var(--border-subtle);
-  background: var(--surface-soft);
+  display: block;
+  padding: 0;
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+  overflow: hidden;
 }
 
-.booking-policy-item h3 {
-  font-family: var(--font-body), sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-main);
-  text-transform: none;
+.booking-policy-item .policy-card-header h3 {
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+  line-height: 1.15;
+  font-weight: 500;
+  color: #1a1512;
 }
 
 .booking-policy-note {
@@ -1984,13 +2120,14 @@ img {
   line-height: 1.6;
 }
 
-.booking-policy-surface .button-row {
+.booking-policy-actions {
   justify-content: flex-start;
+  margin-top: 1.6rem;
 }
 
 .policy-split {
   display: grid;
-  grid-template-columns: minmax(240px, 1fr) 2.5fr;
+  grid-template-columns: 2.5fr minmax(240px, 1fr);
   gap: 3rem;
   align-items: flex-start;
 }
@@ -2270,7 +2407,7 @@ p.form-helper a:hover {
 
 .policy-split {
   display: grid;
-  grid-template-columns: minmax(240px, 1fr) 2.5fr;
+  grid-template-columns: 2.5fr minmax(240px, 1fr);
   gap: 3rem;
   align-items: flex-start;
 }
@@ -2406,19 +2543,6 @@ p.form-helper a:hover {
   gap: 0.45rem;
 }
 
-.policy-card-footer {
-  padding: 0.9rem 1.1rem 1.1rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  background: #fff;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.policy-card-footer .button {
-  width: auto;
-  gap: 0.45rem;
-}
-
 .faq-section {
   margin-top: 1.5rem;
 }
@@ -2538,6 +2662,15 @@ p.form-helper a:hover {
     grid-template-columns: 1fr;
   }
 
+  .booking-policy-layout {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .booking-policy-toc {
+    position: static;
+  }
+
   .card-grid,
   .testimonial-grid,
   .service-grid,
@@ -2640,6 +2773,11 @@ p.form-helper a:hover {
   .policy-split {
     grid-template-columns: 1fr;
     gap: 2.5rem;
+  }
+
+  .booking-addon-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
   }
 
   .footer-col {

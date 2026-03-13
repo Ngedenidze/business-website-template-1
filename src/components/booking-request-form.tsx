@@ -6,6 +6,7 @@ import Link from "next/link";
 type PackageOption = {
   _id: string;
   packageName: string;
+  optionalAddOns?: string[];
 };
 
 type FieldErrors = Partial<Record<string, string>>;
@@ -23,6 +24,7 @@ type FormState = {
   eventLocation: string;
   numberOfGuests: string;
   selectedPackageId: string;
+  selectedAddOns: string[];
   additionalDetails: string;
   website: string;
 };
@@ -36,6 +38,7 @@ function buildInitialState(selectedPackageId = ""): FormState {
     eventLocation: "",
     numberOfGuests: "",
     selectedPackageId,
+    selectedAddOns: [],
     additionalDetails: "",
     website: "",
   };
@@ -55,10 +58,45 @@ export function BookingRequestForm({
   const [agreedToPolicy, setAgreedToPolicy] = useState(false);
 
   const minimumDate = useMemo(() => new Date().toISOString().split("T")[0], []);
+  const selectedPackage = useMemo(
+    () => packages.find((packageItem) => packageItem._id === formState.selectedPackageId),
+    [packages, formState.selectedPackageId],
+  );
+  const availableAddOns = selectedPackage?.optionalAddOns ?? [];
 
   function updateField(field: keyof FormState, value: string) {
     setFormState((previous) => ({ ...previous, [field]: value }));
     setFieldErrors((previous) => ({ ...previous, [field]: "" }));
+  }
+
+  function updateSelectedPackage(selectedPackageId: string) {
+    const matchedPackage = packages.find((packageItem) => packageItem._id === selectedPackageId);
+    const matchedAddOns = matchedPackage?.optionalAddOns ?? [];
+
+    setFormState((previous) => ({
+      ...previous,
+      selectedPackageId,
+      selectedAddOns: previous.selectedAddOns.filter((item) =>
+        matchedAddOns.includes(item),
+      ),
+    }));
+    setFieldErrors((previous) => ({ ...previous, selectedPackageId: "" }));
+  }
+
+  function toggleAddOn(addOn: string) {
+    setFormState((previous) => {
+      if (previous.selectedAddOns.includes(addOn)) {
+        return {
+          ...previous,
+          selectedAddOns: previous.selectedAddOns.filter((item) => item !== addOn),
+        };
+      }
+
+      return {
+        ...previous,
+        selectedAddOns: [...previous.selectedAddOns, addOn],
+      };
+    });
   }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -124,6 +162,7 @@ export function BookingRequestForm({
             id="fullName"
             name="fullName"
             autoComplete="name"
+            placeholder="Jane Smith"
             value={formState.fullName}
             onChange={(event) => updateField("fullName", event.target.value)}
             aria-invalid={Boolean(fieldErrors.fullName)}
@@ -140,6 +179,7 @@ export function BookingRequestForm({
             id="phoneNumber"
             name="phoneNumber"
             autoComplete="tel"
+            placeholder="(973) 555-1234"
             value={formState.phoneNumber}
             onChange={(event) => updateField("phoneNumber", event.target.value)}
             aria-invalid={Boolean(fieldErrors.phoneNumber)}
@@ -157,6 +197,7 @@ export function BookingRequestForm({
             name="emailAddress"
             autoComplete="email"
             type="email"
+            placeholder="you@example.com"
             value={formState.emailAddress}
             onChange={(event) =>
               updateField("emailAddress", event.target.value)
@@ -176,6 +217,7 @@ export function BookingRequestForm({
             name="eventDate"
             type="date"
             min={minimumDate}
+            placeholder="Select your event date"
             value={formState.eventDate}
             onChange={(event) => updateField("eventDate", event.target.value)}
             aria-invalid={Boolean(fieldErrors.eventDate)}
@@ -191,6 +233,7 @@ export function BookingRequestForm({
           <input
             id="eventLocation"
             name="eventLocation"
+            placeholder="Caldwell, NJ"
             value={formState.eventLocation}
             onChange={(event) =>
               updateField("eventLocation", event.target.value)
@@ -209,6 +252,7 @@ export function BookingRequestForm({
             id="numberOfGuests"
             name="numberOfGuests"
             inputMode="numeric"
+            placeholder="120"
             value={formState.numberOfGuests}
             onChange={(event) =>
               updateField("numberOfGuests", event.target.value)
@@ -227,11 +271,9 @@ export function BookingRequestForm({
             id="selectedPackageId"
             name="selectedPackageId"
             value={formState.selectedPackageId}
-            onChange={(event) =>
-              updateField("selectedPackageId", event.target.value)
-            }
+            onChange={(event) => updateSelectedPackage(event.target.value)}
           >
-            <option value="">Select a package (optional)</option>
+            <option value="">Choose a package (optional)</option>
             {packages.map((packageItem) => (
               <option key={packageItem._id} value={packageItem._id}>
                 {packageItem.packageName}
@@ -239,6 +281,24 @@ export function BookingRequestForm({
             ))}
           </select>
         </div>
+
+        {availableAddOns.length > 0 ? (
+          <div className="form-field full">
+            <label>Optional Add-ons</label>
+            <div className="booking-addon-grid">
+              {availableAddOns.map((addOn) => (
+                <label key={addOn} className="booking-addon-option">
+                  <input
+                    type="checkbox"
+                    checked={formState.selectedAddOns.includes(addOn)}
+                    onChange={() => toggleAddOn(addOn)}
+                  />
+                  <span>{addOn}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         <div className="form-field full">
           <label htmlFor="additionalDetails">Additional Details</label>

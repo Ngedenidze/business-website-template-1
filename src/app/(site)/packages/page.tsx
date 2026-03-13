@@ -68,12 +68,9 @@ export default async function PackagesPage() {
       />
       <section className="section packages-page">
         <div className="page-wrap packages-page-wrap">
-          <header className="section-head left-aligned packages-hero">
+          <header className="section-head left-aligned packages-pricing-head packages-hero">
             <span className="eyebrow">Rental Offerings</span>
-            <h1 className="packages-hero-title">
-              <span>Curated</span>
-              <span className="packages-hero-title-muted">Packages</span>
-            </h1>
+            <h1>Curated Packages</h1>
             <p className="packages-hero-copy">
               Compare our setups for weddings, family events, and backyard
               celebrations. We&apos;ll follow up to confirm availability and

@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
-import { ChevronRight, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 type PolicySection = {
   sectionTitle: string;
@@ -58,40 +57,6 @@ export function PolicyBrowser({
 
   return (
     <div className="policy-split">
-      {/* Sidebar with Search and TOC */}
-      <aside className="policy-sidebar">
-        <div className="policy-sidebar-sticky">
-          <div className="policy-search-container">
-            <Search className="policy-search-icon" size={18} />
-            <input
-              type="search"
-              placeholder="Search policies..."
-              className="policy-search-input"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          <nav className="policy-toc">
-            <h4 className="policy-toc-title">Quick Links</h4>
-            <ul className="policy-toc-list">
-              {sections.map((section) => (
-                <li key={section.sectionTitle}>
-                  <a href={`#${slugify(section.sectionTitle)}`}>
-                    {section.sectionTitle}
-                  </a>
-                </li>
-              ))}
-              {showFees && (
-                <li>
-                  <a href="#fees">Delivery and Setup Fees</a>
-                </li>
-              )}
-            </ul>
-          </nav>
-        </div>
-      </aside>
-
       {/* Main Content Area */}
       <div className="policy-main">
         <div className="policy-surface">
@@ -117,12 +82,6 @@ export function PolicyBrowser({
                         <p className="booking-policy-note">{section.note}</p>
                       ) : null}
                     </div>
-                  </div>
-                  <div className="policy-card-footer">
-                    <Link className="button button-primary" href="/contact">
-                      Clarify this section
-                      <ChevronRight size={16} aria-hidden="true" />
-                    </Link>
                   </div>
                 </article>
               ))}
@@ -214,6 +173,40 @@ export function PolicyBrowser({
           </div>
         ) : null}
       </div>
+
+      {/* Sidebar with Search and TOC */}
+      <aside className="policy-sidebar">
+        <div className="policy-sidebar-sticky">
+          <div className="policy-search-container">
+            <Search className="policy-search-icon" size={18} />
+            <input
+              type="search"
+              placeholder="Search policies..."
+              className="policy-search-input"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          <nav className="policy-toc">
+            <h4 className="policy-toc-title">Quick Links</h4>
+            <ul className="policy-toc-list">
+              {sections.map((section) => (
+                <li key={section.sectionTitle}>
+                  <a href={`#${slugify(section.sectionTitle)}`}>
+                    {section.sectionTitle}
+                  </a>
+                </li>
+              ))}
+              {showFees && (
+                <li>
+                  <a href="#fees">Delivery and Setup Fees</a>
+                </li>
+              )}
+            </ul>
+          </nav>
+        </div>
+      </aside>
     </div>
   );
 }

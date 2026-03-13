@@ -27,6 +27,13 @@ function normalizePackageName(value: string) {
   return value.trim().toLowerCase();
 }
 
+function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
+}
+
 export default async function BookingRequestPage({
   searchParams,
 }: {
@@ -53,34 +60,37 @@ export default async function BookingRequestPage({
   return (
     <>
       <section className="section">
-        <div className="page-wrap booking-split">
-          <div className="booking-image-panel">
-            <SanityImage
-              image={heroImage}
-              alt="Event setup preview"
-              priority
-              className="booking-sticky-media"
-            />
+        <div className="page-wrap">
+          <div className="section-head left-aligned">
+            <p className="eyebrow">Booking Request</p>
+            <h1>Request Your Event Date</h1>
+            <p>
+              Fill out the form below and we will confirm availability. We will
+              reach out to finalize your booking after review.
+            </p>
           </div>
 
-          <div className="booking-form-panel">
-            <div className="section-head left-aligned">
-              <p className="eyebrow">Booking Request</p>
-              <h1>Request Your Event Date</h1>
-              <p>
-                Fill out the form below and we will confirm availability. We
-                will reach out to finalize your booking after review.
-              </p>
+          <div className="booking-split">
+            <div className="booking-image-panel">
+              <SanityImage
+                image={heroImage}
+                alt="Event setup preview"
+                priority
+                className="booking-sticky-media"
+              />
             </div>
 
-            <BookingRequestForm
-              key={initialSelectedPackageId || "none"}
-              packages={packages.map(({ _id, packageName }) => ({
-                _id,
-                packageName,
-              }))}
-              initialSelectedPackageId={initialSelectedPackageId}
-            />
+            <div className="booking-form-panel">
+              <BookingRequestForm
+                key={initialSelectedPackageId || "none"}
+                packages={packages.map(({ _id, packageName, optionalAddOns }) => ({
+                  _id,
+                  packageName,
+                  optionalAddOns,
+                }))}
+                initialSelectedPackageId={initialSelectedPackageId}
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -89,32 +99,61 @@ export default async function BookingRequestPage({
       businessInfo.rentalPolicyHighlights.length > 0 ? (
         <section className="section section-tight" id="policy">
           <div className="page-wrap">
-            <div className="section-surface booking-policy-surface">
+            <header className="section-head left-aligned packages-pricing-head booking-policy-head">
+              <p className="eyebrow">Policy Snapshot</p>
               <h2>Rental Policy Highlights</h2>
               <p>Please review these terms before submitting your request.</p>
-              <div className="booking-policy-list">
-                {businessInfo.rentalPolicyHighlights.map((section) => (
-                  <article
-                    key={section.sectionTitle}
-                    className="booking-policy-item"
-                  >
-                    <h3>{section.sectionTitle}</h3>
-                    <ul className="list-clean">
-                      {section.bulletPoints.map((point) => (
-                        <li key={point}>{point}</li>
-                      ))}
-                    </ul>
-                    {section.note ? (
-                      <p className="booking-policy-note">{section.note}</p>
-                    ) : null}
-                  </article>
-                ))}
+            </header>
+
+            <div className="booking-policy-layout">
+              <div className="booking-policy-main">
+                <div className="booking-policy-list">
+                  {businessInfo.rentalPolicyHighlights.map((section) => (
+                    <article
+                      key={section.sectionTitle}
+                      id={slugify(section.sectionTitle)}
+                      className="booking-policy-item"
+                    >
+                      <div className="policy-card-content">
+                        <div className="policy-card-header">
+                          <h3>{section.sectionTitle}</h3>
+                        </div>
+                        <div className="policy-card-body">
+                          <ul className="list-clean">
+                            {section.bulletPoints.map((point) => (
+                              <li key={point}>{point}</li>
+                            ))}
+                          </ul>
+                          {section.note ? (
+                            <p className="booking-policy-note">{section.note}</p>
+                          ) : null}
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
               </div>
-              <div className="button-row" style={{ justifyContent: "flex-start" }}>
+
+              <aside className="booking-policy-quicklinks">
+                <nav className="policy-toc booking-policy-toc">
+                  <h4 className="policy-toc-title">Quick Links</h4>
+                  <ul className="policy-toc-list">
+                    {businessInfo.rentalPolicyHighlights.map((section) => (
+                      <li key={`link-${section.sectionTitle}`}>
+                        <a href={`#${slugify(section.sectionTitle)}`}>
+                          {section.sectionTitle}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              </aside>
+            </div>
+
+            <div className="button-row booking-policy-actions">
                 <Link className="button button-secondary" href="/policy">
                   View Full Policy Page
                 </Link>
-              </div>
             </div>
           </div>
         </section>

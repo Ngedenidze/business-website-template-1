@@ -27,12 +27,14 @@ export const bookingRequestSchema = z
       .min(1, "Guest count must be at least 1.")
       .max(5000, "Guest count looks too high."),
     selectedPackageId: z.string().trim().optional().or(z.literal("")),
+    selectedAddOns: z.array(z.string().trim().min(1).max(160)).max(25).optional(),
     additionalDetails: z.string().trim().max(2000).optional().or(z.literal("")),
     website: z.string().max(0).optional().or(z.literal("")),
   })
   .transform((payload) => ({
     ...payload,
     selectedPackageId: payload.selectedPackageId || undefined,
+    selectedAddOns: Array.from(new Set(payload.selectedAddOns ?? [])).filter(Boolean),
     additionalDetails: payload.additionalDetails || undefined,
     website: payload.website || "",
   }));

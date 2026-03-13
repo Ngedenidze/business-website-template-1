@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ArrowRight, ChevronLeft, Search } from "lucide-react";
 
 type ServiceAreaDirectoryItem = {
   _id: string;
@@ -96,12 +96,13 @@ export function ServiceAreasBrowser({
 
   if (!selectedCounty) {
     return (
-      <div className="service-directory-shell">
-        <div className="service-directory-tools">
+      <div className="service-directory-shell service-directory-shell-county">
+        <div className="service-directory-tools service-directory-tools-county">
           <h2>Select a County</h2>
           <p>Choose a county first, then browse towns we serve in that area.</p>
           <label className="service-search-control">
             <span className="sr-only">Search counties</span>
+            <Search className="service-search-icon" size={16} aria-hidden="true" />
             <input
               type="search"
               value={countySearch}
@@ -119,9 +120,15 @@ export function ServiceAreasBrowser({
               className="service-county-card"
               href={`/service-areas?county=${encodeURIComponent(county)}`}
             >
-              <span className="service-area-county">{county}</span>
-              <strong>{county}</strong>
+              <h3 className="service-county-title">{county}</h3>
               <span className="service-county-count">{towns.length} towns</span>
+              <span className="service-county-preview">
+                Includes {towns.slice(0, 3).map((town) => town.townName).join(", ")}
+              </span>
+              <span className="service-county-linkcue">
+                Browse towns
+                <ArrowRight size={14} aria-hidden="true" />
+              </span>
             </Link>
           ))}
         </div>
@@ -134,7 +141,7 @@ export function ServiceAreasBrowser({
   }
 
   return (
-    <div className="service-directory-shell">
+    <div className="service-directory-shell service-directory-shell-town">
       <div className="service-directory-tools">
         <Link
           href="/service-areas"
@@ -147,6 +154,7 @@ export function ServiceAreasBrowser({
         <p>{selectedCountyTowns.length} towns match your current search.</p>
         <label className="service-search-control">
           <span className="sr-only">Search towns</span>
+          <Search className="service-search-icon" size={16} aria-hidden="true" />
           <input
             type="search"
             value={townSearch}

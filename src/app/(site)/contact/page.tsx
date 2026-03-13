@@ -18,7 +18,7 @@ export async function generateMetadata() {
 }
 
 export default async function ContactPage() {
-  const { businessInfo, serviceAreas } = await getContactPageData();
+  const { businessInfo } = await getContactPageData();
 
   // Strip redundant "How booking works: " if it exists
   let bookingInstructionsText = businessInfo.bookingInstructions || "";
@@ -115,14 +115,6 @@ export default async function ContactPage() {
                   </div>
                 </article>
               ) : null}
-
-              <Link
-                className="button button-primary contact-cta-button"
-                href="/booking-request"
-              >
-                <Send size={16} aria-hidden="true" />
-                Start Your Quote
-              </Link>
             </div>
 
             <article className="contact-form-card">
@@ -134,49 +126,17 @@ export default async function ContactPage() {
               <ContactForm />
             </article>
           </div>
-        </div>
-      </section>
-
-      {bookingInstructionsText ? (
-        <section className="section section-tight" style={{ paddingTop: 0 }}>
-          <div className="page-wrap">
-            <div className="section-surface policy-surface">
-              <div className="how-booking-works">
-                <h2>How Booking Works</h2>
-                <p>{bookingInstructionsText}</p>
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      <section className="section section-tight">
-        <div className="page-wrap">
-          <div className="section-head">
-            <div>
-              <h3>Nearby Towns</h3>
-              <p>
-                We handle party rentals and event setup in each area below.
-                Explore your town page for local details.
-              </p>
-            </div>
-            <Link className="button button-secondary" href="/service-areas">
-              View All Service Areas
+          <section className="cta-band contact-cta-band">
+            <h2>Already know what you need?</h2>
+            <p>Send your details and we will confirm availability quickly.</p>
+            <Link
+              className="button button-primary contact-cta-button"
+              href="/booking-request"
+            >
+              <Send size={16} aria-hidden="true" />
+              Book your event
             </Link>
-          </div>
-
-          <div className="service-grid">
-            {serviceAreas.map((serviceArea) => (
-              <article className="service-area-card" key={serviceArea._id}>
-                <p className="service-area-county">{serviceArea.county}</p>
-                <h3>{serviceArea.townName}</h3>
-                <p>{serviceArea.shortDescription}</p>
-                <Link href={`/service-areas/${serviceArea.slug.current}`}>
-                  Event rentals in {serviceArea.townName}
-                </Link>
-              </article>
-            ))}
-          </div>
+          </section>
         </div>
       </section>
     </>

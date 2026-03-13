@@ -142,7 +142,8 @@ export default async function HomePage() {
 
       <section className="section">
         <div className="page-wrap">
-          <div className="section-head">
+          <div className="section-head left-aligned packages-pricing-head">
+            <span className="eyebrow">Featured</span>
             <h2>Featured Packages</h2>
             <p>
               Elegant, practical solutions for weddings, backyard celebrations, and family gatherings.
@@ -247,7 +248,8 @@ export default async function HomePage() {
 
       <section className="section">
         <div className="page-wrap">
-          <div className="section-head">
+          <div className="section-head left-aligned packages-pricing-head">
+            <span className="eyebrow">Testimonials</span>
             <h2>Client Experiences</h2>
             <p>Feedback from the families and planners we serve across the area.</p>
           </div>
@@ -268,7 +270,8 @@ export default async function HomePage() {
 
       <section className="section">
         <div className="page-wrap">
-          <div className="section-head left-aligned">
+          <div className="section-head left-aligned packages-pricing-head">
+            <span className="eyebrow">Service Areas</span>
             <h2>Towns We Serve</h2>
             <p>
               We provide premium rental setups for homes and venues in these local communities.

@@ -131,7 +131,7 @@ export const serviceAreaSlugsQuery =
   groq`*[_type == "serviceArea" && defined(county) && defined(slug.current)]{ "slug": slug.current }`;
 
 export const packageOptionsQuery =
-  groq`*[_type == "package"]|order(packageName asc){ _id, packageName }`;
+  groq`*[_type == "package"]|order(packageName asc){ _id, packageName, optionalAddOns }`;
 
 export const faqPageQuery = groq`*[_type == "faqPage"][0]${faqPageProjection}`;
 

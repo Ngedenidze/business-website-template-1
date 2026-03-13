@@ -55,6 +55,13 @@ export const bookingRequestType = defineType({
       readOnly: true,
     }),
     defineField({
+      name: "selectedAddOns",
+      title: "Selected Add-ons",
+      type: "array",
+      of: [{ type: "string" }],
+      readOnly: true,
+    }),
+    defineField({
       name: "additionalDetails",
       title: "Additional Details",
       type: "text",
