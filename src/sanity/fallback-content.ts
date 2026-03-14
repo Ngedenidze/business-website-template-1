@@ -21,7 +21,7 @@ function localImage(url: string, alt: string): SanityImageWithAlt {
 
 const setupImages = {
   popUp30Guests: localImage(
-    "/images/gallery/spirit-10x20-30-guests.png",
+    "/images/gallery/spirit-20x26-frame.png",
     "10x20 pop-up tent setup with guest seating",
   ),
   popUpBuffet: localImage(
@@ -208,6 +208,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     _id: "fallback-town-caldwell",
     county: "Essex County",
     townName: "Caldwell",
+    distanceFromCaldwellMiles: 0,
     slug: { current: "caldwell" },
     shortDescription:
       "Tent, table, and chair rentals in Caldwell with delivery coverage across Essex County.",
@@ -224,6 +225,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     _id: "fallback-town-west-caldwell",
     county: "Essex County",
     townName: "West Caldwell",
+    distanceFromCaldwellMiles: 1.1,
     slug: { current: "west-caldwell" },
     shortDescription:
       "Party rentals in West Caldwell with complete tent, table, and chair package options.",
@@ -235,6 +237,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     _id: "fallback-town-north-caldwell",
     county: "Essex County",
     townName: "North Caldwell",
+    distanceFromCaldwellMiles: 2.0,
     slug: { current: "north-caldwell" },
     shortDescription:
       "Event rentals in North Caldwell for family celebrations, reunions, and seasonal gatherings.",
@@ -246,6 +249,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     _id: "fallback-town-essex-fells",
     county: "Essex County",
     townName: "Essex Fells",
+    distanceFromCaldwellMiles: 0.8,
     slug: { current: "essex-fells" },
     shortDescription:
       "Tent and table rentals in Essex Fells for weddings and outdoor receptions.",
@@ -257,6 +261,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     _id: "fallback-town-roseland",
     county: "Essex County",
     townName: "Roseland",
+    distanceFromCaldwellMiles: 2.1,
     slug: { current: "roseland" },
     shortDescription:
       "Chair, table, and tent package rentals in Roseland with local delivery options.",
@@ -268,6 +273,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     _id: "fallback-town-livingston",
     county: "Essex County",
     townName: "Livingston",
+    distanceFromCaldwellMiles: 4.6,
     slug: { current: "livingston" },
     shortDescription:
       "Event rental packages in Livingston for birthdays, showers, and receptions.",
@@ -279,6 +285,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     _id: "fallback-town-montclair",
     county: "Essex County",
     townName: "Montclair",
+    distanceFromCaldwellMiles: 3.6,
     slug: { current: "montclair" },
     shortDescription:
       "Reliable event setup rentals in Montclair for home and venue events.",
@@ -290,6 +297,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     _id: "fallback-town-cedar-grove",
     county: "Essex County",
     townName: "Cedar Grove",
+    distanceFromCaldwellMiles: 2.8,
     slug: { current: "cedar-grove" },
     shortDescription:
       "Reliable event setup rentals in Cedar Grove for home and venue events.",
@@ -301,6 +309,7 @@ export const fallbackServiceAreas: ServiceAreaItem[] = [
     _id: "fallback-town-east-hanover",
     county: "Morris County",
     townName: "East Hanover",
+    distanceFromCaldwellMiles: 4.8,
     slug: { current: "east-hanover" },
     shortDescription:
       "Party rental bundles in East Hanover with fast quote responses.",
@@ -452,7 +461,9 @@ export const fallbackBusinessInfo: BusinessInfo = {
       price: "$18",
       itemImage: inventoryImages.cocktailTable,
     },
-    { itemName: "Table Linens", price: "$15" },
+    { itemName: "Table Linens", price: "$15",
+      itemImage: inventoryImages.roundTable,
+    },
     {
       itemName: "10x20 Pop-Up Tent",
       price: "$125",

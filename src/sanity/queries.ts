@@ -36,6 +36,7 @@ const serviceAreaProjection = groq`{
   _id,
   county,
   townName,
+  distanceFromCaldwellMiles,
   slug,
   shortDescription,
   seoText,
@@ -131,7 +132,13 @@ export const serviceAreaSlugsQuery =
   groq`*[_type == "serviceArea" && defined(county) && defined(slug.current)]{ "slug": slug.current }`;
 
 export const packageOptionsQuery =
-  groq`*[_type == "package"]|order(packageName asc){ _id, packageName, optionalAddOns }`;
+  groq`*[_type == "package"]|order(packageName asc){
+    _id,
+    packageName,
+    price,
+    includedItems,
+    optionalAddOns
+  }`;
 
 export const faqPageQuery = groq`*[_type == "faqPage"][0]${faqPageProjection}`;
 
@@ -141,6 +148,7 @@ export const siteShellQuery = groq`{
     _id,
     county,
     townName,
+    distanceFromCaldwellMiles,
     slug,
     shortDescription
   }

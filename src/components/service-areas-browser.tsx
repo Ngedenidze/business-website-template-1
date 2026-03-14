@@ -180,7 +180,6 @@ export function ServiceAreasBrowser({
             <p className="service-area-county">{serviceArea.county}</p>
             <h3>{serviceArea.townName}</h3>
             <p>{serviceArea.shortDescription}</p>
-            <Link href={`/service-areas/${serviceArea.slug.current}`}>Party rentals in {serviceArea.townName}</Link>
           </article>
         ))}
       </div>

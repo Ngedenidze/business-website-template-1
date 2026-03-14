@@ -376,6 +376,172 @@ const serviceAreaTownsByCounty = {
   ],
 };
 
+const distanceFromCaldwellMilesByCountyTown = {
+  "Essex County": {
+    Caldwell: 0.0,
+    "West Caldwell": 1.1,
+    "North Caldwell": 2.0,
+    "Essex Fells": 0.8,
+    Roseland: 2.1,
+    Livingston: 4.6,
+    "West Orange": 3.7,
+    Verona: 1.8,
+    "Cedar Grove": 2.8,
+    Montclair: 3.6,
+    Bloomfield: 5.1,
+    "Glen Ridge": 4.5,
+    Nutley: 6.4,
+    Belleville: 6.8,
+    "East Orange": 6.2,
+    Orange: 5.4,
+    Irvington: 8.3,
+    Maplewood: 7.3,
+    "South Orange": 6.3,
+    Millburn: 7.1,
+    Newark: 9.6,
+    Fairfield: 3.3,
+  },
+  "Morris County": {
+    "East Hanover": 4.8,
+    "Florham Park": 7.5,
+    Hanover: 8.0,
+    "Parsippany-Troy Hills": 7.8,
+    Montville: 6.6,
+    "Lincoln Park": 6.0,
+    Boonton: 8.1,
+    "Boonton Township": 10.0,
+    Denville: 11.6,
+    "Mountain Lakes": 9.3,
+    "Rockaway Borough": 13.2,
+    "Rockaway Township": 14.2,
+    Mendham: 17.5,
+    "Mendham Township": 15.5,
+    Madison: 9.3,
+    "Chatham Borough": 8.8,
+    "Chatham Township": 11.6,
+    "Harding Township": 13.4,
+    "Long Hill Township": 15.6,
+    "Chester Borough": 21.9,
+    "Chester Township": 21.8,
+    "Mount Olive": 24.4,
+    Jefferson: 18.2,
+    Butler: 11.5,
+    Kinnelon: 11.4,
+  },
+  "Passaic County": {
+    "Little Falls": 4.0,
+    "Woodland Park": 5.6,
+    Totowa: 5.3,
+    Wayne: 7.6,
+    Clifton: 6.3,
+    Passaic: 7.8,
+    Paterson: 7.9,
+    Haledon: 8.2,
+    "Prospect Park": 8.9,
+    "North Haledon": 9.8,
+    "Pompton Lakes": 11.3,
+    Ringwood: 18.3,
+    Bloomingdale: 13.9,
+    "West Milford": 19.3,
+    Hawthorne: 10.2,
+    Wanaque: 14.1,
+  },
+  "Bergen County": {
+    Garfield: 9.3,
+    Lodi: 10.5,
+    "Hasbrouck Heights": 10.7,
+    "Wood-Ridge": 10.0,
+    Moonachie: 11.5,
+    Carlstadt: 11.3,
+    Rutherford: 9.0,
+    "East Rutherford": 10.2,
+    Wallington: 9.0,
+    "South Hackensack": 12.1,
+    Hackensack: 12.6,
+    Teaneck: 14.3,
+    Bergenfield: 15.7,
+    Englewood: 16.3,
+    "Englewood Cliffs": 17.6,
+    "Fort Lee": 16.0,
+    Leonia: 15.2,
+    "Ridgefield Park": 13.5,
+    "Palisades Park": 14.6,
+    "Cliffside Park": 15.2,
+    Edgewater: 15.9,
+    "Fair Lawn": 10.7,
+    Paramus: 13.1,
+    Ridgewood: 13.0,
+    "Glen Rock": 11.5,
+    "Elmwood Park": 9.4,
+    Oradell: 15.1,
+    "River Edge": 13.9,
+    "New Milford": 15.0,
+    Dumont: 16.6,
+    Haworth: 16.9,
+    Cresskill: 18.0,
+    Tenafly: 17.9,
+    Alpine: 20.8,
+    Hillsdale: 16.8,
+    "Park Ridge": 18.2,
+    Emerson: 16.2,
+  },
+  "Hudson County": {
+    "Jersey City": 14.2,
+    Hoboken: 14.6,
+    "Union City": 13.7,
+    Weehawken: 14.5,
+    "West New York": 14.5,
+    "North Bergen": 13.5,
+    Guttenberg: 14.6,
+    Bayonne: 15.0,
+    Secaucus: 11.6,
+    Kearny: 10.0,
+    Harrison: 9.3,
+  },
+  "Union County": {
+    Union: 10.0,
+    Springfield: 10.2,
+    Summit: 9.7,
+    "New Providence": 11.8,
+    "Berkeley Heights": 13.6,
+    Mountainside: 11.8,
+    Westfield: 13.4,
+    "Scotch Plains": 15.1,
+    Fanwood: 14.8,
+    Plainfield: 17.1,
+    Cranford: 12.7,
+    Roselle: 13.0,
+    "Roselle Park": 12.0,
+    Elizabeth: 12.7,
+    Kenilworth: 11.1,
+    Clark: 15.4,
+    Rahway: 16.0,
+    Linden: 14.8,
+    Hillside: 10.2,
+  },
+  "Somerset County": {
+    "Basking Ridge": 17.3,
+    "Bernards Township": 18.9,
+    Bernardsville: 18.1,
+    "Far Hills": 20.7,
+    "Peapack-Gladstone": 21.5,
+    Bedminster: 24.3,
+    Bridgewater: 24.2,
+    "Bound Brook": 23.2,
+    Somerville: 25.4,
+  },
+  "New York (within ~30 miles)": {
+    "New York City boroughs": 21.5,
+    Yonkers: 22.6,
+    "Mount Vernon": 23.9,
+    "New Rochelle": 26.6,
+    "White Plains": 30.3,
+    Tarrytown: 26.5,
+    "Sleepy Hollow": 27.8,
+    Nyack: 25.8,
+  },
+};
+
 const packages = [
   {
     _id: "seed-package-garden",
@@ -502,18 +668,26 @@ const serviceAreaSeedEntries = Object.entries(serviceAreaTownsByCounty).flatMap(
 );
 
 const slugCounts = new Map();
+const missingTownMileageEntries = [];
 
 const serviceAreas = serviceAreaSeedEntries.map(({ county, townName }) => {
   const baseSlug = toSlug(townName);
   const baseSlugCount = slugCounts.get(baseSlug) || 0;
   slugCounts.set(baseSlug, baseSlugCount + 1);
   const uniqueSlug = baseSlugCount === 0 ? baseSlug : `${baseSlug}-${toSlug(county)}`;
+  const distanceFromCaldwellMiles =
+    distanceFromCaldwellMilesByCountyTown[county]?.[townName];
+
+  if (typeof distanceFromCaldwellMiles !== "number") {
+    missingTownMileageEntries.push(`${townName} (${county})`);
+  }
 
   return {
     _id: `seed-service-${toSlug(county)}-${uniqueSlug}`,
     _type: "serviceArea",
     county,
     townName,
+    distanceFromCaldwellMiles,
     slug: { _type: "slug", current: uniqueSlug },
     shortDescription:
       `Tent, table, and chair rentals in ${townName} with delivery coverage across ${county} and nearby towns.`,
@@ -528,6 +702,12 @@ const serviceAreas = serviceAreaSeedEntries.map(({ county, townName }) => {
     },
   };
 });
+
+if (missingTownMileageEntries.length > 0) {
+  console.warn(
+    `[seed] Missing Caldwell mileage for ${missingTownMileageEntries.length} towns: ${missingTownMileageEntries.join(", ")}`,
+  );
+}
 
 const homepageServiceAreaPreviewTownNames = [
   "Caldwell",

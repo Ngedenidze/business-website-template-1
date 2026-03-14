@@ -120,25 +120,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section section-tight" style={{ padding: "5rem 0" }}>
-        <div className="page-wrap">
-          <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div style={{ width: "32px", height: "1px", background: "var(--accent)", marginBottom: "2.5rem", opacity: 0.4 }} aria-hidden="true" />
-            <p style={{
-              fontFamily: "var(--font-heading), serif",
-              fontSize: "clamp(1.8rem, 4vw, 2.7rem)",
-              lineHeight: "1.35",
-              color: "#1a1512",
-              fontWeight: 400,
-              letterSpacing: "-0.01em",
-              margin: 0
-            }}>
-              {homepage.introSectionText}
-            </p>
-            <div style={{ width: "32px", height: "1px", background: "var(--accent)", marginTop: "2.5rem", opacity: 0.4 }} aria-hidden="true" />
-          </div>
-        </div>
-      </section>
+
 
       <section className="section">
         <div className="page-wrap">

@@ -34,13 +34,37 @@ function slugify(text: string) {
     .replace(/[^\w-]+/g, "");
 }
 
+function resolveDeliveryBaseLabel(addressOrServiceBase?: string) {
+  if (!addressOrServiceBase) {
+    return "Caldwell";
+  }
+
+  const segments = addressOrServiceBase
+    .split(",")
+    .map((segment) => segment.trim())
+    .filter(Boolean);
+  if (segments.length >= 2) {
+    const city = segments[segments.length - 2];
+    const stateMatch = segments[segments.length - 1].match(/[A-Z]{2}/);
+    if (city && stateMatch?.[0]) {
+      return `${city}, ${stateMatch[0]}`;
+    }
+  }
+
+  if (addressOrServiceBase.toLowerCase().includes("caldwell")) {
+    return "Caldwell, NJ";
+  }
+
+  return addressOrServiceBase;
+}
+
 export default async function BookingRequestPage({
   searchParams,
 }: {
   searchParams: Promise<BookingRequestPageSearchParams>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const { packages, businessInfo, heroImage } = await getBookingPageData();
+  const { packages, businessInfo, heroImage, serviceAreas } = await getBookingPageData();
   const selectedPackageIdQuery = [
     resolvedSearchParams?.selectedPackageId,
     resolvedSearchParams?.packageId,
@@ -56,6 +80,7 @@ export default async function BookingRequestPage({
         normalizePackageName(packageItem.packageName) === normalizePackageName(selectedPackageNameQuery),
     )?._id ||
     "";
+  const deliveryBaseLabel = resolveDeliveryBaseLabel(businessInfo.addressOrServiceBase);
 
   return (
     <>
@@ -83,10 +108,21 @@ export default async function BookingRequestPage({
             <div className="booking-form-panel">
               <BookingRequestForm
                 key={initialSelectedPackageId || "none"}
-                packages={packages.map(({ _id, packageName, optionalAddOns }) => ({
+                packages={packages.map(({ _id, packageName, price, includedItems, optionalAddOns }) => ({
                   _id,
                   packageName,
+                  price,
+                  includedItems,
                   optionalAddOns,
+                }))}
+                deliveryBaseLabel={deliveryBaseLabel}
+                deliveryFees={businessInfo.deliveryFees ?? []}
+                setupFees={businessInfo.setupFees ?? []}
+                individualPricing={businessInfo.individualRentalPricing ?? []}
+                serviceAreas={serviceAreas.map(({ county, townName, distanceFromCaldwellMiles }) => ({
+                  county,
+                  townName,
+                  distanceFromCaldwellMiles,
                 }))}
                 initialSelectedPackageId={initialSelectedPackageId}
               />

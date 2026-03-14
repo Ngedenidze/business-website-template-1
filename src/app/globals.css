@@ -1271,7 +1271,7 @@ img {
   flex-direction: column;
   gap: 1.5rem;
   padding: 2rem;
-  background: var(--surface-soft);
+  background: #fff;
   border-radius: var(--radius-card);
 }
 
@@ -1856,6 +1856,64 @@ img {
   color: var(--text-main);
   font-size: 0.94rem;
   line-height: 1.4;
+}
+
+.booking-estimate-card {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-card);
+  background: #fff;
+  padding: 1.25rem 1.25rem 1.2rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.booking-estimate-label {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7a6f68;
+  font-family: var(--font-body), sans-serif;
+}
+
+.booking-estimate-amount {
+  margin: -0.05rem 0 0.15rem;
+  font-size: clamp(3rem, 6vw, 3.8rem);
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: #2b2b2b;
+  font-family: var(--font-heading), serif;
+}
+
+.booking-estimate-amount--placeholder {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: #7a7069;
+  font-family: var(--font-body), sans-serif;
+}
+
+.booking-estimate-support {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1.02rem;
+  line-height: 1.62;
+  font-weight: 400;
+  font-family: var(--font-body), sans-serif;
+}
+
+.booking-estimate-caption {
+  margin: 0;
+  color: #7d746d;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  font-weight: 400;
+  font-family: var(--font-body), sans-serif;
 }
 
 .form-helper {

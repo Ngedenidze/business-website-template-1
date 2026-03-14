@@ -1,4 +1,5 @@
 import { client } from "@/sanity/client";
+import { getCaldwellDistanceMiles } from "@/lib/caldwell-distance-map";
 import {
   businessInfoQuery,
   faqPageQuery,
@@ -286,6 +287,14 @@ function normalizeServiceArea(item: ServiceAreaItem): ServiceAreaItem {
       typeof item.county === "string" && item.county.trim()
         ? item.county
         : "Other Service Areas",
+    distanceFromCaldwellMiles:
+      typeof item.distanceFromCaldwellMiles === "number" &&
+      Number.isFinite(item.distanceFromCaldwellMiles)
+        ? item.distanceFromCaldwellMiles
+        : (
+            fallbackServiceArea?.distanceFromCaldwellMiles ??
+            getCaldwellDistanceMiles(item.county, item.townName)
+          ),
     serviceAreaSlides:
       Array.isArray(item.serviceAreaSlides) && item.serviceAreaSlides.length > 0
         ? item.serviceAreaSlides
@@ -407,10 +416,17 @@ export async function getGalleryPageData() {
 }
 
 export async function getBookingPageData() {
-  const [packages, businessInfo, homepageDoc] = await Promise.all([
-    fetchOrNull<{ _id: string; packageName: string; optionalAddOns?: string[] }[]>(packageOptionsQuery),
+  const [packages, businessInfo, homepageDoc, serviceAreas] = await Promise.all([
+    fetchOrNull<{
+      _id: string;
+      packageName: string;
+      price?: string;
+      includedItems?: string[];
+      optionalAddOns?: string[];
+    }[]>(packageOptionsQuery),
     fetchOrNull<BusinessInfo>(businessInfoQuery),
     fetchOrNull<Homepage>(homepageQuery),
+    fetchOrNull<ServiceAreaItem[]>(serviceAreasQuery),
   ]);
 
   return {
@@ -418,11 +434,15 @@ export async function getBookingPageData() {
       ? packages.map((item) => ({
           _id: item._id,
           packageName: item.packageName,
+          price: typeof item.price === "string" ? item.price : "",
+          includedItems: normalizeStringArray(item.includedItems),
           optionalAddOns: normalizeStringArray(item.optionalAddOns),
         }))
       : fallbackPackages.map((item) => ({
           _id: item._id,
           packageName: item.packageName,
+          price: item.price,
+          includedItems: normalizeStringArray(item.includedItems),
           optionalAddOns: normalizeStringArray(item.optionalAddOns),
         })),
     businessInfo: normalizeBusinessInfo(businessInfo),
@@ -432,6 +452,9 @@ export async function getBookingPageData() {
       homepageDoc?.heroImage ??
       fallbackBusinessInfo.bookingPageImage ??
       fallbackHomepage.heroImage,
+    serviceAreas: isNonEmptyArray(serviceAreas)
+      ? serviceAreas.map(normalizeServiceArea)
+      : fallbackServiceAreas.map(normalizeServiceArea),
   };
 }
 

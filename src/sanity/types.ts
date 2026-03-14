@@ -52,6 +52,7 @@ export type ServiceAreaItem = {
   _id: string;
   county: string;
   townName: string;
+  distanceFromCaldwellMiles?: number;
   slug: SlugValue;
   shortDescription: string;
   seoText?: string;

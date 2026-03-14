@@ -31,6 +31,12 @@ export const serviceAreaType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "distanceFromCaldwellMiles",
+      title: "Distance From Caldwell (Miles)",
+      type: "number",
+      validation: (rule) => rule.required().min(0),
+    }),
+    defineField({
       name: "shortDescription",
       title: "Short Description",
       type: "text",
