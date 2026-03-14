@@ -23,7 +23,7 @@ export function createPageMetadata({
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${title} | ${SITE_NAME}`,
+      title,
       description: resolvedDescription,
       url: canonicalUrl,
       siteName: SITE_NAME,

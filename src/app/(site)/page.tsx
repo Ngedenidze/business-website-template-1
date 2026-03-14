@@ -4,16 +4,16 @@ import { ImageSlideshow } from "@/components/image-slideshow";
 import { SanityImage } from "@/components/sanity-image";
 import { BOOKING_PATH, SITE_URL, DEFAULT_META_DESCRIPTION } from "@/lib/site";
 import { createPageMetadata } from "@/lib/metadata";
-import { getHomePageData } from "@/sanity/data";
+import { getHomePageData, getSiteShellData } from "@/sanity/data";
 
 export async function generateMetadata() {
   const { homepage } = await getHomePageData();
 
   return createPageMetadata({
-    title: homepage?.seo?.metaTitle || "Tent, Table, and Chair Rentals for Local Events",
+    title: homepage?.seo?.metaTitle || "Tent, Table & Chair Rentals in Caldwell, NJ",
     description:
       homepage?.seo?.metaDescription ||
-      "Browse event rental packages, view setup photos, and request your date for tents, tables, and chairs.",
+      "Event rental packages for 20–80 guests in Caldwell, NJ. Request tents, tables, chairs, delivery, and setup pricing.",
     path: "/",
   });
 }
@@ -29,33 +29,63 @@ function splitPackageItemLabel(item: string) {
   return { quantity: match[1].trim(), label: match[2].trim() };
 }
 
+function parsePostalAddress(addressOrServiceBase?: string) {
+  if (!addressOrServiceBase || addressOrServiceBase.trim().length === 0) {
+    return {
+      streetAddress: "23 Westville Ave",
+      addressLocality: "Caldwell",
+      addressRegion: "NJ",
+      postalCode: "07006",
+    };
+  }
+
+  const normalized = addressOrServiceBase.replace(/\s+/g, " ").trim();
+  const zipMatch = normalized.match(/\b(\d{5})(?:-\d{4})?\b/);
+  const stateMatch = normalized.match(/\b([A-Z]{2})\b/);
+  const parts = normalized.split(",").map((part) => part.trim()).filter(Boolean);
+
+  return {
+    streetAddress: parts[0] ?? normalized,
+    addressLocality:
+      parts.length >= 2
+        ? parts[parts.length - 2].replace(/\b[A-Z]{2}\b/, "").trim() || "Caldwell"
+        : "Caldwell",
+    addressRegion: stateMatch?.[1] ?? "NJ",
+    postalCode: zipMatch?.[1] ?? "07006",
+  };
+}
+
 export default async function HomePage() {
-  const { homepage, featuredPackages, testimonials, serviceAreas } =
-    await getHomePageData();
-  const essexFeaturedTowns = serviceAreas
+  const [{ homepage, featuredPackages, testimonials, serviceAreas }, siteShell] =
+    await Promise.all([getHomePageData(), getSiteShellData()]);
+  const previewServiceAreas = serviceAreas;
+  const fullServiceAreas = siteShell.serviceAreas;
+  const businessInfo = siteShell.businessInfo;
+  const parsedAddress = parsePostalAddress(businessInfo.addressOrServiceBase);
+  const essexFeaturedTowns = previewServiceAreas
     .filter((serviceArea) => serviceArea.county.toLowerCase().includes("essex"))
     .slice(0, 6);
-  const featuredTownCards = essexFeaturedTowns.length > 0 ? essexFeaturedTowns : serviceAreas.slice(0, 6);
+  const featuredTownCards = essexFeaturedTowns.length > 0 ? essexFeaturedTowns : previewServiceAreas.slice(0, 6);
 
   // Generate LocalBusiness Schema
   const schemaOrgJSONLD = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: "Spirit Event Rentals",
+    name: businessInfo.businessName,
     image: homepage.heroImage?.asset?.url || "",
-    telephone: "973-632-6516", // Format based on known fallback
-    email: "spiriteventrentals@yahoo.com",
+    telephone: businessInfo.phoneNumber || undefined,
+    email: businessInfo.emailAddress || undefined,
     address: {
       "@type": "PostalAddress",
-      streetAddress: "23 Westville Ave",
-      addressLocality: "Caldwell",
-      addressRegion: "NJ",
-      postalCode: "07006",
+      streetAddress: parsedAddress.streetAddress,
+      addressLocality: parsedAddress.addressLocality,
+      addressRegion: parsedAddress.addressRegion,
+      postalCode: parsedAddress.postalCode,
       addressCountry: "US",
     },
     url: SITE_URL,
     description: homepage?.seo?.metaDescription || DEFAULT_META_DESCRIPTION,
-    areaServed: serviceAreas.map((area) => ({
+    areaServed: fullServiceAreas.map((area) => ({
       "@type": "City",
       name: area.townName,
       containedInPlace: {

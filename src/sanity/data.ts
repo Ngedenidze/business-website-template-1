@@ -381,9 +381,8 @@ export async function getHomePageData() {
 }
 
 export async function getPackagesPageData() {
-  const [packages, homepageDoc, businessInfo] = await Promise.all([
+  const [packages, businessInfo] = await Promise.all([
     fetchOrNull<PackageItem[]>(packagesQuery),
-    fetchOrNull<Homepage>(homepageQuery),
     fetchOrNull<BusinessInfo>(businessInfoQuery),
   ]);
 
@@ -392,25 +391,25 @@ export async function getPackagesPageData() {
       ? packages.map(normalizePackage)
       : fallbackPackages.map(normalizePackage),
     businessInfo: normalizeBusinessInfo(businessInfo),
-    seo: homepageDoc?.seo ?? fallbackHomepage.seo,
+    seo: {
+      metaTitle: "Event Rental Packages in Caldwell, NJ",
+      metaDescription:
+        "Compare tent, table, and chair package pricing with guest capacity and included items for local weddings, birthdays, and backyard events.",
+    },
   };
 }
 
 export async function getGalleryPageData() {
-  const [galleryItems, homepageDoc] = await Promise.all([
-    fetchOrNull<GalleryItem[]>(galleryQuery),
-    fetchOrNull<Homepage>(homepageQuery),
-  ]);
+  const galleryItems = await fetchOrNull<GalleryItem[]>(galleryQuery);
 
   return {
     galleryItems: isNonEmptyArray(galleryItems)
       ? galleryItems.map(normalizeGalleryItem)
       : fallbackGallery.map(normalizeGalleryItem),
-    seo: homepageDoc?.seo ?? {
-      metaTitle:
-        "Event Rental Gallery | Wedding & Party Tent Setups | Spirit Event Rentals",
+    seo: {
+      metaTitle: "Event Rental Gallery in Caldwell, NJ",
       metaDescription:
-        "View photos of our event rental setups. See how our tents, tables, and chairs look at real weddings, backyard parties, and corporate events in New Jersey.",
+        "Browse real tent, table, and chair setup photos from weddings, birthdays, and backyard celebrations near Caldwell, NJ.",
     },
   };
 }
@@ -446,7 +445,11 @@ export async function getBookingPageData() {
           optionalAddOns: normalizeStringArray(item.optionalAddOns),
         })),
     businessInfo: normalizeBusinessInfo(businessInfo),
-    seo: businessInfo?.seo ?? fallbackBusinessInfo.seo,
+    seo: {
+      metaTitle: "Book Event Rentals in Caldwell, NJ",
+      metaDescription:
+        "Submit your event date, town, guest count, and package details. We confirm availability and follow up with final quote details.",
+    },
     heroImage:
       businessInfo?.bookingPageImage ??
       homepageDoc?.heroImage ??
@@ -469,10 +472,10 @@ export async function getContactPageData() {
     serviceAreas: isNonEmptyArray(serviceAreas)
       ? serviceAreas.map(normalizeServiceArea).slice(0, 6)
       : fallbackServiceAreas.map(normalizeServiceArea).slice(0, 6),
-    seo: businessInfo?.seo ?? {
-      metaTitle: "Contact Us | Spirit Event Rentals Caldwell",
+    seo: {
+      metaTitle: "Contact Spirit Event Rentals in Caldwell, NJ",
       metaDescription:
-        "Need help planning your event setup? Contact Spirit Event Rentals in Caldwell, NJ via phone or email for questions about tents, tables, and chairs.",
+        "Call or email our team for package guidance, date availability, delivery questions, and booking support in Caldwell and nearby towns.",
     },
   };
 }
@@ -483,10 +486,10 @@ export async function getPolicyPageData() {
 
   return {
     businessInfo: resolvedBusinessInfo,
-    seo: resolvedBusinessInfo.seo ?? {
-      metaTitle: "Rental Policies & Delivery Fees | Spirit Event Rentals",
+    seo: {
+      metaTitle: "Rental Policy, Delivery & Setup Fees",
       metaDescription:
-        "Review our event rental policies, site requirements, weather guidelines, and delivery fees for tents, tables, and chairs.",
+        "Review rental terms, site requirements, weather policy, and delivery/setup pricing before booking your event.",
     },
   };
 }
@@ -514,9 +517,9 @@ export async function getServiceAreasPageData() {
       ? serviceAreas.map(normalizeServiceArea)
       : fallbackServiceAreas.map(normalizeServiceArea),
     seo: {
-      metaTitle: "Local Event Rentals & Service Areas | Spirit Event Rentals",
+      metaTitle: "Service Areas Near Caldwell, NJ",
       metaDescription:
-        "We deliver party rentals, tents, tables, and chairs to Caldwell, Riverview, Lakeside, and surrounding New Jersey towns. Check if we serve your area.",
+        "See towns we serve across Essex, Morris, Passaic, Bergen, Hudson, Union, and Somerset counties for event rental delivery from Caldwell, NJ.",
     },
   };
 }

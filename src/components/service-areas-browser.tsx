@@ -9,6 +9,9 @@ type ServiceAreaDirectoryItem = {
   county: string;
   townName: string;
   shortDescription: string;
+  distanceFromCaldwellMiles?: number;
+  estimatedDeliveryFee?: string | null;
+  matchedDeliveryTier?: string | null;
   slug: {
     current: string;
   };
@@ -180,6 +183,22 @@ export function ServiceAreasBrowser({
             <p className="service-area-county">{serviceArea.county}</p>
             <h3>{serviceArea.townName}</h3>
             <p>{serviceArea.shortDescription}</p>
+            <p className="service-area-delivery-fee">
+              Estimated delivery fee:{" "}
+              {serviceArea.estimatedDeliveryFee ?? "We will confirm with your quote"}
+            </p>
+            {typeof serviceArea.distanceFromCaldwellMiles === "number" ? (
+              <p className="service-area-delivery-note">
+                Caldwell distance: {serviceArea.distanceFromCaldwellMiles.toFixed(1)} miles
+                {serviceArea.matchedDeliveryTier
+                  ? ` · Tier ${serviceArea.matchedDeliveryTier}`
+                  : ""}
+              </p>
+            ) : null}
+            <Link href={`/service-areas/${serviceArea.slug.current}`}>
+              View service area
+              <ArrowRight size={14} aria-hidden="true" />
+            </Link>
           </article>
         ))}
       </div>

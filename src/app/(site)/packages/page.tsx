@@ -9,10 +9,10 @@ export async function generateMetadata() {
   const { seo } = await getPackagesPageData();
 
   return createPageMetadata({
-    title: seo?.metaTitle || "Event Rental Packages",
+    title: seo?.metaTitle || "Event Rental Packages in Caldwell, NJ",
     description:
       seo?.metaDescription ||
-      "Browse tent, table, and chair package pricing with guest capacity and included items.",
+      "Compare tent, table, and chair package pricing, guest capacity, and included items for local weddings, birthdays, and backyard events.",
     path: "/packages",
   });
 }
@@ -45,7 +45,7 @@ export default async function PackagesPage() {
     "@type": "Product",
     name: packageItem.packageName,
     image: packageItem.packagePhoto?.asset?.url || "",
-    description: packageItem.shortDescription,
+    description: packageItem.fullDescription || packageItem.shortDescription,
     offers: {
       "@type": "Offer",
       url: `${SITE_URL}/packages`,
@@ -59,9 +59,31 @@ export default async function PackagesPage() {
       },
     },
   }));
+  const breadcrumbSchemaOrgJSONLD = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${SITE_URL}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Packages",
+        item: `${SITE_URL}/packages`,
+      },
+    ],
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchemaOrgJSONLD) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgJSONLD) }}

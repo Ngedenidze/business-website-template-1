@@ -122,7 +122,6 @@ export function ImageSlideshow({
                 fill
                 priority={priority && index === 0}
                 sizes={sizes}
-                unoptimized
               />
             </div>
           );

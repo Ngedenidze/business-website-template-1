@@ -1,7 +1,17 @@
 export const SITE_NAME = "Spirit Event Rentals";
 
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+const normalizedConfiguredSiteUrl =
+  configuredSiteUrl &&
+  !/^https?:\/\/example\.com$/i.test(configuredSiteUrl)
+    ? configuredSiteUrl
+    : undefined;
+const vercelPreviewUrl = process.env.VERCEL_URL?.replace(/\/$/, "");
+
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://example.com";
+  normalizedConfiguredSiteUrl ||
+  (vercelPreviewUrl ? `https://${vercelPreviewUrl}` : undefined) ||
+  "http://localhost:3000";
 
 export const DEFAULT_META_DESCRIPTION =
   "Tent, table, chair, and package rentals in Caldwell, NJ and nearby towns for weddings, birthdays, and backyard events.";
