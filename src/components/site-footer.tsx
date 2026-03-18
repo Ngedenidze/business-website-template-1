@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Facebook, Instagram } from "lucide-react";
-import { SITE_NAME } from "@/lib/site";
+import { SITE_NAME, type NavLink } from "@/lib/site";
 import { urlFor } from "@/sanity/image";
 import type { SanityImageWithAlt } from "@/sanity/types";
 
@@ -19,6 +19,7 @@ type SiteFooterProps = {
   instagramUrl?: string;
   facebookUrl?: string;
   serviceAreas: FooterServiceArea[];
+  navLinks: NavLink[];
 };
 
 function toTelLink(phoneNumber: string): string {
@@ -36,6 +37,7 @@ export function SiteFooter({
   instagramUrl,
   facebookUrl,
   serviceAreas,
+  navLinks,
 }: SiteFooterProps) {
   const name = businessName ?? SITE_NAME;
   const hasSocials = Boolean(instagramUrl || facebookUrl);
@@ -112,21 +114,11 @@ export function SiteFooter({
             <li>
               <Link href="/booking-request">Start a Quote</Link>
             </li>
-            <li>
-              <Link href="/packages">View Packages</Link>
-            </li>
-            <li>
-              <Link href="/gallery">Event Gallery</Link>
-            </li>
-            <li>
-              <Link href="/policy">Rental Policy</Link>
-            </li>
-            <li>
-              <Link href="/faq">FAQ</Link>
-            </li>
-            <li>
-              <Link href="/contact">Contact Us</Link>
-            </li>
+            {navLinks.map((link) => (
+              <li key={`company-${link.href}`}>
+                <Link href={link.href}>{link.label}</Link>
+              </li>
+            ))}
           </ul>
         </div>
 

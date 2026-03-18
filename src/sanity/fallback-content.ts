@@ -60,15 +60,15 @@ const inventoryImages = {
     "Cocktail table rental item",
   ),
   popUpTent10x20: localImage(
-    "/images/inventory/spirit-tent-10x20-pop-up.png",
+    "/images/inventory/spirit-tent-10x20-pop-up.jpg",
     "10 by 20 pop-up tent rental item",
   ),
   frameTent20x26: localImage(
-    "/images/inventory/spirit-tent-20x26-frame.png",
+    "/images/inventory/spirit-tent-20x26-frame.avif",
     "20 by 26 frame tent rental item",
   ),
   frameTent20x40: localImage(
-    "/images/inventory/spirit-tent-20x40-frame.png",
+    "/images/inventory/spirit-tent-20x40-frame.avif",
     "20 by 40 frame tent rental item",
   ),
 };

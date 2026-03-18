@@ -92,11 +92,11 @@ export default async function PackagesPage() {
         <div className="page-wrap packages-page-wrap">
           <header className="section-head left-aligned packages-pricing-head packages-hero">
             <span className="eyebrow">Rental Offerings</span>
-            <h1>Curated Packages</h1>
+            <h1>Event Rental Packages in Caldwell, NJ</h1>
             <p className="packages-hero-copy">
-              Compare our setups for weddings, family events, and backyard
-              celebrations. We&apos;ll follow up to confirm availability and
-              finalize your booking.
+              Compare tent, table, and chair bundles for weddings, family events,
+              and backyard celebrations. We&apos;ll confirm availability and finalize
+              your booking after review.
             </p>
           </header>
 
@@ -274,6 +274,18 @@ export default async function PackagesPage() {
               </p>
             </section>
           ) : null}
+
+          <div className="button-row" style={{ justifyContent: "flex-start", marginTop: "2rem" }}>
+            <Link className="button button-primary" href={BOOKING_PATH}>
+              Request Your Event Date
+            </Link>
+            <Link className="button button-secondary" href="/service-areas">
+              View Service Areas
+            </Link>
+            <Link className="button button-secondary" href="/policy">
+              Review Policy
+            </Link>
+          </div>
         </div>
       </section>
     </>

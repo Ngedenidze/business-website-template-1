@@ -1,21 +1,27 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
-import { getServiceAreaSlugs } from "@/sanity/data";
+import { getBlogPostSlugs, getServiceAreaSlugs } from "@/sanity/data";
 
 const staticPaths = [
   "/",
   "/packages",
+  "/blog",
   "/gallery",
   "/booking-request",
   "/contact",
   "/service-areas",
   "/faq",
   "/policy",
+  "/llms.txt",
+  "/llms-full.txt",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
-  const serviceAreaSlugs = await getServiceAreaSlugs();
+  const [serviceAreaSlugs, blogPostSlugs] = await Promise.all([
+    getServiceAreaSlugs(),
+    getBlogPostSlugs(),
+  ]);
 
   const staticEntries = staticPaths.map((path) => ({
     url: `${SITE_URL}${path}`,
@@ -27,5 +33,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
   }));
 
-  return [...staticEntries, ...serviceAreaEntries];
+  const blogPostEntries = blogPostSlugs.map((slug) => ({
+    url: `${SITE_URL}/blog/${slug}`,
+    lastModified: now,
+  }));
+
+  return [...staticEntries, ...serviceAreaEntries, ...blogPostEntries];
 }

@@ -1,12 +1,16 @@
 import { client } from "@/sanity/client";
 import { getCaldwellDistanceMiles } from "@/lib/caldwell-distance-map";
 import {
+  blogPostBySlugQuery,
+  blogPostSlugsQuery,
+  blogPostsQuery,
   businessInfoQuery,
   faqPageQuery,
   galleryQuery,
   homepageQuery,
   packageOptionsQuery,
   packagesQuery,
+  publishedBlogPostCountQuery,
   serviceAreaBySlugQuery,
   serviceAreaSlugsQuery,
   serviceAreasQuery,
@@ -23,6 +27,7 @@ import {
   fallbackTestimonials,
 } from "@/sanity/fallback-content";
 import type {
+  BlogPost,
   BusinessInfo,
   FAQPage,
   GalleryItem,
@@ -280,13 +285,28 @@ function normalizeServiceArea(item: ServiceAreaItem): ServiceAreaItem {
     typeof item.slug?.current === "string"
       ? fallbackServiceAreasBySlug.get(item.slug.current)
       : undefined;
+  const resolvedTownName =
+    typeof item.townName === "string" && item.townName.trim().length > 0
+      ? item.townName
+      : fallbackServiceArea?.townName || "this area";
+  const resolvedCounty =
+    typeof item.county === "string" && item.county.trim()
+      ? item.county
+      : (fallbackServiceArea?.county || "Nearby Service Areas");
+  const rawSeoText =
+    typeof item.seoText === "string" && item.seoText.trim().length > 0
+      ? item.seoText.trim()
+      : (fallbackServiceArea?.seoText?.trim() || "");
+  const minimumSeoTextLength = 90;
+  const normalizedSeoText =
+    rawSeoText.length >= minimumSeoTextLength
+      ? rawSeoText
+      : `Need event rentals in ${resolvedTownName}? We provide tent rentals, table and chair rentals, and package delivery from Caldwell, NJ throughout ${resolvedCounty}.`;
 
   return {
     ...item,
-    county:
-      typeof item.county === "string" && item.county.trim()
-        ? item.county
-        : "Other Service Areas",
+    county: resolvedCounty,
+    seoText: normalizedSeoText,
     distanceFromCaldwellMiles:
       typeof item.distanceFromCaldwellMiles === "number" &&
       Number.isFinite(item.distanceFromCaldwellMiles)
@@ -313,17 +333,33 @@ function normalizeHomepage(item: Homepage): Homepage {
   };
 }
 
+function normalizeBlogPost(item: BlogPost): BlogPost {
+  return {
+    ...item,
+    excerpt:
+      typeof item.excerpt === "string" && item.excerpt.trim().length > 0
+        ? item.excerpt.trim()
+        : "Helpful event rental planning guidance for Caldwell, NJ and nearby towns.",
+    content: Array.isArray(item.content) ? item.content : [],
+  };
+}
+
 export async function getSiteShellData() {
-  const shellData = await fetchOrNull<{
-    businessInfo: BusinessInfo | null;
-    serviceAreas: ServiceAreaItem[];
-  }>(siteShellQuery);
+  const [shellData, publishedBlogPostCount] = await Promise.all([
+    fetchOrNull<{
+      businessInfo: BusinessInfo | null;
+      serviceAreas: ServiceAreaItem[];
+    }>(siteShellQuery),
+    fetchOrNull<number>(publishedBlogPostCountQuery),
+  ]);
 
   return {
     businessInfo: normalizeBusinessInfo(shellData?.businessInfo),
     serviceAreas: isNonEmptyArray(shellData?.serviceAreas)
       ? shellData.serviceAreas.map(normalizeServiceArea)
       : fallbackServiceAreas.map(normalizeServiceArea),
+    hasPublishedBlogPosts:
+      typeof publishedBlogPostCount === "number" && publishedBlogPostCount > 0,
   };
 }
 
@@ -407,11 +443,46 @@ export async function getGalleryPageData() {
       ? galleryItems.map(normalizeGalleryItem)
       : fallbackGallery.map(normalizeGalleryItem),
     seo: {
-      metaTitle: "Event Rental Gallery in Caldwell, NJ",
+      metaTitle: "Event Rental Gallery in Caldwell, NJ | Tents, Tables & Chairs",
       metaDescription:
-        "Browse real tent, table, and chair setup photos from weddings, birthdays, and backyard celebrations near Caldwell, NJ.",
+        "See real tent, table, and chair rental setups in Caldwell, NJ and nearby towns. Browse photos, compare packages, and request your event date.",
     },
   };
+}
+
+export async function getBlogIndexData() {
+  const blogPosts = await fetchOrNull<BlogPost[]>(blogPostsQuery);
+
+  return {
+    blogPosts: isNonEmptyArray(blogPosts)
+      ? blogPosts.map(normalizeBlogPost)
+      : [],
+    seo: {
+      metaTitle: "Event Rental Blog in Caldwell, NJ | Planning Tips",
+      metaDescription:
+        "Event planning tips, tent setup advice, and booking guidance for Caldwell, NJ and nearby towns.",
+    },
+  };
+}
+
+export async function getBlogPostBySlug(slug: string) {
+  const blogPost = await fetchOrNull<BlogPost>(blogPostBySlugQuery, { slug });
+  return blogPost ? normalizeBlogPost(blogPost) : null;
+}
+
+export async function getBlogPostSlugs() {
+  const slugs = await fetchOrNull<{ slug: string }[]>(blogPostSlugsQuery);
+
+  if (isNonEmptyArray(slugs)) {
+    return slugs.map((entry) => entry.slug);
+  }
+
+  return [];
+}
+
+export async function hasPublishedBlogPosts() {
+  const blogPostCount = await fetchOrNull<number>(publishedBlogPostCountQuery);
+  return typeof blogPostCount === "number" && blogPostCount > 0;
 }
 
 export async function getBookingPageData() {
@@ -487,9 +558,9 @@ export async function getPolicyPageData() {
   return {
     businessInfo: resolvedBusinessInfo,
     seo: {
-      metaTitle: "Rental Policy, Delivery & Setup Fees",
+      metaTitle: "Event Rental Policy in Caldwell, NJ | Delivery & Setup Fees",
       metaDescription:
-        "Review rental terms, site requirements, weather policy, and delivery/setup pricing before booking your event.",
+        "Review Caldwell, NJ event rental policy terms, site requirements, weather rules, and delivery/setup fees before booking.",
     },
   };
 }
@@ -504,7 +575,7 @@ export async function getFaqPageData() {
       metaTitle: resolvedFaqPage.title || "Frequently Asked Questions",
       metaDescription:
         resolvedFaqPage.introText ||
-        "Read answers to common questions about booking, delivery, setup, and event rental policies.",
+        "Read answers to common questions about booking, delivery, setup, and event rental policies in Caldwell, NJ.",
     },
   };
 }

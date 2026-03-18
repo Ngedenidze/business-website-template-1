@@ -16,7 +16,12 @@ export const SITE_URL =
 export const DEFAULT_META_DESCRIPTION =
   "Tent, table, chair, and package rentals in Caldwell, NJ and nearby towns for weddings, birthdays, and backyard events.";
 
-export const NAV_LINKS = [
+export type NavLink = {
+  href: string;
+  label: string;
+};
+
+export const BASE_NAV_LINKS: NavLink[] = [
   { href: "/packages", label: "Packages" },
   { href: "/gallery", label: "Gallery" },
   { href: "/service-areas", label: "Service Areas" },
@@ -24,5 +29,7 @@ export const NAV_LINKS = [
   { href: "/policy", label: "Policy" },
   { href: "/contact", label: "Contact" },
 ];
+
+export const BLOG_NAV_LINK: NavLink = { href: "/blog", label: "Blog" };
 
 export const BOOKING_PATH = "/booking-request";

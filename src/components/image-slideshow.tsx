@@ -3,7 +3,7 @@
 import { type CSSProperties, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { urlFor } from "@/sanity/image";
+import { isSanityCdnUrl, resolveImageUrl } from "@/lib/resolve-image-url";
 import type { SanityImageWithAlt } from "@/sanity/types";
 
 type ImageSlideshowProps = {
@@ -97,12 +97,10 @@ export function ImageSlideshow({
     >
       <div className="slideshow-viewport">
         {slides.map((slide, index) => {
-          const directUrl = slide.asset?.url?.trim();
-          const imageUrl = directUrl
-            ? directUrl
-            : slide.asset?._ref
-              ? urlFor(slide).width(1800).height(1200).fit("crop").url()
-              : null;
+          const imageUrl = resolveImageUrl(slide, {
+            width: 1800,
+            height: 1200,
+          });
           const altText = slide.alt?.trim() || "Event rental photo";
           const isActive = index === visibleIndex;
 
@@ -121,6 +119,7 @@ export function ImageSlideshow({
                 alt={altText}
                 fill
                 priority={priority && index === 0}
+                unoptimized={isSanityCdnUrl(imageUrl)}
                 sizes={sizes}
               />
             </div>

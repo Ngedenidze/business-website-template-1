@@ -66,6 +66,25 @@ export default async function HomePage() {
     .filter((serviceArea) => serviceArea.county.toLowerCase().includes("essex"))
     .slice(0, 6);
   const featuredTownCards = essexFeaturedTowns.length > 0 ? essexFeaturedTowns : previewServiceAreas.slice(0, 6);
+  const homepageHeadline = (() => {
+    const fallbackHeadline = "Tent, Table, and Chair Rentals in Caldwell, NJ";
+    const candidate = homepage.mainHeadline?.trim();
+    if (!candidate) {
+      return fallbackHeadline;
+    }
+
+    if (/caldwell|new jersey|\bnj\b/i.test(candidate)) {
+      return candidate;
+    }
+
+    return `${candidate} in Caldwell, NJ`;
+  })();
+  const socialLinks = [businessInfo.instagramUrl, businessInfo.facebookUrl].filter(
+    (value): value is string =>
+      typeof value === "string" &&
+      value.trim().length > 0 &&
+      /^https?:\/\//i.test(value),
+  );
 
   // Generate LocalBusiness Schema
   const schemaOrgJSONLD = {
@@ -85,6 +104,7 @@ export default async function HomePage() {
     },
     url: SITE_URL,
     description: homepage?.seo?.metaDescription || DEFAULT_META_DESCRIPTION,
+    ...(socialLinks.length > 0 ? { sameAs: socialLinks } : {}),
     areaServed: fullServiceAreas.map((area) => ({
       "@type": "City",
       name: area.townName,
@@ -120,7 +140,7 @@ export default async function HomePage() {
 
           <div className="hero-editorial-copy">
             <span className="eyebrow">Local Event Rentals</span>
-            <h1>{homepage.mainHeadline}</h1>
+            <h1>{homepageHeadline}</h1>
             <p>{homepage.supportingText}</p>
             <div className="button-row">
               <Link className="button button-primary" href={BOOKING_PATH}>

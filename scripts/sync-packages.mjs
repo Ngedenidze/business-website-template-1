@@ -73,7 +73,7 @@ const packageSeeds = [
     optionalAddOns: [],
     featured: true,
     buttonText: "Request Small Backyard Package",
-    imageFileName: "spirit-tent-10x20-pop-up.png",
+    imageFileName: "spirit-tent-10x20-pop-up.jpg",
     imageAlt: "10 by 20 pop-up tent for small backyard rental package",
   },
   {
@@ -91,7 +91,7 @@ const packageSeeds = [
     optionalAddOns: [],
     featured: true,
     buttonText: "Request Backyard Party Package",
-    imageFileName: "spirit-tent-20x26-frame.png",
+    imageFileName: "spirit-tent-20x26-frame.avif",
     imageAlt: "20 by 26 frame tent for medium backyard party package",
   },
   {
@@ -109,10 +109,20 @@ const packageSeeds = [
     optionalAddOns: [],
     featured: true,
     buttonText: "Request Large Party Package",
-    imageFileName: "spirit-tent-20x40-frame.png",
+    imageFileName: "spirit-tent-20x40-frame.avif",
     imageAlt: "20 by 40 frame tent for large party rental package",
   },
 ];
+
+function getImageContentType(fileName) {
+  const extension = path.extname(fileName).toLowerCase();
+
+  if (extension === ".png") return "image/png";
+  if (extension === ".jpg" || extension === ".jpeg") return "image/jpeg";
+  if (extension === ".avif") return "image/avif";
+
+  throw new Error(`Unsupported image extension for "${fileName}"`);
+}
 
 function assertImageFilesExist() {
   const missing = packageSeeds
@@ -139,7 +149,7 @@ async function getOrUploadAsset(fileName) {
     fs.createReadStream(path.join(inventoryDir, fileName)),
     {
       filename: fileName,
-      contentType: "image/png",
+      contentType: getImageContentType(fileName),
     },
   );
 

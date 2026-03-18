@@ -3,6 +3,7 @@ import { Mail, Phone } from "lucide-react";
 import { BookingRequestForm } from "@/components/booking-request-form";
 import { SanityImage } from "@/components/sanity-image";
 import { createPageMetadata } from "@/lib/metadata";
+import { SITE_URL } from "@/lib/site";
 import { getBookingPageData } from "@/sanity/data";
 
 export async function generateMetadata() {
@@ -81,17 +82,59 @@ export default async function BookingRequestPage({
     )?._id ||
     "";
   const deliveryBaseLabel = resolveDeliveryBaseLabel(businessInfo.addressOrServiceBase);
+  const breadcrumbSchemaOrgJSONLD = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${SITE_URL}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Booking Request",
+        item: `${SITE_URL}/booking-request`,
+      },
+    ],
+  };
+  const bookingServiceSchemaOrgJSONLD = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Event rental booking request",
+    name: "Book Event Rentals in Caldwell, NJ",
+    provider: {
+      "@type": "LocalBusiness",
+      name: businessInfo.businessName || "Spirit Event Rentals",
+      url: SITE_URL,
+    },
+    areaServed: "Caldwell, NJ and surrounding towns",
+    offers: {
+      "@type": "Offer",
+      url: `${SITE_URL}/booking-request`,
+    },
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchemaOrgJSONLD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bookingServiceSchemaOrgJSONLD) }}
+      />
       <section className="section">
         <div className="page-wrap">
           <div className="section-head left-aligned">
             <p className="eyebrow">Booking Request</p>
-            <h1>Request Your Event Date</h1>
+            <h1>Book Event Rentals in Caldwell, NJ</h1>
             <p>
-              Fill out the form below and we will confirm availability. We will
-              reach out to finalize your booking after review.
+              Fill out the form below to request your event date in Caldwell and
+              nearby towns. We review availability and follow up to finalize your booking.
             </p>
           </div>
 
@@ -100,6 +143,8 @@ export default async function BookingRequestPage({
               <SanityImage
                 image={heroImage}
                 alt="Event setup preview"
+                width={960}
+                height={1200}
                 priority
                 className="booking-sticky-media"
               />
@@ -189,6 +234,12 @@ export default async function BookingRequestPage({
             <div className="button-row booking-policy-actions">
                 <Link className="button button-secondary" href="/policy">
                   View Full Policy Page
+                </Link>
+                <Link className="button button-secondary" href="/faq">
+                  Read FAQs
+                </Link>
+                <Link className="button button-secondary" href="/service-areas">
+                  Check Service Areas
                 </Link>
             </div>
           </div>

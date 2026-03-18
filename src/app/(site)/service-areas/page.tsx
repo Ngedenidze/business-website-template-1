@@ -86,6 +86,7 @@ export async function generateMetadata() {
 
 type ServiceAreasPageSearchParams = {
   county?: string;
+  sort?: string;
 };
 
 export default async function ServiceAreasPage({
@@ -96,6 +97,8 @@ export default async function ServiceAreasPage({
   const resolvedSearchParams = await searchParams;
   const selectedCountyQuery =
     typeof resolvedSearchParams?.county === "string" ? resolvedSearchParams.county : null;
+  const selectedSortQuery =
+    typeof resolvedSearchParams?.sort === "string" ? resolvedSearchParams.sort : null;
   const [{ serviceAreas }, { businessInfo }] = await Promise.all([
     getServiceAreasPageData(),
     getPolicyPageData(),
@@ -143,12 +146,32 @@ export default async function ServiceAreasPage({
       },
     ],
   };
+  const collectionPageSchemaOrgJSONLD = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Service Areas Near Caldwell, NJ",
+    url: `${SITE_URL}/service-areas`,
+    about: {
+      "@type": "Service",
+      serviceType: "Tent, table, and chair rentals",
+      areaServed: "Caldwell, NJ and nearby towns",
+    },
+    hasPart: directoryItems.slice(0, 60).map((item) => ({
+      "@type": "WebPage",
+      name: `Event Rentals in ${item.townName}`,
+      url: `${SITE_URL}/service-areas/${item.slug.current}`,
+    })),
+  };
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchemaOrgJSONLD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchemaOrgJSONLD) }}
       />
 
       <section className="section">
@@ -162,7 +185,11 @@ export default async function ServiceAreasPage({
             </p>
           </header>
 
-          <ServiceAreasBrowser serviceAreas={directoryItems} selectedCountyQuery={selectedCountyQuery} />
+          <ServiceAreasBrowser
+            serviceAreas={directoryItems}
+            selectedCountyQuery={selectedCountyQuery}
+            selectedSortQuery={selectedSortQuery}
+          />
         </div>
       </section>
     </>

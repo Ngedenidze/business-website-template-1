@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ServiceAreaTownSearch } from "@/components/service-area-town-search";
-import { ImageSlideshow } from "@/components/image-slideshow";
 import { createPageMetadata } from "@/lib/metadata";
 import { SITE_URL } from "@/lib/site";
 import {
@@ -134,7 +133,7 @@ export default async function ServiceAreaTownPage({
           <div className="section-head">
             <div>
               <p className="eyebrow">Local Service Area</p>
-              <h1>Event Rentals in {serviceArea.townName}</h1>
+              <h1>Event Rentals in {serviceArea.townName}, NJ</h1>
               <p className="service-area-county">{serviceArea.county}</p>
               <p>
                 Tent rentals in {serviceArea.townName}, table and chair rentals in
@@ -144,15 +143,6 @@ export default async function ServiceAreaTownPage({
           </div>
 
           <div className="section-surface service-area-detail-surface">
-            <ImageSlideshow
-              images={serviceArea.serviceAreaSlides}
-              aspectRatio="16 / 9"
-              autoplay
-              intervalMs={4000}
-              showControls
-              className="service-area-detail-media"
-              fallbackLabel={`${serviceArea.townName} event setup photos`}
-            />
             <p>{serviceArea.shortDescription}</p>
             {serviceArea.seoText ? <p>{serviceArea.seoText}</p> : null}
             <div className="button-row" style={{ marginTop: "1rem" }}>

@@ -346,17 +346,17 @@
       },
       {
         "itemName": "10' x 20' Pop-up Tent",
-        "imagePath": "/images/inventory/spirit-tent-10x20-pop-up.png",
+        "imagePath": "/images/inventory/spirit-tent-10x20-pop-up.jpg",
         "altText": "10 by 20 pop-up tent rental item"
       },
       {
         "itemName": "20' x 26' Frame Tent",
-        "imagePath": "/images/inventory/spirit-tent-20x26-frame.png",
+        "imagePath": "/images/inventory/spirit-tent-20x26-frame.avif",
         "altText": "20 by 26 frame tent rental item"
       },
       {
         "itemName": "20' x 40' Frame Tent",
-        "imagePath": "/images/inventory/spirit-tent-20x40-frame.png",
+        "imagePath": "/images/inventory/spirit-tent-20x40-frame.avif",
         "altText": "20 by 40 frame tent rental item"
       }
     ],
@@ -393,17 +393,17 @@
       {
         "itemName": "10x20 Pop-Up Tent",
         "price": "$125",
-        "imagePath": "/images/inventory/spirit-tent-10x20-pop-up.png"
+        "imagePath": "/images/inventory/spirit-tent-10x20-pop-up.jpg"
       },
       {
         "itemName": "20x26 Tent",
         "price": "$350",
-        "imagePath": "/images/inventory/spirit-tent-20x26-frame.png"
+        "imagePath": "/images/inventory/spirit-tent-20x26-frame.avif"
       },
       {
         "itemName": "20x40 Tent",
         "price": "$550",
-        "imagePath": "/images/inventory/spirit-tent-20x40-frame.png"
+        "imagePath": "/images/inventory/spirit-tent-20x40-frame.avif"
       }
     ],
     "deliveryFees": [

@@ -32,6 +32,20 @@ const testimonialProjection = groq`{
   town
 }`;
 
+const blogPostProjection = groq`{
+  _id,
+  title,
+  slug,
+  excerpt,
+  featuredImage,
+  publishDate,
+  authorName,
+  topic,
+  readTime,
+  content,
+  seo
+}`;
+
 const serviceAreaProjection = groq`{
   _id,
   county,
@@ -118,6 +132,34 @@ export const packagesQuery = groq`*[_type == "package"]|order(featured desc, pac
 export const galleryQuery = groq`*[_type == "galleryItem"]|order(_createdAt desc)${galleryProjection}`;
 
 export const testimonialsQuery = groq`*[_type == "testimonial"]|order(_createdAt desc)${testimonialProjection}`;
+
+export const blogPostsQuery = groq`*[
+  _type == "blogPost" &&
+  defined(slug.current) &&
+  defined(publishDate) &&
+  publishDate <= now()
+]|order(publishDate desc)${blogPostProjection}`;
+
+export const blogPostBySlugQuery = groq`*[
+  _type == "blogPost" &&
+  slug.current == $slug &&
+  defined(publishDate) &&
+  publishDate <= now()
+][0]${blogPostProjection}`;
+
+export const blogPostSlugsQuery = groq`*[
+  _type == "blogPost" &&
+  defined(slug.current) &&
+  defined(publishDate) &&
+  publishDate <= now()
+]{ "slug": slug.current }`;
+
+export const publishedBlogPostCountQuery = groq`count(*[
+  _type == "blogPost" &&
+  defined(slug.current) &&
+  defined(publishDate) &&
+  publishDate <= now()
+])`;
 
 export const businessInfoQuery =
   groq`*[_type == "businessInfo"][0]${businessInfoProjection}`;

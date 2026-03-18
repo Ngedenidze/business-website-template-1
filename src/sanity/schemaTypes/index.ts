@@ -1,4 +1,5 @@
 import { bookingRequestType } from "./documents/bookingRequestType";
+import { blogPostType } from "./documents/blogPostType";
 import { businessInfoType } from "./documents/businessInfoType";
 import { faqPageType } from "./documents/faqPageType";
 import { galleryItemType } from "./documents/galleryItemType";
@@ -18,4 +19,5 @@ export const schemaTypes = [
   faqPageType,
   serviceAreaType,
   bookingRequestType,
+  blogPostType,
 ];

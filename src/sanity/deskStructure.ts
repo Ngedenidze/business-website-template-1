@@ -20,6 +20,7 @@ export const deskStructure: StructureResolver = (S) =>
       S.listItem().title("Packages").child(S.documentTypeList("package")),
       S.listItem().title("Gallery").child(S.documentTypeList("galleryItem")),
       S.listItem().title("Testimonials").child(S.documentTypeList("testimonial")),
+      S.listItem().title("Blog Posts").child(S.documentTypeList("blogPost")),
       S.listItem().title("Service Areas").child(S.documentTypeList("serviceArea")),
       S.divider(),
       S.listItem()

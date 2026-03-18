@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Clock, Mail, MapPin, PhoneCall, Send } from "lucide-react";
 import { createPageMetadata } from "@/lib/metadata";
+import { SITE_URL } from "@/lib/site";
 import { getContactPageData } from "@/sanity/data";
 
 import { ContactForm } from "@/components/contact-form";
@@ -28,18 +29,73 @@ export default async function ContactPage() {
       "",
     );
   }
+  const breadcrumbSchemaOrgJSONLD = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${SITE_URL}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Contact",
+        item: `${SITE_URL}/contact`,
+      },
+    ],
+  };
+  const contactPageSchemaOrgJSONLD = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Contact Spirit Event Rentals",
+    url: `${SITE_URL}/contact`,
+    about: {
+      "@type": "LocalBusiness",
+      name: businessInfo.businessName || "Spirit Event Rentals",
+      telephone: businessInfo.phoneNumber || undefined,
+      email: businessInfo.emailAddress || undefined,
+      address: businessInfo.addressOrServiceBase || undefined,
+      areaServed: "Caldwell, NJ and surrounding towns",
+      url: SITE_URL,
+    },
+  };
+  const localBusinessSchemaOrgJSONLD = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: businessInfo.businessName || "Spirit Event Rentals",
+    url: SITE_URL,
+    telephone: businessInfo.phoneNumber || undefined,
+    email: businessInfo.emailAddress || undefined,
+    address: businessInfo.addressOrServiceBase || undefined,
+    areaServed: "Caldwell, NJ and surrounding towns",
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchemaOrgJSONLD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchemaOrgJSONLD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchemaOrgJSONLD) }}
+      />
       <section className="section">
         <div className="page-wrap">
           <div className="section-head left-aligned">
             <div>
               <p className="eyebrow">Contact</p>
-              <h1>Contact Our Rental Team</h1>
+              <h1>Contact Our Caldwell, NJ Rental Team</h1>
               <p>
-                Reach out to ask about date availability, setup requirements, or
-                package pricing.
+                Reach out for date availability, setup requirements, or package
+                pricing in Caldwell and nearby towns.
               </p>
             </div>
           </div>
@@ -136,6 +192,17 @@ export default async function ContactPage() {
               <Send size={16} aria-hidden="true" />
               Book your event
             </Link>
+            <div className="contact-cta-links">
+              <Link className="contact-cta-text-link" href="/packages">
+                View Packages
+              </Link>
+              <Link className="contact-cta-text-link" href="/service-areas">
+                Service Areas
+              </Link>
+              <Link className="contact-cta-text-link" href="/faq">
+                Read FAQs
+              </Link>
+            </div>
           </section>
         </div>
       </section>

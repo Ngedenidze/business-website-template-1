@@ -7,6 +7,22 @@ export type SeoFields = {
   metaDescription?: string;
 };
 
+export type PortableTextSpan = {
+  _type: "span";
+  text: string;
+  marks?: string[];
+};
+
+export type PortableTextBlock = {
+  _type: "block";
+  _key?: string;
+  style?: string;
+  listItem?: "bullet" | "number";
+  level?: number;
+  children?: PortableTextSpan[];
+  markDefs?: Array<Record<string, unknown>>;
+};
+
 export type SanityImageWithAlt = {
   alt?: string;
   asset?: {
@@ -46,6 +62,20 @@ export type TestimonialItem = {
   testimonialText: string;
   eventType?: string;
   town?: string;
+};
+
+export type BlogPost = {
+  _id: string;
+  title: string;
+  slug: SlugValue;
+  excerpt: string;
+  featuredImage?: SanityImageWithAlt | null;
+  publishDate: string;
+  authorName?: string;
+  topic?: string;
+  readTime?: string;
+  content: PortableTextBlock[];
+  seo?: SeoFields;
 };
 
 export type ServiceAreaItem = {

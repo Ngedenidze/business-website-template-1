@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { ArrowRight, ChevronLeft, Search } from "lucide-react";
 
@@ -20,14 +21,41 @@ type ServiceAreaDirectoryItem = {
 type ServiceAreasBrowserProps = {
   serviceAreas: ServiceAreaDirectoryItem[];
   selectedCountyQuery?: string | null;
+  selectedSortQuery?: string | null;
 };
+
+type SortOption = "default" | "alphabetical" | "distance";
+
+function normalizeSortOption(value: string | null | undefined): SortOption {
+  if (value === "alphabetical" || value === "distance") {
+    return value;
+  }
+
+  return "default";
+}
+
+function buildServiceAreasHref(county: string | null, sort: SortOption) {
+  const params = new URLSearchParams();
+  if (county) {
+    params.set("county", county);
+  }
+  if (sort !== "default") {
+    params.set("sort", sort);
+  }
+
+  const queryString = params.toString();
+  return queryString.length > 0 ? `/service-areas?${queryString}` : "/service-areas";
+}
 
 export function ServiceAreasBrowser({
   serviceAreas,
   selectedCountyQuery,
+  selectedSortQuery,
 }: ServiceAreasBrowserProps) {
+  const router = useRouter();
   const [countySearch, setCountySearch] = useState("");
   const [townSearchByCounty, setTownSearchByCounty] = useState<Record<string, string>>({});
+  const selectedSort = normalizeSortOption(selectedSortQuery);
 
   const serviceAreasByCounty = useMemo(() => {
     return serviceAreas.reduce<Record<string, ServiceAreaDirectoryItem[]>>((groups, serviceArea) => {
@@ -94,8 +122,32 @@ export function ServiceAreasBrowser({
       );
     });
 
-    return [...filtered].sort((left, right) => left.townName.localeCompare(right.townName));
-  }, [selectedCounty, serviceAreasByCounty, townSearch]);
+    if (selectedSort === "alphabetical") {
+      return [...filtered].sort((left, right) => left.townName.localeCompare(right.townName));
+    }
+
+    if (selectedSort === "distance") {
+      return [...filtered].sort((left, right) => {
+        const leftMiles = left.distanceFromCaldwellMiles;
+        const rightMiles = right.distanceFromCaldwellMiles;
+        const leftHasMiles = typeof leftMiles === "number";
+        const rightHasMiles = typeof rightMiles === "number";
+
+        if (leftHasMiles && rightHasMiles) {
+          if (leftMiles !== rightMiles) {
+            return leftMiles - rightMiles;
+          }
+          return left.townName.localeCompare(right.townName);
+        }
+
+        if (leftHasMiles) return -1;
+        if (rightHasMiles) return 1;
+        return left.townName.localeCompare(right.townName);
+      });
+    }
+
+    return filtered;
+  }, [selectedCounty, selectedSort, serviceAreasByCounty, townSearch]);
 
   if (!selectedCounty) {
     return (
@@ -121,7 +173,7 @@ export function ServiceAreasBrowser({
             <Link
               key={county}
               className="service-county-card"
-              href={`/service-areas?county=${encodeURIComponent(county)}`}
+              href={buildServiceAreasHref(county, selectedSort)}
             >
               <h3 className="service-county-title">{county}</h3>
               <span className="service-county-count">{towns.length} towns</span>
@@ -147,7 +199,7 @@ export function ServiceAreasBrowser({
     <div className="service-directory-shell service-directory-shell-town">
       <div className="service-directory-tools">
         <Link
-          href="/service-areas"
+          href={buildServiceAreasHref(null, selectedSort)}
           className="button button-secondary service-back-button"
         >
           <ChevronLeft size={16} aria-hidden="true" />
@@ -155,26 +207,45 @@ export function ServiceAreasBrowser({
         </Link>
         <h2>{selectedCounty}</h2>
         <p>{selectedCountyTowns.length} towns match your current search.</p>
-        <label className="service-search-control">
-          <span className="sr-only">Search towns</span>
-          <Search className="service-search-icon" size={16} aria-hidden="true" />
-          <input
-            type="search"
-            value={townSearch}
-            onChange={(event) => {
-              if (!selectedCounty) {
-                return;
-              }
+        <div className="service-directory-filters">
+          <label className="service-search-control">
+            <span className="sr-only">Search towns</span>
+            <Search className="service-search-icon" size={16} aria-hidden="true" />
+            <input
+              type="search"
+              value={townSearch}
+              onChange={(event) => {
+                if (!selectedCounty) {
+                  return;
+                }
 
-              setTownSearchByCounty((previous) => ({
-                ...previous,
-                [selectedCounty]: event.target.value,
-              }));
-            }}
-            placeholder={`Search towns in ${selectedCounty}`}
-            className="service-search-input"
-          />
-        </label>
+                setTownSearchByCounty((previous) => ({
+                  ...previous,
+                  [selectedCounty]: event.target.value,
+                }));
+              }}
+              placeholder={`Search towns in ${selectedCounty}`}
+              className="service-search-input"
+            />
+          </label>
+
+          <label className="service-directory-sort">
+            <span>Sort towns</span>
+            <select
+              value={selectedSort}
+              onChange={(event) => {
+                const nextSort = normalizeSortOption(event.target.value);
+                const nextHref = buildServiceAreasHref(selectedCounty, nextSort);
+                router.push(nextHref);
+              }}
+              className="service-sort-select"
+            >
+              <option value="default">Default</option>
+              <option value="alphabetical">Alphabetical (A-Z)</option>
+              <option value="distance">Distance from Caldwell</option>
+            </select>
+          </label>
+        </div>
       </div>
 
       <div className="service-grid">

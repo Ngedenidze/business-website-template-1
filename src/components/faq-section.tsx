@@ -13,7 +13,7 @@ export function FAQSection({ faqPage }: FAQSectionProps) {
     <section className="section section-tight faq-section" aria-labelledby="policy-faq-heading">
       <div className="section-head left-aligned">
         {faqPage.eyebrow ? <p className="eyebrow">{faqPage.eyebrow}</p> : null}
-        <h2 id="policy-faq-heading">{faqPage.title}</h2>
+        <h1 id="policy-faq-heading">{faqPage.title}</h1>
         {faqPage.introText ? <p>{faqPage.introText}</p> : null}
       </div>
 

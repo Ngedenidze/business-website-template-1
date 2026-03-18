@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { urlFor } from "@/sanity/image";
+import { isSanityCdnUrl, resolveImageUrl } from "@/lib/resolve-image-url";
 import type { SanityImageWithAlt } from "@/sanity/types";
 
 type SanityImageProps = {
@@ -21,16 +21,10 @@ export function SanityImage({
   fallbackLabel = "Event photo placeholder",
   className,
 }: SanityImageProps) {
-  const directUrl = image?.asset?.url?.trim();
-  const imageUrl = directUrl
-    ? directUrl
-    : image?.asset?._ref
-      ? urlFor(image)
-          .width(width * 2)
-          .height(height * 2)
-          .fit("crop")
-          .url()
-      : null;
+  const imageUrl = resolveImageUrl(image, {
+    width: width * 2,
+    height: height * 2,
+  });
   const imageAlt = image?.alt?.trim() || alt?.trim() || "Event rental setup";
 
   if (!imageUrl) {
@@ -49,6 +43,7 @@ export function SanityImage({
         width={width}
         height={height}
         priority={priority}
+        unoptimized={isSanityCdnUrl(imageUrl)}
         sizes="(max-width: 760px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />
     </div>

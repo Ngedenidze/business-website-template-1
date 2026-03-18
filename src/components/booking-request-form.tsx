@@ -96,6 +96,38 @@ function normalizeName(value: string): string {
     .trim();
 }
 
+function normalizePhoneDigits(value: string): string {
+  const digits = value.replace(/\D/g, "");
+
+  if (digits.length >= 11 && digits.startsWith("1")) {
+    return digits.slice(1, 11);
+  }
+
+  return digits.slice(0, 10);
+}
+
+function formatPhoneNumber(value: string): string {
+  const digits = normalizePhoneDigits(value);
+
+  if (digits.length === 0) {
+    return "";
+  }
+
+  if (digits.length < 4) {
+    return `(${digits}`;
+  }
+
+  if (digits.length < 7) {
+    return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  }
+
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
+function isValidPhoneNumber(value: string): boolean {
+  return normalizePhoneDigits(value).length === 10;
+}
+
 function escapeRegex(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -518,12 +550,22 @@ export function BookingRequestForm({
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (!isValidPhoneNumber(formState.phoneNumber)) {
+      setFieldErrors((previous) => ({
+        ...previous,
+        phoneNumber: "Enter a valid 10-digit phone number.",
+      }));
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError("");
     setSuccessMessage("");
 
     const requestPayload = {
       ...formState,
+      phoneNumber: formatPhoneNumber(formState.phoneNumber),
       selectedDeliveryDistance: matchedDeliveryTier?.label,
       selectedSetupTent: matchedSetupTent || undefined,
       estimatedPackagePrice: packagePrice > 0 ? packagePrice : undefined,
@@ -610,9 +652,13 @@ export function BookingRequestForm({
             id="phoneNumber"
             name="phoneNumber"
             autoComplete="tel"
+            inputMode="tel"
+            maxLength={14}
             placeholder="(973) 555-1234"
             value={formState.phoneNumber}
-            onChange={(event) => updateField("phoneNumber", event.target.value)}
+            onChange={(event) =>
+              updateField("phoneNumber", formatPhoneNumber(event.target.value))
+            }
             aria-invalid={Boolean(fieldErrors.phoneNumber)}
             required
           />
@@ -784,6 +830,7 @@ export function BookingRequestForm({
           <textarea
             id="additionalDetails"
             name="additionalDetails"
+            className="additional-details-textarea"
             value={formState.additionalDetails}
             onChange={(event) =>
               updateField("additionalDetails", event.target.value)
